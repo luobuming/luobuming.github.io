@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        操作浮点数-汇编层面 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#FPU"><span class="toc-text">FPU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于浮点数操作的汇编指令"><span class="toc-text">关于浮点数操作的汇编指令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#除法"><span class="toc-text">除法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#加法"><span class="toc-text">加法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#浮点数比较"><span class="toc-text">浮点数比较</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#其他"><span class="toc-text">其他</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#浮点数二进制表示"><span class="toc-text">浮点数二进制表示</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#单精度浮点数"><span class="toc-text">单精度浮点数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#双精度浮点数"><span class="toc-text">双精度浮点数</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        操作浮点数-汇编层面
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-03-18 00:30:50</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#汇编语言" title="汇编语言">汇编语言</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>有更新！</p>
+<a id="more"></a>
+<h3 id="FPU"><a href="#FPU" class="headerlink" title="FPU"></a>FPU</h3><p>FPU是专用于浮点运算的处理器，有ST0～ST7，都是用来放浮点数的</p>
+<h3 id="关于浮点数操作的汇编指令"><a href="#关于浮点数操作的汇编指令" class="headerlink" title="关于浮点数操作的汇编指令"></a>关于浮点数操作的汇编指令</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FLD</td>
+<td>类似于push指令，把浮点数据压入ST寄存器中</td>
+</tr>
+<tr>
+<td>FST</td>
+<td>类似于pop指令，把ST寄存器ST0的数据传送到目标操作数中</td>
+</tr>
+<tr>
+<td>FSTP</td>
+<td>与FST相类似，所不同的是：指令FST执行完后，不进行堆栈的弹出操作，即：寄存器堆栈不发生变化，而指令FSTP执行完后，则需要进行寄存器堆栈的弹出操作，寄存器堆栈将发生变化</td>
+</tr>
+</tbody></table>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fld</span> <span class="built_in">dword</span> <span class="built_in">ptr</span> <span class="built_in">ds</span>:[<span class="built_in">eax</span>+<span class="number">0xC</span>]   意思是将[<span class="built_in">eax</span>+c]的值以浮点型放进<span class="built_in">ST0</span>里面</span><br><span class="line"><span class="keyword">fstp</span> <span class="built_in">dword</span> <span class="built_in">ptr</span> <span class="built_in">ss</span>:[<span class="built_in">ebp</span>-<span class="number">0x20</span>] 意思是将<span class="built_in">ST0</span>里面的浮点值，放到<span class="built_in">ebp</span>-<span class="number">20</span>这个内存里面，同是清空<span class="built_in">ST0</span>里面的值</span><br></pre></td></tr></table></figure>
+
+<h4 id="除法"><a href="#除法" class="headerlink" title="除法"></a>除法</h4><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FDIVR m32real</td>
+<td>将 m32real 除以 ST(0)，结果存储到 ST(0)</td>
+</tr>
+<tr>
+<td>FDIVR m64real</td>
+<td>将 m64real 除以 ST(0)，结果存储到 ST(0)</td>
+</tr>
+<tr>
+<td>FDIVR ST(0), ST(i)</td>
+<td>将 ST(i) 除以 ST(0)，结果存储到 ST(0)</td>
+</tr>
+<tr>
+<td>FDIVR ST(i), ST(0)</td>
+<td>将 ST(0) 除以 ST(i)，结果存储到 ST(i)</td>
+</tr>
+<tr>
+<td>FDIVRP ST(i), ST(0)</td>
+<td>将 ST(0) 除以 ST(i)，结果存储到 ST(i)，并弹出寄存器堆栈</td>
+</tr>
+<tr>
+<td>FDIVRP</td>
+<td>将 ST(0) 除以 ST(1)，结果存储到 ST(1)，并弹出寄存器堆栈</td>
+</tr>
+<tr>
+<td>FIDIVR m32int</td>
+<td>将 m32int 除以 ST(0)，结果存储到 ST(0)</td>
+</tr>
+<tr>
+<td>FIDIVR m16int</td>
+<td>将 m16int 除以 ST(0)，结果存储到 ST(0)</td>
+</tr>
+</tbody></table>
+<h4 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h4><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FADD m32real</td>
+<td>将 m32real 与 ST(0) 相加，结果存储到 ST(0)。</td>
+</tr>
+<tr>
+<td>FADD m64real</td>
+<td>将 m64real 与 ST(0) 相加，结果存储到 ST(0)。</td>
+</tr>
+<tr>
+<td>FADD ST(0), ST(i)</td>
+<td>将 ST(0) 与 ST(i) 相加，结果存储到 ST(0)。</td>
+</tr>
+<tr>
+<td>FADD ST(i), ST(0)</td>
+<td>将 ST(i) 与 ST(0) 相加，结果存储到 ST(i)。</td>
+</tr>
+<tr>
+<td>FADDP ST(i), ST(0)</td>
+<td>将 ST(0) 与 ST(i) 相加，结果存储到 ST(i)，并弹出寄存器堆栈</td>
+</tr>
+<tr>
+<td>FADDP</td>
+<td>将 ST(0) 与 ST(1) 相加，结果存储到 ST(1)，并弹出寄存器堆栈</td>
+</tr>
+<tr>
+<td>FIADD m32int</td>
+<td>将 m32int 与 ST(0) 相加，结果存储到 ST(0)</td>
+</tr>
+<tr>
+<td>FIADD m16int</td>
+<td>将 m16int 与 ST(0) 相加，结果存储到 ST(0)</td>
+</tr>
+</tbody></table>
+<h4 id="浮点数比较"><a href="#浮点数比较" class="headerlink" title="浮点数比较"></a>浮点数比较</h4><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fcom</td>
+<td>比较st0和st1寄存器的值</td>
+</tr>
+<tr>
+<td>fcom st(x)</td>
+<td>比较st0和stx寄存器的值</td>
+</tr>
+<tr>
+<td>fcom source</td>
+<td>比较st0和32/64位内存值</td>
+</tr>
+<tr>
+<td>fcomp</td>
+<td>比较st0和st1寄存器的值，并弹出堆栈</td>
+</tr>
+<tr>
+<td>fcomp st(x)</td>
+<td>比较st0和stx寄存器的值，并弹出堆栈</td>
+</tr>
+<tr>
+<td>fcomp source</td>
+<td>比较st0和32/64位内存值，并弹出堆栈</td>
+</tr>
+<tr>
+<td>fcompp</td>
+<td>比较st0和st1寄存器的值，并两次弹出堆栈</td>
+</tr>
+<tr>
+<td>ftst</td>
+<td>比较st0和0.0</td>
+</tr>
+</tbody></table>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p><a href="http://www.voidcn.com/article/p-hlzrbceg-qh.html" target="_blank" rel="noopener">汇编语言学习笔记(十二)-浮点指令</a></p>
+<h3 id="浮点数二进制表示"><a href="#浮点数二进制表示" class="headerlink" title="浮点数二进制表示"></a>浮点数二进制表示</h3><p>在计算机中，浮点数在内存中的存储和整数的存储是不一样的。计算机底层只能识别0和1，也就是采用二进制，二进制也可用科学计数法来表示浮点数</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2.5</span>  转换成二进制 <span class="number">10.1</span>  科学记数法表示为<span class="number">1.01</span>×<span class="number">2</span>^<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>十进制小数转换二进制小数时，整数部分和平常的方法是一样的，小数部分规则如下：</p>
+<p><img src="https://s2.ax1x.com/2019/03/18/AeO0wn.png" alt> </p>
+<h4 id="单精度浮点数"><a href="#单精度浮点数" class="headerlink" title="单精度浮点数"></a>单精度浮点数</h4><ul>
+<li>数据宽度：32位，即一个字</li>
+<li>最高为符号位（正数为0，负数为1）</li>
+<li>尾数位：位于后23位，由于二进制的最高只可能是0或者1，又因为科学记数法表示之后首位必定是1，故社区小数点和点前的1为最后的尾数</li>
+<li>指数位：需要加上127，然后再转换成二进制最高位之后的8位</li>
+</ul>
+<h4 id="双精度浮点数"><a href="#双精度浮点数" class="headerlink" title="双精度浮点数"></a>双精度浮点数</h4><ul>
+<li>数据宽度：64位，即2个字</li>
+<li>符号位：最高位是符号位，规则和32位一样</li>
+<li>指数位：最高位向后的11位是指数位，需加上1023</li>
+<li>尾数位：后52位</li>
+</ul>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

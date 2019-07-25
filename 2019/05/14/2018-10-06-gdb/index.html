@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        动态调试工具--gdb - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#功能"><span class="toc-text">功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#peda"><span class="toc-text">peda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用方法-这是我自己用到的命令，今后遇到新的再补充"><span class="toc-text">使用方法(这是我自己用到的命令，今后遇到新的再补充)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#用GDB加载ELF文件"><span class="toc-text">用GDB加载ELF文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行程序"><span class="toc-text">运行程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设置断点"><span class="toc-text">设置断点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看所有断点信息"><span class="toc-text">查看所有断点信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看当前程序栈的信息"><span class="toc-text">查看当前程序栈的信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看程序中所有段读、写、执行的属性"><span class="toc-text">查看程序中所有段读、写、执行的属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#继续运行"><span class="toc-text">继续运行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设置寄存器的值"><span class="toc-text">设置寄存器的值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#退出"><span class="toc-text">退出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输出命令"><span class="toc-text">输出命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#显示栈中的100项"><span class="toc-text">显示栈中的100项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#打印当前线程的调用栈"><span class="toc-text">打印当前线程的调用栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设置命令行参数"><span class="toc-text">设置命令行参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gdb中查看内存（x命令）"><span class="toc-text">gdb中查看内存（x命令）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#基本语法"><span class="toc-text">基本语法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#n、f、u是可选的参数。"><span class="toc-text">n、f、u是可选的参数。</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#寄存器的显示"><span class="toc-text">寄存器的显示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GDB命令脚本编程"><span class="toc-text">GDB命令脚本编程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、自定义命令-也可以传参数，支持-arg0～-arg9，-argc表示参数总个数"><span class="toc-text">一、自定义命令(也可以传参数，支持$arg0～$arg9，$argc表示参数总个数)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令脚本"><span class="toc-text">命令脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#执行gdb脚本"><span class="toc-text">执行gdb脚本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子"><span class="toc-text">例子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目（debug32）"><span class="toc-text">题目（debug32）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#调式过程"><span class="toc-text">调式过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#flag：flag-i-has-debugger-skill"><span class="toc-text">flag：flag{i_has_debugger_skill}</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        动态调试工具--gdb
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-05-14 14:22:24</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#工具" title="工具">工具</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>添加了一些gdb脚本编程！</p>
+<a id="more"></a>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><ul>
+<li>UNIX及UNIX-like下的调试工具。或许，各位比较喜欢那种图形界面方式的，像VC、BCB等IDE的调试，但如果你是在 UNIX平台下做软件，你会发现GDB这个调试工具相比于VC、z的优点是具有修复网络断点以及恢复链接等功能，比BCB的图形化调试器有更强大的功能。所谓“寸有所长，尺有所短”就是这个道理。</li>
+</ul>
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ul>
+<li>启动你的程序，可以按照你的自定义的要求随心所欲的运行程序。</li>
+<li>可让被调试的程序在你所指定的调置的断点处停住。（断点可以是条件表达式）</li>
+<li>当程序被停住时，可以检查此时你的程序中所发生的事。</li>
+<li>你可以改变你的程序，将一个BUG产生的影响修正从而测试其他BUG。</li>
+</ul>
+<h2 id="peda"><a href="#peda" class="headerlink" title="peda"></a>peda</h2><ul>
+<li><p>为了更好的使用这个存命令行的工具，推荐大家用peda这个插件，这个插件是用来方便的通过命令来显示出寄存器、汇编代码、栈中的情况</p>
+</li>
+<li><p>安装方法</p>
+<ul>
+<li><p>peda不支持python3版本的gdb，因此需要安装低版本的gdb。 </p>
+</li>
+<li><p>三句命令即可</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https:<span class="string">//github.com/longld/peda.git</span> ~<span class="string">/peda</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"source ~/peda/peda.py"</span> &gt;&gt; ~<span class="string">/.gdbinit</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"DONE! debug your program with gdb and enjoy"</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用方法-这是我自己用到的命令，今后遇到新的再补充"><a href="#使用方法-这是我自己用到的命令，今后遇到新的再补充" class="headerlink" title="使用方法(这是我自己用到的命令，今后遇到新的再补充)"></a>使用方法(这是我自己用到的命令，今后遇到新的再补充)</h2><h3 id="用GDB加载ELF文件"><a href="#用GDB加载ELF文件" class="headerlink" title="用GDB加载ELF文件"></a>用GDB加载ELF文件</h3><ul>
+<li>0x01(直接加载)</li>
+</ul>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb <span class="string">[filename]</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>0x02(打开gdb后再加载文件)</li>
+</ul>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">root@wxm-virtual-machine:~/<span class="built_in">file</span><span class="comment"># gdb</span></span><br><span class="line">GNU gdb (Ubuntu <span class="number">7.11</span><span class="number">.1</span><span class="number">-0</span>ubuntu1~<span class="number">16.5</span>) <span class="number">7.11</span><span class="number">.1</span></span><br><span class="line">Copyright (C) <span class="number">2016</span> Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL <span class="built_in">version</span> <span class="number">3</span> <span class="keyword">or</span> later &lt;<span class="keyword">http</span>://gnu.org/licenses/gpl.html&gt;</span><br><span class="line">This is free software: you are free <span class="built_in">to</span> change <span class="keyword">and</span> redistribute <span class="keyword">it</span>.</span><br><span class="line">There is NO WARRANTY, <span class="built_in">to</span> <span class="keyword">the</span> extent permitted <span class="keyword">by</span> law.  Type <span class="string">"show copying"</span></span><br><span class="line"><span class="keyword">and</span> <span class="string">"show warranty"</span> <span class="keyword">for</span> details.</span><br><span class="line">This GDB was configured <span class="keyword">as</span> <span class="string">"x86_64-linux-gnu"</span>.</span><br><span class="line">Type <span class="string">"show configuration"</span> <span class="keyword">for</span> configuration details.</span><br><span class="line">For bug reporting instructions, please see:</span><br><span class="line">&lt;<span class="keyword">http</span>://www.gnu.org/software/gdb/bugs/&gt;.</span><br><span class="line">Find <span class="keyword">the</span> GDB manual <span class="keyword">and</span> other documentation resources online <span class="keyword">at</span>:</span><br><span class="line">&lt;<span class="keyword">http</span>://www.gnu.org/software/gdb/documentation/&gt;.</span><br><span class="line">For help, type <span class="string">"help"</span>.</span><br><span class="line">Type <span class="string">"apropos word"</span> <span class="built_in">to</span> search <span class="keyword">for</span> commands related <span class="built_in">to</span> <span class="string">"word"</span>.</span><br><span class="line">gdb-peda$ <span class="built_in">file</span> debug32 </span><br><span class="line">Reading symbols <span class="built_in">from</span> debug32...(no debugging symbols found)...done.</span><br><span class="line">gdb-peda$</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行程序"><a href="#运行程序" class="headerlink" title="运行程序"></a>运行程序</h3><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">run</span><span class="bash"> 或者 r</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="设置断点"><a href="#设置断点" class="headerlink" title="设置断点"></a>设置断点</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">break</span> [函数名]</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看所有断点信息"><a href="#查看所有断点信息" class="headerlink" title="查看所有断点信息"></a>查看所有断点信息</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">info</span> breakpoints</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看当前程序栈的信息"><a href="#查看当前程序栈的信息" class="headerlink" title="查看当前程序栈的信息"></a>查看当前程序栈的信息</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">info</span> frame</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看程序中所有段读、写、执行的属性"><a href="#查看程序中所有段读、写、执行的属性" class="headerlink" title="查看程序中所有段读、写、执行的属性"></a>查看程序中所有段读、写、执行的属性</h3><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">vmmap</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="继续运行"><a href="#继续运行" class="headerlink" title="继续运行"></a>继续运行</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">continue</span> 或者 c</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置寄存器的值"><a href="#设置寄存器的值" class="headerlink" title="设置寄存器的值"></a>设置寄存器的值</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">set</span> $[寄存器名] = 值</span><br></pre></td></tr></table></figure>
+
+<h3 id="退出"><a href="#退出" class="headerlink" title="退出"></a>退出</h3><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">q</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="输出命令"><a href="#输出命令" class="headerlink" title="输出命令"></a>输出命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span>  内容</span><br><span class="line"><span class="built_in">print</span> 内容</span><br></pre></td></tr></table></figure>
+
+<h3 id="显示栈中的100项"><a href="#显示栈中的100项" class="headerlink" title="显示栈中的100项"></a>显示栈中的100项</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">stack</span> <span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="打印当前线程的调用栈"><a href="#打印当前线程的调用栈" class="headerlink" title="打印当前线程的调用栈"></a>打印当前线程的调用栈</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">backtrace</span><span class="params">(bt)</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="设置命令行参数"><a href="#设置命令行参数" class="headerlink" title="设置命令行参数"></a>设置命令行参数</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">set</span> args [参数]</span><br><span class="line"></span><br><span class="line"><span class="builtin-name">run</span> [参数]</span><br></pre></td></tr></table></figure>
+
+<h3 id="gdb中查看内存（x命令）"><a href="#gdb中查看内存（x命令）" class="headerlink" title="gdb中查看内存（x命令）"></a>gdb中查看内存（x命令）</h3><p>x命令也就是examine命令，这个命令是用来查看内存地址中的值；</p>
+<h4 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x/<span class="tag">&lt;<span class="name">n</span>/<span class="attr">f</span>/<span class="attr">u</span>&gt;</span> <span class="tag">&lt;<span class="name">addr</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="n、f、u是可选的参数。"><a href="#n、f、u是可选的参数。" class="headerlink" title="n、f、u是可选的参数。"></a>n、f、u是可选的参数。</h4><ul>
+<li>n是一个正整数，表示显示内存的长度，也就是说从当前地址向后显示几个地址的内容。</li>
+<li>f表示现实的格式。</li>
+<li><ul>
+<li>x：按十六进制格式显示变量</li>
+</ul>
+</li>
+<li><ul>
+<li>d：按十进制格式显示变量</li>
+</ul>
+</li>
+<li><ul>
+<li>u：按十六进制显示无符号整型</li>
+</ul>
+</li>
+<li><ul>
+<li>o：按八进制显示变量</li>
+</ul>
+</li>
+<li><ul>
+<li>t：按二进制显示变量</li>
+</ul>
+</li>
+<li><ul>
+<li>a：按十六进制格式显示变量</li>
+</ul>
+</li>
+<li><ul>
+<li>c：按字符串格式显示变量</li>
+</ul>
+</li>
+<li><ul>
+<li>f：按浮点数格式显示变量</li>
+</ul>
+</li>
+<li>u表示从当前地址往后请求的字节数，如果不指定的话，GDB默认是4个bytes。</li>
+<li><ul>
+<li>b：单字节</li>
+</ul>
+</li>
+<li><ul>
+<li>h：双字节</li>
+</ul>
+</li>
+<li><ul>
+<li>w：四字节</li>
+</ul>
+</li>
+<li><ul>
+<li>g：八字节</li>
+</ul>
+</li>
+<li>addr表示要显示的地址</li>
+</ul>
+<h2 id="寄存器的显示"><a href="#寄存器的显示" class="headerlink" title="寄存器的显示"></a>寄存器的显示</h2><ul>
+<li>在这个工具里面，寄存器有eax,ebx,ecx,edx等等，一开始我还不明白这是什么意思，自己悟了一会发现这些事ax、bx、cx、dx等等前面都加了一个e，虽然我不明白加一个e的意思，但是整个的意思就是后面寄存器代表的意思。如果去掉e还不懂得话，就要去先学习学习汇编了</li>
+</ul>
+<h2 id="GDB命令脚本编程"><a href="#GDB命令脚本编程" class="headerlink" title="GDB命令脚本编程"></a>GDB命令脚本编程</h2><h3 id="一、自定义命令-也可以传参数，支持-arg0～-arg9，-argc表示参数总个数"><a href="#一、自定义命令-也可以传参数，支持-arg0～-arg9，-argc表示参数总个数" class="headerlink" title="一、自定义命令(也可以传参数，支持$arg0～$arg9，$argc表示参数总个数)"></a>一、自定义命令(也可以传参数，支持$arg0～$arg9，$argc表示参数总个数)</h3><figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">define</span> <span class="section">commandname</span></span><br><span class="line">	code</span><br><span class="line">	……</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line"><span class="keyword">define</span> <span class="section">my_command</span></span><br><span class="line">  print <span class="variable">$i</span></span><br><span class="line">end</span><br><span class="line">set <span class="variable">$i</span>=123</span><br><span class="line">my_command</span><br></pre></td></tr></table></figure>
+
+<h3 id="命令脚本"><a href="#命令脚本" class="headerlink" title="命令脚本"></a>命令脚本</h3><p>if…else…语句</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> 条件</span><br><span class="line">	<span class="built_in">code</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">code</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>while循环</p>
+<figure class="highlight hsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> 条件</span><br><span class="line">	code</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">loop</span>\<span class="keyword">_break</span>和<span class="keyword">loop</span>\<span class="keyword">_continue</span>命令分别对应其它语言中的<span class="keyword">break</span>和<span class="keyword">continue</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>脚本文件的注释也是以#开头的，这个同很多其它脚本语言都一样</p>
+</blockquote>
+<h3 id="执行gdb脚本"><a href="#执行gdb脚本" class="headerlink" title="执行gdb脚本"></a>执行gdb脚本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> gdbcode.txt</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/gdbinit/Gdbinit/blob/master/gdbinit" target="_blank" rel="noopener">参考链接</a> </p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><ul>
+<li>拿一道实验吧的逆向题作为例子</li>
+</ul>
+<h3 id="题目（debug32）"><a href="#题目（debug32）" class="headerlink" title="题目（debug32）"></a>题目（debug32）</h3><ul>
+<li><p>拿到题目之后先检查是否有壳</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gdb-peda$ checksec debug32</span><br><span class="line">CANARY    : <span class="type">ENABLED</span></span><br><span class="line">FORTIFY   : <span class="type">disabled</span></span><br><span class="line">NX        : <span class="type">ENABLED</span></span><br><span class="line">PIE       : <span class="type">disabled</span></span><br><span class="line">RELRO     : <span class="type">Partial</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后使用IDA查看一下</p>
+<ul>
+<li>发现main函数中什么都没有</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __<span class="function">cdecl <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li>shift+f12(查找所有字符串)，发现flag，于是跟踪找到sub_804849B();</li>
+<li>sub_804849B()这个函数中是向屏幕中打印flag的，但是main函数中并没有调用这个函数，所以我们可以用GDB来使主函数调用这个打印flag的这个函数</li>
+</ul>
+<h2 id="调式过程"><a href="#调式过程" class="headerlink" title="调式过程"></a>调式过程</h2><ul>
+<li>首先加载文件</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@wxm-virtual-machine:~/<span class="built_in">file</span><span class="comment"># gdb debug32</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后再主函数设置断点</li>
+</ul>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gdb-peda$ <span class="keyword">break </span>__libc_start_main</span><br><span class="line"><span class="keyword">Breakpoint </span><span class="number">1</span> <span class="built_in">at</span> <span class="number">0x8048370</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后运行该程序</li>
+</ul>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">gdb-peda$ run</span><br><span class="line">Starting program: /root/file/debug32 </span><br><span class="line"></span><br><span class="line">[----------------------------------registers-----------------------------------]</span><br><span class="line"><span class="symbol">EAX:</span> <span class="number">0xf7ffd918</span> --&gt; <span class="number">0x0</span> </span><br><span class="line"><span class="symbol">EBX:</span> <span class="number">0xf7ffd000</span> --&gt; <span class="number">0x22f3c</span> </span><br><span class="line"><span class="symbol">ECX:</span> <span class="number">0xffffd154</span> --&gt; <span class="number">0xffffd32b</span> (<span class="string">"/root/file/debug32"</span>)</span><br><span class="line"><span class="symbol">EDX:</span> <span class="number">0xf7fe9880</span> (<span class="keyword">push</span>   <span class="built_in">ebp</span>)</span><br><span class="line"><span class="symbol">ESI:</span> <span class="number">0x1</span> </span><br><span class="line"><span class="symbol">EDI:</span> <span class="number">0x80483a0</span> (<span class="keyword">xor</span>    <span class="built_in">ebp</span>,<span class="built_in">ebp</span>)</span><br><span class="line"><span class="symbol">EBP:</span> <span class="number">0x0</span> </span><br><span class="line"><span class="symbol">ESP:</span> <span class="number">0xffffd12c</span> --&gt; <span class="number">0x80483c1</span> (<span class="keyword">hlt</span>)</span><br><span class="line"><span class="symbol">EIP:</span> <span class="number">0xf7e1c540</span> (&lt;__libc_start_main&gt;:	<span class="keyword">call</span>   <span class="number">0xf7f21289</span>)</span><br><span class="line"><span class="symbol">EFLAGS:</span> <span class="number">0x292</span> (carry parity ADJUST <span class="meta">zero</span> SIGN trap INTERRUPT direction overflow)</span><br><span class="line">[-------------------------------------code-------------------------------------]</span><br><span class="line">   <span class="number">0xf7e1c53a</span>:	<span class="keyword">xchg</span>   <span class="built_in">ax</span>,<span class="built_in">ax</span></span><br><span class="line">   <span class="number">0xf7e1c53c</span>:	<span class="keyword">xchg</span>   <span class="built_in">ax</span>,<span class="built_in">ax</span></span><br><span class="line">   <span class="number">0xf7e1c53e</span>:	<span class="keyword">xchg</span>   <span class="built_in">ax</span>,<span class="built_in">ax</span></span><br><span class="line">=&gt; <span class="number">0xf7e1c540</span> &lt;__libc_start_main&gt;:	<span class="keyword">call</span>   <span class="number">0xf7f21289</span></span><br><span class="line">   <span class="number">0xf7e1c545</span> &lt;__libc_start_main+<span class="number">5</span>&gt;:	<span class="keyword">add</span>    <span class="built_in">eax</span>,<span class="number">0x197abb</span></span><br><span class="line">   <span class="number">0xf7e1c54a</span> &lt;__libc_start_main+<span class="number">10</span>&gt;:	<span class="keyword">push</span>   <span class="built_in">ebp</span></span><br><span class="line">   <span class="number">0xf7e1c54b</span> &lt;__libc_start_main+<span class="number">11</span>&gt;:	<span class="keyword">push</span>   <span class="built_in">edi</span></span><br><span class="line">   <span class="number">0xf7e1c54c</span> &lt;__libc_start_main+<span class="number">12</span>&gt;:	<span class="keyword">push</span>   <span class="built_in">esi</span></span><br><span class="line">No argument</span><br><span class="line">[------------------------------------stack-------------------------------------]</span><br><span class="line"><span class="number">0000</span>| <span class="number">0xffffd12c</span> --&gt; <span class="number">0x80483c1</span> (<span class="keyword">hlt</span>)</span><br><span class="line"><span class="number">0004</span>| <span class="number">0xffffd130</span> --&gt; <span class="number">0x804855a</span> (<span class="keyword">push</span>   <span class="built_in">ebp</span>)</span><br><span class="line"><span class="number">0008</span>| <span class="number">0xffffd134</span> --&gt; <span class="number">0x1</span> </span><br><span class="line"><span class="number">0012</span>| <span class="number">0xffffd138</span> --&gt; <span class="number">0xffffd154</span> --&gt; <span class="number">0xffffd32b</span> (<span class="string">"/root/file/debug32"</span>)</span><br><span class="line"><span class="number">0016</span>| <span class="number">0xffffd13c</span> --&gt; <span class="number">0x8048570</span> (<span class="keyword">push</span>   <span class="built_in">ebp</span>)</span><br><span class="line"><span class="number">0020</span>| <span class="number">0xffffd140</span> --&gt; <span class="number">0x80485d0</span> (<span class="keyword">repz</span> <span class="keyword">ret</span>)</span><br><span class="line"><span class="number">0024</span>| <span class="number">0xffffd144</span> --&gt; <span class="number">0xf7fe9880</span> (<span class="keyword">push</span>   <span class="built_in">ebp</span>)</span><br><span class="line"><span class="number">0028</span>| <span class="number">0xffffd148</span> --&gt; <span class="number">0xffffd14c</span> --&gt; <span class="number">0xf7ffd918</span> --&gt; <span class="number">0x0</span> </span><br><span class="line">[------------------------------------------------------------------------------]</span><br><span class="line"><span class="symbol">Legend:</span> code, data, rodata, value</span><br><span class="line"></span><br><span class="line">Breakpoint <span class="number">1</span>, <span class="number">0xf7e1c540</span> <span class="keyword">in</span> __libc_start_main () from /lib32/libc.so<span class="meta">.6</span></span><br><span class="line">gdb-peda$</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>由上面的代码可以看出来，寄存器，汇编代码，栈都是一目了然的，程序也停在了main函数处，eip指向短点处。此时我们想让main函数调用sub_804849B()，所以我们将eip的值修改为这个函数的起首地址即可</li>
+</ul>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb-peda<span class="symbol">$</span> <span class="keyword">set</span> $eip <span class="comment">= 0x804849b</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后继续运行程序</li>
+</ul>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">gdb-peda$ c</span><br><span class="line">Continuing.</span><br><span class="line">Printing flag</span><br><span class="line">i_has_debugger_skill</span><br><span class="line"></span><br><span class="line">Program received signal SIGSEGV, Segmentation fault.</span><br><span class="line"></span><br><span class="line">[----------------------------------registers-----------------------------------]</span><br><span class="line"><span class="symbol">EAX:</span> <span class="number">0x0</span> </span><br><span class="line"><span class="symbol">EBX:</span> <span class="number">0xf7ffd000</span> --&gt; <span class="number">0x22f3c</span> </span><br><span class="line"><span class="symbol">ECX:</span> <span class="number">0xf7fb5870</span> --&gt; <span class="number">0x0</span> </span><br><span class="line"><span class="symbol">EDX:</span> <span class="number">0xa</span> (<span class="string">'\n'</span>)</span><br><span class="line"><span class="symbol">ESI:</span> <span class="number">0x1</span> </span><br><span class="line"><span class="symbol">EDI:</span> <span class="number">0x80483a0</span> (<span class="keyword">xor</span>    <span class="built_in">ebp</span>,<span class="built_in">ebp</span>)</span><br><span class="line"><span class="symbol">EBP:</span> <span class="number">0x0</span> </span><br><span class="line"><span class="symbol">ESP:</span> <span class="number">0xffffd130</span> --&gt; <span class="number">0x804855a</span> (<span class="keyword">push</span>   <span class="built_in">ebp</span>)</span><br><span class="line"><span class="symbol">EIP:</span> <span class="number">0x80483c1</span> (<span class="keyword">hlt</span>)</span><br><span class="line"><span class="symbol">EFLAGS:</span> <span class="number">0x10246</span> (carry PARITY adjust <span class="meta">ZERO</span> sign trap INTERRUPT direction overflow)</span><br><span class="line">[-------------------------------------code-------------------------------------]</span><br><span class="line">   <span class="number">0x80483b6</span>:	<span class="keyword">push</span>   <span class="built_in">esi</span></span><br><span class="line">   <span class="number">0x80483b7</span>:	<span class="keyword">push</span>   <span class="number">0x804855a</span></span><br><span class="line">   <span class="number">0x80483bc</span>:	<span class="keyword">call</span>   <span class="number">0x8048370</span> &lt;__libc_start_main@plt&gt;</span><br><span class="line">=&gt; <span class="number">0x80483c1</span>:	<span class="keyword">hlt</span>    </span><br><span class="line">   <span class="number">0x80483c2</span>:	<span class="keyword">xchg</span>   <span class="built_in">ax</span>,<span class="built_in">ax</span></span><br><span class="line">   <span class="number">0x80483c4</span>:	<span class="keyword">xchg</span>   <span class="built_in">ax</span>,<span class="built_in">ax</span></span><br><span class="line">   <span class="number">0x80483c6</span>:	<span class="keyword">xchg</span>   <span class="built_in">ax</span>,<span class="built_in">ax</span></span><br><span class="line">   <span class="number">0x80483c8</span>:	<span class="keyword">xchg</span>   <span class="built_in">ax</span>,<span class="built_in">ax</span></span><br><span class="line">[------------------------------------stack-------------------------------------]</span><br><span class="line"><span class="number">0000</span>| <span class="number">0xffffd130</span> --&gt; <span class="number">0x804855a</span> (<span class="keyword">push</span>   <span class="built_in">ebp</span>)</span><br><span class="line"><span class="number">0004</span>| <span class="number">0xffffd134</span> --&gt; <span class="number">0x1</span> </span><br><span class="line"><span class="number">0008</span>| <span class="number">0xffffd138</span> --&gt; <span class="number">0xffffd154</span> --&gt; <span class="number">0xffffd32b</span> (<span class="string">"/root/file/debug32"</span>)</span><br><span class="line"><span class="number">0012</span>| <span class="number">0xffffd13c</span> --&gt; <span class="number">0x8048570</span> (<span class="keyword">push</span>   <span class="built_in">ebp</span>)</span><br><span class="line"><span class="number">0016</span>| <span class="number">0xffffd140</span> --&gt; <span class="number">0x80485d0</span> (<span class="keyword">repz</span> <span class="keyword">ret</span>)</span><br><span class="line"><span class="number">0020</span>| <span class="number">0xffffd144</span> --&gt; <span class="number">0xf7fe9880</span> (<span class="keyword">push</span>   <span class="built_in">ebp</span>)</span><br><span class="line"><span class="number">0024</span>| <span class="number">0xffffd148</span> --&gt; <span class="number">0xffffd14c</span> --&gt; <span class="number">0xf7ffd918</span> --&gt; <span class="number">0x0</span> </span><br><span class="line"><span class="number">0028</span>| <span class="number">0xffffd14c</span> --&gt; <span class="number">0xf7ffd918</span> --&gt; <span class="number">0x0</span> </span><br><span class="line">[------------------------------------------------------------------------------]</span><br><span class="line"><span class="symbol">Legend:</span> code, data, rodata, value</span><br><span class="line">Stopped reason: SIGSEGV</span><br><span class="line"><span class="number">0x080483c1</span> <span class="keyword">in</span> ?? ()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>发现sub_804849B()这个函数如期的被调用</li>
+</ul>
+<h3 id="flag：flag-i-has-debugger-skill"><a href="#flag：flag-i-has-debugger-skill" class="headerlink" title="flag：flag{i_has_debugger_skill}"></a>flag：flag{i_has_debugger_skill}</h3>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

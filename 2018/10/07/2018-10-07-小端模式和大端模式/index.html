@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        大端模式和小端模式详解 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#大端模式和小端模式的起源"><span class="toc-text">大端模式和小端模式的起源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是大端和小端"><span class="toc-text">什么是大端和小端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么会有大小端模式之分呢？"><span class="toc-text">为什么会有大小端模式之分呢？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用一个CTF逆向题目作为例子"><span class="toc-text">用一个CTF逆向题目作为例子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#main函数"><span class="toc-text">main函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sub-401060"><span class="toc-text">sub_401060()</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        大端模式和小端模式详解
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2018-10-07 15:38:28</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#逆向" title="逆向">逆向</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>数据存储的方式</p>
+<a id="more"></a>
+
+<h2 id="大端模式和小端模式的起源"><a href="#大端模式和小端模式的起源" class="headerlink" title="大端模式和小端模式的起源"></a>大端模式和小端模式的起源</h2><ul>
+<li>关于大端小端名词的由来，有一个有趣的故事，来自于Jonathan Swift的《格利佛游记》：Lilliput和Blefuscu这两个强国在过去的36个月中一直在苦战。战争的原因：大家都知道，吃鸡蛋的时候，原始的方法是打破鸡蛋较大的一端，可以那时的皇帝的祖父由于小时侯吃鸡蛋，按这种方法把手指弄破了，因此他的父亲，就下令，命令所有的子民吃鸡蛋的时候，必须先打破鸡蛋较小的一端，违令者重罚。然后老百姓对此法令极为反感，期间发生了多次叛乱，其中一个皇帝因此送命，另一个丢了王位，产生叛乱的原因就是另一个国家Blefuscu的国王大臣煽动起来的，叛乱平息后，就逃到这个帝国避难。据估计，先后几次有11000余人情愿死也不肯去打破鸡蛋较小的端吃鸡蛋。这个其实讽刺当时英国和法国之间持续的冲突。Danny Cohen一位网络协议的开创者，第一次使用这两个术语指代字节顺序，后来就被大家广泛接受。</li>
+</ul>
+<h2 id="什么是大端和小端"><a href="#什么是大端和小端" class="headerlink" title="什么是大端和小端"></a>什么是大端和小端</h2><ul>
+<li><p>例如0x12345678在内存中的存放的位置</p>
+</li>
+<li><p>大端模式</p>
+<ul>
+<li><p>高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。</p>
+<pre><code>低地址 --------------------&gt; 高地址
+0x12  |  0x34  |  0x56  |  0x78</code></pre></li>
+</ul>
+</li>
+<li><p>小端模式</p>
+<ul>
+<li><p>低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。</p>
+<pre><code>低地址 --------------------&gt; 高地址
+0x78  |  0x56  |  0x34  |  0x12</code></pre></li>
+</ul>
+</li>
+</ul>
+<h2 id="为什么会有大小端模式之分呢？"><a href="#为什么会有大小端模式之分呢？" class="headerlink" title="为什么会有大小端模式之分呢？"></a>为什么会有大小端模式之分呢？</h2><ul>
+<li>这是因为在计算机系统中，我们是以字节为单位的，每个地址单元都对应着一个字节，一个字节为8bit。但是在C语言中除了8bit的char之外，还有16bit的short型，32bit的long型（要看具体的编译器），另外，对于位数大于8位的处理器，例如16位或者32位的处理器，由于寄存器宽度大于一个字节，那么必然存在着一个如果将多个字节安排的问题。因此就导致了大端存储模式和小端存储模式。例如一个16bit的short型x，在内存中的地址为0x0010，x的值为0x1122，那么0x11为高字节，0x22为低字节。对于大端模式，就将0x11放在低地址中，即0x0010中，0x22放在高地址中，即0x0011中。小端模式，刚好相反。我们常用的X86结构是小端模式，而KEIL C51则为大端模式。很多的ARM，DSP都为小端模式。有些ARM处理器还可以由硬件来选择是大端模式还是小端模式。</li>
+</ul>
+<p><img src="data:image/png;base64,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" alt="image"></p>
+<h2 id="用一个CTF逆向题目作为例子"><a href="#用一个CTF逆向题目作为例子" class="headerlink" title="用一个CTF逆向题目作为例子"></a>用一个CTF逆向题目作为例子</h2><ul>
+<li>之前做题的时候也遇到过，但是往后在做题的时候还是分不清什么时候是小端模式，什么时候是大端模式，我自己也是很无奈</li>
+</ul>
+<h3 id="main函数"><a href="#main函数" class="headerlink" title="main函数"></a>main函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __<span class="function">cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> flag; <span class="comment">// [esp+0h] [ebp-7D0h]</span></span><br><span class="line"></span><br><span class="line">  sub_4011BA(aCanYouGuessThe, flag);</span><br><span class="line">  gets(&amp;flag);</span><br><span class="line">  <span class="keyword">if</span> ( sub_401060(&amp;flag) )</span><br><span class="line">    sub_4011BA(aGoodTheKeyIsYo, flag);</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    sub_4011BA(aYouDonTGuessIt, flag);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="sub-401060"><a href="#sub-401060" class="headerlink" title="sub_401060()"></a>sub_401060()</h3><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">signed<span class="built_in"> int </span>__cdecl sub_401060(const char *flag_2)</span><br><span class="line">&#123;</span><br><span class="line">  unsigned<span class="built_in"> int </span>v1; // edx</span><br><span class="line">  unsigned<span class="built_in"> int </span>v2; // edx</span><br><span class="line"> <span class="built_in"> int </span>v3; // edx</span><br><span class="line"> <span class="built_in"> int </span>v5; // [esp+Ch] [ebp-10h]</span><br><span class="line"> <span class="built_in"> int </span>v6; // [esp+10h] [ebp-Ch]</span><br><span class="line"> <span class="built_in"> int </span>v7; // [esp+14h] [ebp-8h]</span><br><span class="line">  __int16 v8; // [esp+18h] [ebp-4h]</span><br><span class="line">  char v9; // [esp+1Ah] [ebp-2h]</span><br><span class="line"></span><br><span class="line">  v5 = dword_40708C;</span><br><span class="line">  v6 = dword_407090;</span><br><span class="line">  v8 = word_407098;</span><br><span class="line">  v9 = byte_40709A;</span><br><span class="line">  v7 = dword_407094;</span><br><span class="line"> <span class="built_in"> if </span>( strlen(flag_2) == strlen(&amp;v5) )</span><br><span class="line">  &#123;</span><br><span class="line">    v1 = 0;</span><br><span class="line">   <span class="built_in"> if </span>( strlen(flag_2) != 0 )</span><br><span class="line">    &#123;</span><br><span class="line">      do</span><br><span class="line">        flag_2[v1++] ^= 0x20u;</span><br><span class="line">      while ( v1 &lt; strlen(flag_2) );</span><br><span class="line">    &#125;</span><br><span class="line">    v2 = 0;</span><br><span class="line">   <span class="built_in"> if </span>( strlen(&amp;v5) != 0 )</span><br><span class="line">    &#123;</span><br><span class="line">      do</span><br><span class="line">        *(&amp;v5 + v2++) -= 5;</span><br><span class="line">      while ( v2 &lt; strlen(&amp;v5) );</span><br><span class="line">    &#125;</span><br><span class="line">    v3 = 0;</span><br><span class="line">   <span class="built_in"> if </span>( strlen(&amp;v5) == 0 )</span><br><span class="line">     <span class="built_in"> return </span>1;</span><br><span class="line">    while ( *(&amp;v5 + v3 + flag_2 - &amp;v5) == *(&amp;v5 + v3) )</span><br><span class="line">    &#123;</span><br><span class="line">     <span class="built_in"> if </span>( ++v3 &gt;= strlen(&amp;v5) )</span><br><span class="line">       <span class="built_in"> return </span>1;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"> <span class="built_in"> return </span>0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>经过观察发现程序中定义了几个数据v5\v6\v7\v8\v9等等，点击查看汇编代码发现</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.data</span><span class="selector-pseudo">:0040708C</span> <span class="selector-tag">dword_40708C</span>    <span class="selector-tag">dd</span> 48195768<span class="selector-tag">h</span>            ; <span class="selector-tag">DATA</span> <span class="selector-tag">XREF</span>: <span class="selector-tag">sub_401060</span>+3↑<span class="selector-tag">r</span></span><br><span class="line"><span class="selector-class">.data</span><span class="selector-pseudo">:00407090</span> <span class="selector-tag">dword_407090</span>    <span class="selector-tag">dd</span> 78586<span class="selector-tag">E50h</span>            ; <span class="selector-tag">DATA</span> <span class="selector-tag">XREF</span>: <span class="selector-tag">sub_401060</span>+8↑<span class="selector-tag">r</span></span><br><span class="line"><span class="selector-class">.data</span><span class="selector-pseudo">:00407094</span> <span class="selector-tag">dword_407094</span>    <span class="selector-tag">dd</span> 58196<span class="selector-tag">A54h</span>            ; <span class="selector-tag">DATA</span> <span class="selector-tag">XREF</span>: <span class="selector-tag">sub_401060</span>+39↑<span class="selector-tag">r</span></span><br><span class="line"><span class="selector-class">.data</span><span class="selector-pseudo">:00407098</span> <span class="selector-tag">word_407098</span>     <span class="selector-tag">dw</span> 65<span class="selector-tag">Eh</span>                 ; <span class="selector-tag">DATA</span> <span class="selector-tag">XREF</span>: <span class="selector-tag">sub_401060</span>+13↑<span class="selector-tag">r</span></span><br><span class="line"><span class="selector-class">.data</span><span class="selector-pseudo">:0040709A</span> <span class="selector-tag">byte_40709A</span>     <span class="selector-tag">db</span> 0                    ; <span class="selector-tag">DATA</span> <span class="selector-tag">XREF</span>: <span class="selector-tag">sub_401060</span>+1<span class="selector-tag">D</span>↑<span class="selector-tag">r</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当时我是比较蒙bi的，这是大端还是小端？反正不知道，每一个都试试，也不多。最后发现是小端模式。</li>
+</ul>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

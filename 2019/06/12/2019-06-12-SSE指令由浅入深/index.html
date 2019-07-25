@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        SSE指令由浅入深 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常用SSE指令和解释"><span class="toc-text">常用SSE指令和解释</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#浮点指令"><span class="toc-text">浮点指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#整数指令"><span class="toc-text">整数指令</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSE浮点数运算操作"><span class="toc-text">SSE浮点数运算操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSE指令的运用"><span class="toc-text">SSE指令的运用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MMX指令和解释"><span class="toc-text">MMX指令和解释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#例子0x01"><span class="toc-text">例子0x01</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#例子0x02"><span class="toc-text">例子0x02</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考文献："><span class="toc-text">参考文献：</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        SSE指令由浅入深
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-06-12 21:11:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#逆向" title="逆向">逆向</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>最近在CTF比赛中遇到过几次SSE指令，之前没怎么了解这个，于是抽时间总结了一些这方面的知识，希望能帮助更多人理解SSE指令。</p>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>SSE是一组Intel CPU指令，是继MMX的扩充指令集，也是流化SIMD扩展，提供有70条新指令和一组暂存器，用于处理128位打包数据。在Linux下可以使用<code>cat /proc/cpuinfo</code>来查看CUP支持的指令集。</p>
+<p><img src="https://s2.ax1x.com/2019/06/12/VWFsne.png" alt> </p>
+<p>SSE新增的八个新的128位暂存器，这些128位元的暂存器可以用存放32位源的单精度浮点数，SSE的浮点数运算指令就是使用这些暂存器，下面是SSE新增的暂存器的示意图<br><img src="https://s2.ax1x.com/2019/06/12/VWF3XF.jpg" alt> </p>
+<p>SSE的浮点数运算指令可以分成两类：Packed和Scalar；Packed指令是一次对XMM暂存器中4个浮点数（DATA0！DATA3）都进行计算，而Scalar则只对XMM暂存器中的DATA0进行运算。如下图所示：<br><img src="https://s2.ax1x.com/2019/06/12/VWFY79.jpg" alt> </p>
+<h3 id="常用SSE指令和解释"><a href="#常用SSE指令和解释" class="headerlink" title="常用SSE指令和解释"></a>常用SSE指令和解释</h3><h4 id="浮点指令"><a href="#浮点指令" class="headerlink" title="浮点指令"></a>浮点指令</h4><ul>
+<li><p>赋值</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">movaps </span> 把<span class="number">4</span>个对齐的单精度值传送到xmm寄存器或者内存</span><br><span class="line"><span class="keyword">movups </span> 把<span class="number">4</span>个不对齐的单精度值传送到xmm寄存器或者内存</span><br><span class="line"><span class="keyword">movlps </span> 把<span class="number">2</span>个单精度值传送到内存或者寄存器的低四字</span><br><span class="line"><span class="keyword">movhps </span> 把<span class="number">2</span>个单精度值传送到内存或者寄存器的高四字</span><br><span class="line"><span class="keyword">movlhps </span>把<span class="number">2</span>个单精度值从低四字传送到高四字</span><br><span class="line"><span class="keyword">movhlps </span>把<span class="number">2</span>个单精度值从高四字传送到低四字</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数学运算</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">addps</span>   将两个打包值相加</span><br><span class="line"><span class="keyword">subps</span>   将两个打包值相减</span><br><span class="line"><span class="keyword">mulps</span>   将两个打包值相乘</span><br><span class="line"><span class="keyword">divps</span>   将两个打包值相除</span><br><span class="line"><span class="keyword">rcpps</span>   计算打包值的倒数</span><br><span class="line"><span class="keyword">sqrtps</span>  计算打包值的平方根</span><br><span class="line"><span class="keyword">rsqrtps</span> 计算打包值的平方根倒数</span><br><span class="line"><span class="keyword">maxps</span>   计算两个打包值中的最大值</span><br><span class="line"><span class="keyword">minps</span>   计算两个打包值中的最小值</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>比较</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmpps</span>   比较打包值</span><br><span class="line"><span class="keyword">cmpss</span>   比较标量值</span><br><span class="line"><span class="keyword">comiss</span>  比较标量值并且设置eflags寄存器</span><br><span class="line"><span class="keyword">ucomiss</span> 比较标量值（包括非法值）并设置eflags寄存器</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>unpack和shuffle</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHUFPS</span>  交错的结果对存储在<span class="built_in">xmm1</span>中</span><br><span class="line"><span class="keyword">UNPCKHPS</span> 从<span class="built_in">xmm1</span>和<span class="built_in">xmm2</span> / m128的高四字中解包和交错单精度浮点值</span><br><span class="line"><span class="keyword">UNPCKLPS</span> 从<span class="built_in">xmm1</span>和<span class="built_in">xmm2</span> / m128的低四字中解包和交错单精度浮点值。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>逐位逻辑运算</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">andps </span>  计算两个打包值的按位逻辑与</span><br><span class="line"><span class="keyword">andnps </span> 计算两个打包值的按位逻辑非</span><br><span class="line"><span class="keyword">orps </span>   计算两个打包值的按位逻辑或</span><br><span class="line"><span class="keyword">xorps </span>  计算两个打包值的按位逻辑异或</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="整数指令"><a href="#整数指令" class="headerlink" title="整数指令"></a>整数指令</h4><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pavgb</span>   计算打包无符号字节整数的平均值</span><br><span class="line"><span class="keyword">pavgw</span>   计算打包无符号字整数的平均值</span><br><span class="line"><span class="keyword">pextrw</span>  把一个字从mmx寄存器复制到通用寄存器</span><br><span class="line"><span class="keyword">pinsrw</span>  把一个字从通用寄存器复制到mmx寄存器</span><br><span class="line"><span class="keyword">pmaxub</span>  计算打包无符号字节整数的最大值</span><br><span class="line"><span class="keyword">pmaxsw</span>  计算打包有符号字整数的最大值</span><br><span class="line"><span class="keyword">pminub</span>  计算打包无符号字节整数的最小值</span><br><span class="line"><span class="keyword">pminsw</span>  计算打包有符号字整数的最小值</span><br><span class="line"><span class="keyword">pmulhuw</span> 将打包无符号字整数相乘并且存储高位结果</span><br><span class="line"><span class="keyword">psadbw</span>  计算无符号字节整数的绝对差的总和</span><br></pre></td></tr></table></figure>
+
+<h3 id="SSE浮点数运算操作"><a href="#SSE浮点数运算操作" class="headerlink" title="SSE浮点数运算操作"></a>SSE浮点数运算操作</h3><figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">addps/addss <span class="variable">_mm_add_ps</span>/<span class="variable">_mm_add_ss</span>   加法</span><br><span class="line">subps/subss <span class="variable">_mm_sub_ps</span>/<span class="variable">_mm_sub_ss</span>   減法</span><br><span class="line">mulps/mulss <span class="variable">_mm_mul_ps</span>/<span class="variable">_mm_mul_ss</span>   乘法</span><br><span class="line">divps/divss <span class="variable">_mm_div_ps</span>/<span class="variable">_mm_div_ss</span>        除法</span><br><span class="line">sqrtps/sqrtss   <span class="variable">_mm_sqrt_ps</span>/<span class="variable">_mm_sqrt_ss</span> 平方根</span><br><span class="line">maxps/maxss <span class="variable">_mm_max_ps</span>/<span class="variable">_mm_max_ss</span>   逐项取最大值</span><br><span class="line">minps/minss <span class="variable">_mm_min_ps</span>/<span class="variable">_mm_min_ss</span>   逐项取最小值</span><br></pre></td></tr></table></figure>
+
+<h3 id="SSE指令的运用"><a href="#SSE指令的运用" class="headerlink" title="SSE指令的运用"></a>SSE指令的运用</h3><p>可以分别用C++、SSE内嵌原语、SSE汇编来实现运算<code>sqrt(f1*f1+f2*f2)+0.5</code></p>
+<p>纯C++代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">my_sqrt</span><span class="params">(  <span class="keyword">float</span>* pA_1,<span class="keyword">float</span>* pA_2, <span class="keyword">float</span>* pR_1, <span class="keyword">int</span> nSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> i;  </span><br><span class="line">    <span class="keyword">float</span>* pS_1 = pA_1;  </span><br><span class="line">    <span class="keyword">float</span>* pS_2 = pA_2;  </span><br><span class="line">    <span class="keyword">float</span>* pD_1 = pR_1;  </span><br><span class="line">    <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; nSize; i++ )  </span><br><span class="line">    &#123; </span><br><span class="line">        *pD_1 = (<span class="keyword">float</span>)<span class="built_in">sqrt</span>((*pS_1) * (*pS_1) + (*pS_2)*(*pS_2)) + <span class="number">0.5f</span>;</span><br><span class="line">        pS_1++;  </span><br><span class="line">        pS_2++;  </span><br><span class="line">        pD_1++;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>SSE内嵌原语</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">my_sqrt_sse_1</span><span class="params">(  <span class="keyword">float</span>* pA_1,<span class="keyword">float</span>* pA_2, <span class="keyword">float</span>* pR_1, <span class="keyword">int</span> nSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> nLoop = nSize/ <span class="number">4</span>;  </span><br><span class="line">    __m128 m1, m2, m3, m4;  </span><br><span class="line">    __m128* pSrc1 = (__m128*) pA_1;  </span><br><span class="line">    __m128* pSrc2 = (__m128*) pA_2;  </span><br><span class="line">    __m128* pD_1 = (__m128*) pR_1;  </span><br><span class="line">    __m128 m0_5 = _mm_set_ps1(<span class="number">0.5f</span>);       </span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nLoop; i++ )  </span><br><span class="line">    &#123;  </span><br><span class="line">        m1 = _mm_mul_ps(*pSrc1, *pSrc1);      </span><br><span class="line">        m2 = _mm_mul_ps(*pSrc2, *pSrc2);        </span><br><span class="line">        m3 = _mm_add_ps(m1, m2);             </span><br><span class="line">        m4 = _mm_sqrt_ps(m3); </span><br><span class="line">        *pD_1 = _mm_add_ps(m4, m0_5); </span><br><span class="line">        pSrc1++;  </span><br><span class="line">        pSrc2++;  </span><br><span class="line">        pD_1++;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>SSE汇编</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">void my_sqrt_sse_1(  <span class="meta">float</span>* pA_1,<span class="meta">float</span>* pA_2, <span class="meta">float</span>* pR_1, <span class="keyword">int</span> nSize)</span><br><span class="line">&#123;  </span><br><span class="line">    <span class="keyword">int</span> nLoop = nSize/<span class="number">4</span><span class="comment">;  </span></span><br><span class="line">    <span class="meta">float</span> f = <span class="number">0.</span>5f<span class="comment">;  </span></span><br><span class="line">    _asm  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">movss</span>   <span class="built_in">xmm2</span>, f                         // <span class="built_in">xmm2</span>[<span class="number">0</span>] = <span class="number">0.5</span>  </span><br><span class="line">        <span class="keyword">shufps</span>  <span class="built_in">xmm2</span>, <span class="built_in">xmm2</span>, <span class="number">0</span>                   // <span class="built_in">xmm2</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] = <span class="built_in">xmm2</span>[<span class="number">0</span>]  </span><br><span class="line">        <span class="keyword">mov</span>         <span class="built_in">esi</span>, pA_1                   // 输入的源数组<span class="number">1</span>的地址送往<span class="built_in">esi</span>  </span><br><span class="line">        <span class="keyword">mov</span>         <span class="built_in">edx</span>, pA_2                   // 输入的源数组<span class="number">2</span>的地址送往<span class="built_in">edx</span>  </span><br><span class="line">        <span class="keyword">mov</span>         <span class="built_in">edi</span>, pR_1                   // 输出结果数组的地址保存在<span class="built_in">edi</span>  </span><br><span class="line">        <span class="keyword">mov</span>         <span class="built_in">ecx</span>, nLoop                  //循环次数送往<span class="built_in">ecx</span>  </span><br><span class="line"><span class="symbol">start_loop:</span>  </span><br><span class="line">        <span class="keyword">movaps</span>      <span class="built_in">xmm0</span>, [<span class="built_in">esi</span>]                 // <span class="built_in">xmm0</span> = [<span class="built_in">esi</span>]  </span><br><span class="line">        <span class="keyword">mulps</span>       <span class="built_in">xmm0</span>, <span class="built_in">xmm0</span>                  // <span class="built_in">xmm0</span> = <span class="built_in">xmm0</span> * <span class="built_in">xmm0</span>  </span><br><span class="line">        <span class="keyword">movaps</span>      <span class="built_in">xmm1</span>, [<span class="built_in">edx</span>]                 // <span class="built_in">xmm1</span> = [<span class="built_in">edx</span>]  </span><br><span class="line">        <span class="keyword">mulps</span>       <span class="built_in">xmm1</span>, <span class="built_in">xmm1</span>                  // <span class="built_in">xmm1</span> = <span class="built_in">xmm1</span> * <span class="built_in">xmm1</span>  </span><br><span class="line">        <span class="keyword">addps</span>       <span class="built_in">xmm0</span>, <span class="built_in">xmm1</span>                  // <span class="built_in">xmm0</span> = <span class="built_in">xmm0</span> + <span class="built_in">xmm1</span>  </span><br><span class="line">        <span class="keyword">sqrtps</span>      <span class="built_in">xmm0</span>, <span class="built_in">xmm0</span>                  // <span class="built_in">xmm0</span> = sqrt(<span class="built_in">xmm0</span>)  </span><br><span class="line">        <span class="keyword">addps</span>       <span class="built_in">xmm0</span>, <span class="built_in">xmm2</span>                  // <span class="built_in">xmm0</span> = <span class="built_in">xmm1</span> + <span class="built_in">xmm2</span>  </span><br><span class="line">        <span class="keyword">movaps</span>      [<span class="built_in">edi</span>], <span class="built_in">xmm0</span>                 // [<span class="built_in">edi</span>] = <span class="built_in">xmm0</span>  </span><br><span class="line">        <span class="keyword">add</span>         <span class="built_in">esi</span>, <span class="number">16</span>                     // <span class="built_in">esi</span> += <span class="number">16</span>  </span><br><span class="line">        <span class="keyword">add</span>         <span class="built_in">edx</span>, <span class="number">16</span>                     // <span class="built_in">edx</span> += <span class="number">16</span>  </span><br><span class="line">        <span class="keyword">add</span>         <span class="built_in">edi</span>, <span class="number">16</span>                     // <span class="built_in">edi</span> += <span class="number">16</span>  </span><br><span class="line">        <span class="keyword">dec</span>         <span class="built_in">ecx</span>                         // <span class="built_in">ecx</span>--  </span><br><span class="line">        <span class="keyword">jnz</span>         start_loop                  //如果不为<span class="number">0</span>则转向start_loop  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="MMX指令和解释"><a href="#MMX指令和解释" class="headerlink" title="MMX指令和解释"></a>MMX指令和解释</h3><p>MMX指令分为一下几种：</p>
+<ul>
+<li>数据传送：movd, movq</li>
+<li>数据转换：packsswb, packssdw, packuswb, punpckhbw, punpckhwd, punpckhdq, punpcklbw, punpcklwd, punpckldq</li>
+<li>并行算术：paddb, paddw, paddd, paddsb, paddsw, paddusb, paddusw, psubb, psubw, psubd, psubsb, psubsw, psubusb, psubusb, psubusw, pmulhw, pmullw, pmaddwd</li>
+<li>并行比较：pcmpeqb, pcmpeqw, pcmpeqd, pcmpgtb, pcmpgtw, pcmpgtd</li>
+<li>并行逻辑：pand, pandn, por, pxor</li>
+<li>移位与旋转：psllw, pslld, psllq, psrlw, psrld, psrlq, psraw, psrad</li>
+<li>状态管理：emms</li>
+</ul>
+<p>下面只列出一些常用指令的解释，如果有需要的话可以到<a href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/" target="_blank" rel="noopener">传送门</a> 去查询</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">movd  变量a的<span class="number">32</span>位拷贝到MMX寄存器的低<span class="number">32</span>位，高<span class="number">32</span>位置零</span><br><span class="line">movd  MMX变量的低<span class="number">32</span>位拷贝到int类型中</span><br><span class="line">punpcklbw MM,MM/m64   把目的寄存器与源寄存器的低<span class="number">32</span>位按字节交错排列放入目的寄存器</span><br><span class="line">punpcklwd MM,MM/m64   把目的寄存器与源寄存器的低<span class="number">32</span>位按字交错排列放入目的寄存器</span><br><span class="line">pshufd XMM,XMM/m128,imm8(<span class="number">0</span>~<span class="number">255</span>) 　将源存储器的<span class="number">4</span>个双字由imm8指定选入目的寄存器,内存变量必须对齐内存<span class="number">16</span>字节</span><br><span class="line">movaps  把<span class="number">4</span>个对准的单精度值传送到xmm寄存器或者内存</span><br><span class="line">pmulld  对<span class="number">128</span>位寄存器的每<span class="number">32</span>位做整形乘法运算，形成一个<span class="number">64</span>位的立即数，然后取立即数的低<span class="number">32</span>位到目的寄存器的对应bit位中</span><br><span class="line">movups  将压缩单精度浮点值从 xmm2/m128 移到 xmm1</span><br><span class="line">paddd   对<span class="number">128</span>位寄存器的每<span class="number">32</span>位做整形加法运算</span><br><span class="line">pxor    对 xmm2 同 xmm1 执行逐位“异或”运算</span><br></pre></td></tr></table></figure>
+
+<h3 id="例子0x01"><a href="#例子0x01" class="headerlink" title="例子0x01"></a>例子0x01</h3><p>以2019强网杯Just re作为例子，具体获取flag的方式不再说了，只谈一下涉及到SSE、MMX指令的部分</p>
+<p>在check1中存在一段这样的指令：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">.text:</span><span class="number">00401728</span>                 <span class="keyword">movsx</span>   <span class="built_in">ecx</span>, <span class="number">dh</span></span><br><span class="line"><span class="symbol">.text:</span>0040172B                 <span class="keyword">movd</span>    <span class="built_in">xmm0</span>, <span class="built_in">ecx</span></span><br><span class="line"><span class="symbol">.text:</span>0040172F                 <span class="keyword">punpcklbw</span> <span class="built_in">xmm0</span>, <span class="built_in">xmm0</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401733</span>                 <span class="keyword">punpcklwd</span> <span class="built_in">xmm0</span>, <span class="built_in">xmm0</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401737</span>                 <span class="keyword">pshufd</span>  <span class="built_in">xmm0</span>, <span class="built_in">xmm0</span>, <span class="number">0</span></span><br><span class="line"><span class="symbol">.text:</span>0040173C                 <span class="keyword">movaps</span>  xmmword <span class="built_in">ptr</span> [<span class="built_in">ebp</span>-<span class="number">20h</span>], <span class="built_in">xmm0</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401740</span>                 <span class="keyword">test</span>    <span class="built_in">esi</span>, <span class="built_in">esi</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401742</span>                 <span class="keyword">jz</span>      loc_401891</span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401748</span>                 <span class="keyword">xor</span>     <span class="built_in">esi</span>, <span class="built_in">esi</span></span><br><span class="line"><span class="symbol">.text:</span>0040174A                 <span class="keyword">cmp</span>     dword_4053C4, <span class="number">2</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401751</span>                 <span class="keyword">jl</span>      loc_40180B</span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401757</span>                 <span class="keyword">movd</span>    <span class="built_in">xmm0</span>, <span class="built_in">dword</span> <span class="built_in">ptr</span> [<span class="built_in">ebp</span>-<span class="number">20h</span>]</span><br><span class="line"><span class="symbol">.text:</span>0040175C                 <span class="keyword">mov</span>     <span class="built_in">esi</span>, <span class="number">10h</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401761</span>                 <span class="keyword">movaps</span>  <span class="built_in">xmm3</span>, <span class="built_in">ds</span>:xmmword_404340</span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401768</span>                 <span class="keyword">pmovzxbd</span> <span class="built_in">xmm4</span>, <span class="built_in">xmm0</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0040176D</span>                 <span class="keyword">pmulld</span>  <span class="built_in">xmm4</span>, <span class="built_in">ds</span>:xmmword_404380</span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401776</span>                 <span class="keyword">movups</span>  <span class="built_in">xmm0</span>, xmmword_405018</span><br><span class="line"><span class="symbol">.text:</span><span class="number">0040177D</span>                 <span class="keyword">movaps</span>  <span class="built_in">xmm1</span>, <span class="built_in">xmm4</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401780</span>                 <span class="keyword">movups</span>  <span class="built_in">xmm2</span>, <span class="built_in">xmm3</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401783</span>                 <span class="keyword">paddd</span>   <span class="built_in">xmm1</span>, <span class="built_in">xmm0</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401787</span>                 <span class="keyword">paddd</span>   <span class="built_in">xmm2</span>, <span class="built_in">xmm5</span></span><br><span class="line"><span class="symbol">.text:</span>0040178B                 <span class="keyword">movups</span>  <span class="built_in">xmm0</span>, xmmword_405028</span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401792</span>                 <span class="keyword">pxor</span>    <span class="built_in">xmm2</span>, <span class="built_in">xmm1</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401796</span>                 <span class="keyword">movaps</span>  <span class="built_in">xmm1</span>, <span class="built_in">xmm4</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401799</span>                 <span class="keyword">movups</span>  xmmword_405018, <span class="built_in">xmm2</span></span><br><span class="line"><span class="symbol">.text:</span>004017A0                 <span class="keyword">movaps</span>  <span class="built_in">xmm2</span>, <span class="built_in">ds</span>:xmmword_404350</span><br><span class="line"><span class="symbol">.text:</span>004017A7                 <span class="keyword">paddd</span>   <span class="built_in">xmm1</span>, <span class="built_in">xmm0</span></span><br><span class="line"><span class="symbol">.text:</span>004017AB                 <span class="keyword">movups</span>  <span class="built_in">xmm0</span>, xmmword_405038</span><br><span class="line"><span class="symbol">.text:</span>004017B2                 <span class="keyword">paddd</span>   <span class="built_in">xmm2</span>, <span class="built_in">xmm3</span></span><br><span class="line"><span class="symbol">.text:</span>004017B6                 <span class="keyword">paddd</span>   <span class="built_in">xmm2</span>, <span class="built_in">xmm5</span></span><br><span class="line"><span class="symbol">.text:</span>004017BA                 <span class="keyword">pxor</span>    <span class="built_in">xmm2</span>, <span class="built_in">xmm1</span></span><br><span class="line"><span class="symbol">.text:</span>004017BE                 <span class="keyword">movaps</span>  <span class="built_in">xmm1</span>, <span class="built_in">xmm4</span></span><br><span class="line"><span class="symbol">.text:</span>004017C1                 <span class="keyword">movups</span>  xmmword_405028, <span class="built_in">xmm2</span></span><br><span class="line"><span class="symbol">.text:</span>004017C8                 <span class="keyword">movaps</span>  <span class="built_in">xmm2</span>, <span class="built_in">ds</span>:xmmword_404360</span><br><span class="line"><span class="symbol">.text:</span>004017CF                 <span class="keyword">paddd</span>   <span class="built_in">xmm1</span>, <span class="built_in">xmm0</span></span><br><span class="line"><span class="symbol">.text:</span>004017D3                 <span class="keyword">movups</span>  <span class="built_in">xmm0</span>, xmmword_405048</span><br><span class="line"><span class="symbol">.text:</span>004017DA                 <span class="keyword">paddd</span>   <span class="built_in">xmm2</span>, <span class="built_in">xmm3</span></span><br><span class="line"><span class="symbol">.text:</span>004017DE                 <span class="keyword">paddd</span>   <span class="built_in">xmm2</span>, <span class="built_in">xmm5</span></span><br><span class="line"><span class="symbol">.text:</span>004017E2                 <span class="keyword">paddd</span>   <span class="built_in">xmm4</span>, <span class="built_in">xmm0</span></span><br><span class="line"><span class="symbol">.text:</span>004017E6                 <span class="keyword">pxor</span>    <span class="built_in">xmm2</span>, <span class="built_in">xmm1</span></span><br><span class="line"><span class="symbol">.text:</span>004017EA                 <span class="keyword">movaps</span>  <span class="built_in">xmm1</span>, <span class="built_in">ds</span>:xmmword_404370</span><br><span class="line"><span class="symbol">.text:</span>004017F1                 <span class="keyword">paddd</span>   <span class="built_in">xmm1</span>, <span class="built_in">xmm3</span></span><br><span class="line"><span class="symbol">.text:</span>004017F5                 <span class="keyword">paddd</span>   <span class="built_in">xmm1</span>, <span class="built_in">xmm5</span></span><br><span class="line"><span class="symbol">.text:</span>004017F9                 <span class="keyword">pxor</span>    <span class="built_in">xmm1</span>, <span class="built_in">xmm4</span></span><br><span class="line"><span class="symbol">.text:</span>004017FD                 <span class="keyword">movups</span>  xmmword_405038, <span class="built_in">xmm2</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">00401804</span>                 <span class="keyword">movups</span>  xmmword_405048, <span class="built_in">xmm1</span></span><br></pre></td></tr></table></figure>
+
+<p>对于这类题，用X32dbg/X64dbg动态调试最容易理解程序的流程，经过动态调试分析，不难发现这段汇编代码的意思和下面这段一样</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span></span><br><span class="line">&#123;</span><br><span class="line">  *(&amp;xmmword_405018 + v20) = (v20 + v3) ^ (<span class="number">0x1010101</span> * v11 + *(&amp;xmmword_405018 + v20));</span><br><span class="line">  ++v20;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> ( v20 &lt; <span class="number">24</span> );</span><br></pre></td></tr></table></figure>
+
+<h3 id="例子0x02"><a href="#例子0x02" class="headerlink" title="例子0x02"></a>例子0x02</h3><p>SSE不仅运用被在CTF逆向题目中，在PWN题目中也可能出现</p>
+<p>首先程序只开启了PIE保护，载入IDA中查看程序流程<br><img src="https://s2.ax1x.com/2019/06/12/VWFy0H.png" alt> </p>
+<p>程序先是使用<code>__xstat</code>函数对flag.txt的大小进行了查询，然后分配了<code>文件大小+33</code>的空白内存给<code>s</code></p>
+<p><code>sub_B1C</code>函数是通过<code>/dev/urandom</code>来生成32位字符串<br><img src="https://s2.ax1x.com/2019/06/12/VWF67d.png" alt><br>这个函数中存在SSE指令的是<code>sub_930</code>函数</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:0000000000000930</span> <span class="selector-tag">sub_930</span>         <span class="selector-tag">proc</span> <span class="selector-tag">near</span>               ; <span class="selector-tag">CODE</span> <span class="selector-tag">XREF</span>: <span class="selector-tag">main</span>+<span class="selector-tag">A0</span>↓<span class="selector-tag">p</span></span><br><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:0000000000000930</span>                                         ; <span class="selector-tag">sub_B1C</span>+33↓<span class="selector-tag">p</span></span><br><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:0000000000000930</span>                 <span class="selector-tag">mov</span>     <span class="selector-tag">rax</span>, 0<span class="selector-tag">FFFFFFFFFFFFFFF0h</span></span><br><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:0000000000000937</span>                 <span class="selector-tag">mov</span>     <span class="selector-tag">rdx</span>, <span class="selector-tag">rdi</span></span><br><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:000000000000093A</span>                 <span class="selector-tag">pxor</span>    <span class="selector-tag">xmm0</span>, <span class="selector-tag">xmm0</span></span><br><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:000000000000093E</span></span><br><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:000000000000093E</span> <span class="selector-tag">loc_93E</span>:                                ; <span class="selector-tag">CODE</span> <span class="selector-tag">XREF</span>: <span class="selector-tag">sub_930</span>+19↓<span class="selector-tag">j</span></span><br><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:000000000000093E</span>                 <span class="selector-tag">add</span>     <span class="selector-tag">rax</span>, 10<span class="selector-tag">h</span></span><br><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:0000000000000942</span>                 <span class="selector-tag">pcmpistri</span> <span class="selector-tag">xmm0</span>, <span class="selector-tag">xmmword</span> <span class="selector-tag">ptr</span> <span class="selector-attr">[rdx+rax]</span>, 8</span><br><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:0000000000000949</span>                 <span class="selector-tag">jnz</span>     <span class="selector-tag">short</span> <span class="selector-tag">loc_93E</span></span><br><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:000000000000094B</span>                 <span class="selector-tag">add</span>     <span class="selector-tag">rax</span>, <span class="selector-tag">rcx</span></span><br><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:000000000000094E</span>                 <span class="selector-tag">retn</span></span><br><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:000000000000094E</span> <span class="selector-tag">sub_930</span>         <span class="selector-tag">endp</span></span><br><span class="line"><span class="selector-class">.text</span><span class="selector-pseudo">:000000000000094E</span></span><br></pre></td></tr></table></figure>
+
+<p>代码比较简单，用到了<code>pcmpistri</code>指令，意思是执行字符串数据与隐式长度的打包比较，生成索引，并将结果存储在<code>ECX</code>中；这个函数的作用是确保从<code>/dev/urandom</code>读取的字符串长度小于<code>0x5f</code></p>
+<p>继续往下看，会发现在<code>sub_94F</code>函数中也存在SSE指令<br><img src="https://s2.ax1x.com/2019/06/12/VWF2tI.png" alt><br>经过动态调试分析出来该函数的意思：如果我们输入的字符串的ascii码小于内存中字符串的ascii码的话，函数返回1，如果大于则返回<code>-1</code>，相等的话返回<code>(index+1)%16</code></p>
+<p>那么我们可以通过不断的猜测得到内存中的字符串，也就是flag</p>
+<p>Exp：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">from</span> pwn import *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'deepin-terminal'</span>, <span class="string">'-x'</span>, <span class="string">'sh'</span> ,<span class="string">'-c'</span>]</span><br><span class="line">index_1 = <span class="string">"qwertyuiop[]\\asdfghjkl;'zxcvbnm,./`1234567890--=~!@#$%^&amp;*()_+QWERTYUIOP&#123;&#125;|ASDFGHJKL:\"ZXCVBNM&lt;&gt;?"</span></span><br><span class="line">index_1 = <span class="string">''</span>.join(sorted(index_1))</span><br><span class="line">flag = <span class="string">""</span></span><br><span class="line">r = <span class="built_in">process</span>(<span class="string">"./pwn"</span>)</span><br><span class="line">k = <span class="number">2</span></span><br><span class="line">def guess(<span class="keyword">string</span>, l, x):</span><br><span class="line">    r.recvuntil(<span class="string">"&gt; "</span>)</span><br><span class="line">    <span class="keyword">mid</span> = (l+x)/<span class="number">2</span></span><br><span class="line">    <span class="comment">#gdb.attach(r)</span></span><br><span class="line">    r.sendline(flag + <span class="keyword">string</span>[<span class="keyword">mid</span>])</span><br><span class="line">    res = r.recvline()[:<span class="number">-1</span>]</span><br><span class="line">    res = int(res.<span class="built_in">split</span>(<span class="string">"["</span>)[<span class="number">1</span>].<span class="built_in">split</span>(<span class="string">"]"</span>)[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">if</span> res == k:</span><br><span class="line">        <span class="literal">return</span> <span class="keyword">string</span>[<span class="keyword">mid</span>]</span><br><span class="line">    elif res &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="literal">return</span> guess(<span class="keyword">string</span>, l, <span class="keyword">mid</span> - <span class="number">1</span>)</span><br><span class="line">    <span class="literal">return</span> guess(<span class="keyword">string</span>, <span class="keyword">mid</span> + <span class="number">1</span>, x)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">32</span>):</span><br><span class="line">    <span class="keyword">a</span> = guess(index_1, <span class="number">0</span>, <span class="built_in">len</span>(index_1))</span><br><span class="line">    flag += <span class="keyword">a</span></span><br><span class="line">    k+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> k &gt; <span class="number">16</span>:</span><br><span class="line">        k = <span class="number">1</span></span><br><span class="line">index_2 = <span class="string">" !\"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz&#123;|&#125;~"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">20</span>):</span><br><span class="line">    <span class="keyword">a</span> = guess(index_2, <span class="number">0</span>, <span class="built_in">len</span>(index_2))</span><br><span class="line">    flag += <span class="keyword">a</span></span><br><span class="line">    k+=<span class="number">1</span></span><br><span class="line">    <span class="comment">#print flag</span></span><br><span class="line">    <span class="keyword">if</span> k &gt; <span class="number">16</span>:</span><br><span class="line">        k = <span class="number">1</span></span><br><span class="line"><span class="built_in">log</span>.info(<span class="string">"flag  ---&gt; "</span> + flag)</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>通过做一些存在SSE指令的题目可以发现，动态调试更方便我们理解程序到底是干什么的。</p>
+<p>本文如有不妥之处，敬请斧正。</p>
+<h3 id="参考文献："><a href="#参考文献：" class="headerlink" title="参考文献："></a>参考文献：</h3><p><a href="https://www.felixcloutier.com/x86/" target="_blank" rel="noopener">x86 and amd64 instruction reference</a><br><a href="https://dev.gameres.com/Program/Other/SSEjianjie.htm" target="_blank" rel="noopener">Ping-Che Chen</a> </p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

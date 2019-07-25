@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        壳与脱壳 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#认识壳"><span class="toc-text">认识壳</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#压缩壳"><span class="toc-text">压缩壳</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#UPX"><span class="toc-text">UPX</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ASPack"><span class="toc-text">ASPack</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加密壳ASProtect"><span class="toc-text">加密壳ASProtect</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#虚拟机保护软件"><span class="toc-text">虚拟机保护软件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#脱壳技术"><span class="toc-text">脱壳技术</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础知识"><span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#寻找OEP"><span class="toc-text">寻找OEP</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        壳与脱壳
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-02-25 21:35:28</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#逆向" title="逆向">逆向</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>《加密与解密第16章》</p>
+<a id="more"></a>
+<h2 id="认识壳"><a href="#认识壳" class="headerlink" title="认识壳"></a>认识壳</h2><p>顾名思义，就是在原始程序上附加一个壳，这个壳起到保护程序不被逆向的作用</p>
+<p>大致执行过程是，加了壳的程序通过windows加载器载入内存后，先于原始执行，以得到控制权，在执行过程中对原始程序进行解密、还原，还原后把控制权还给原始程序，执行原来的代码。</p>
+<h3 id="压缩壳"><a href="#压缩壳" class="headerlink" title="压缩壳"></a>压缩壳</h3><p>压缩壳的特点就是减小软件的体积，加密保护不是重点,UPX除了能对目标程序进行加密，也可用于解压缩</p>
+<h4 id="UPX"><a href="#UPX" class="headerlink" title="UPX"></a>UPX</h4><p>UPX是一个以命令行方式操作的可执行文件压缩程序；</p>
+<p>UPX的命令格式如下：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">upx <span class="string">[-123456789dlthVL]</span> <span class="string">[-qvfk]</span> <span class="string">[-o filename]</span> file</span><br></pre></td></tr></table></figure>
+
+<h4 id="ASPack"><a href="#ASPack" class="headerlink" title="ASPack"></a>ASPack</h4><p>ASPack是一款win32可执行文件压缩软件，可压缩win32可执行文件EXE、DLL、OCX。</p>
+<h3 id="加密壳ASProtect"><a href="#加密壳ASProtect" class="headerlink" title="加密壳ASProtect"></a>加密壳ASProtect</h3><p>加密壳种类比较多，不同的壳侧重点也不同，一些壳只是保护程序，另一些壳提供了额外的功能，如ASProtect、Armadillo、EXECryptor、Themida。</p>
+<h3 id="虚拟机保护软件"><a href="#虚拟机保护软件" class="headerlink" title="虚拟机保护软件"></a>虚拟机保护软件</h3><p>原理就是将一系列指令解释称bydecode（字节码）后放在一个解释引擎中执行，从而对软件进行保护</p>
+<h2 id="脱壳技术"><a href="#脱壳技术" class="headerlink" title="脱壳技术"></a>脱壳技术</h2><h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><p>壳的加载过程：</p>
+<ol>
+<li>保存入口参数（pushad/popad、pushfd/popfd）</li>
+<li>获取壳本身需要使用的API地址</li>
+<li>解密源程序各个区块的数据</li>
+<li>输入地址表（IAT）的初始化</li>
+<li>重定位项的处理</li>
+<li>Hook API</li>
+<li>跳转到程序原入口点（OEP）</li>
+</ol>
+<h3 id="寻找OEP"><a href="#寻找OEP" class="headerlink" title="寻找OEP"></a>寻找OEP</h3><p>当外壳所保护的程序运行时，会先执行外壳的程序，外壳程序负责在内存中把原程序解压、还原并把控制权还给解压后的真正程序，再跳到原来的程序入口点，这个解压后的程序入口点称为“OEP”</p>
+<p><strong>根据跨段指令寻找OEP</strong></p>
+<p>绝大多数PE程序在被加壳之后会在程序中加上一个或多个区块，这个区块就是外壳，相当于一个文件加载器，当外壳代码处理完毕后就会跳到程序本身的代码处。所以，根据跨段指令就可以找到真正的程序入口点。如下所示：<br><img src="/home/wxm/Desktop/%E5%8A%A0%E5%AF%86%E4%B8%8E%E8%A7%A3%E5%AF%86%E9%9A%8F%E4%B9%A6%E7%AC%94%E8%AE%B0/%E8%84%B1%E5%A3%B3/IMG_20181203_224530.jpg" alt="壳的加载"> </p>
+<p>外壳的初始化过程中使用了两次跨段转移指令：</p>
+<ol>
+<li>从“.pediy”区块跳到外壳的第二部分（调用VirtualAlloc随机分配）</li>
+<li>从外壳的第二部分跳到程序本身的代码所处的区块</li>
+</ol>
+<blockquote>
+<p>在Ollydbg中“Ctrl+A”组合键可以强迫OllyDbg重新分析代码，“Alt+M”查看模块的信息</p>
+</blockquote>
+<p><strong>用内存访问断点寻找OEP</strong></p>
+<p>外壳先将压缩的代码解压并释放到对应的区块上，处理完毕后再跳转到代码处执行。我们知道OllyDbg有对代码段设置断点的功能，当对某代码段设置内存断点之后，一定会中断再外壳对代码进行读取的那句指令上。</p>
+<p>外壳的解压函数是aPLib的aP_depack_asm()，该函数依次将“.text、.rdata、.data、.rsrc”区块解压并放到正确的位置上，将代码段全部解压完毕后，程序返回真正的程序入口点，那么我们现在就可以对.text段设置断点，f9执行程序，就会停在OEP处啦。这个方法的关键是待代码全部解压完毕后再对.text设置断点。如果我们提前设置断点，当外壳解压代码的时候会对.text代码段不断的进行写入，那么就会终端，而一般的壳会以此对“.text、.rdata、.data、rsrc”区块进行解压，所以我们可以先在.rdata或者.data处设置断点，当程序停下的时候，就说明.text已经还原完毕，那么我们再对.text设置断点，运行程序即可达到OEP。</p>
+<p><strong>根据栈平衡原理寻找OEP</strong></p>
+<pre><code>外壳软件必须保证外壳初始化的现场环境（各个寄存器的值）与原程序的现场环境是相同的（主要是ESP、EBP等重要的寄存器）。加壳程序在初始化时要保存各寄存器的值，待外壳执行完毕后恢复各寄存器的值，最后跳到原程序执行：
+
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pushad</span>  #保存现场环境，相当于 <span class="keyword">push</span> <span class="built_in">eax</span>/<span class="built_in">ebx</span>/<span class="built_in">ecx</span>/<span class="built_in">edx</span>/<span class="built_in">edx</span>/<span class="built_in">esp</span>/<span class="built_in">ebp</span>/<span class="built_in">esi</span>/<span class="built_in">edi</span></span><br><span class="line">……</span><br><span class="line"><span class="keyword">popad</span>   #恢复现场环境，相当于 <span class="keyword">pop</span> <span class="built_in">eax</span>/<span class="built_in">ebx</span>/<span class="built_in">ecx</span>/<span class="built_in">edx</span>/<span class="built_in">edx</span>/<span class="built_in">esp</span>/<span class="built_in">ebp</span>/<span class="built_in">esi</span>/<span class="built_in">edi</span></span><br><span class="line"><span class="keyword">JMP</span> OEP #准备跳到入口点</span><br></pre></td></tr></table></figure>
+
+### 抓取内存映像
+抓取内存映像也称为转存（dump），是指把内存制定地址的映像文件读出，用文件的形式将其保存下来的过程。
+
+**dump时机**
+一般情况下，当外壳来到EOP处时进行Dump是正确的。当程序运行起来的时候，由于一些变量已经初始化了，不适合进行Dump。
+
+**Test**
+我尝试这对一个加壳的软件进行脱壳，使用PEtools和loadPE来进行dump后都不能打开，最后使用ollydbg中的dump插件来dump，dump后可以成功的打开。具体方法：在ollydbg中点击插件-&gt;ollydbg-&gt;脱壳在当前调试的进程-&gt;脱壳。
+
+
+
+</code></pre>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

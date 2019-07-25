@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        C++异常处理机制 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#C-异常处理机制"><span class="toc-text">C ++异常处理机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#主动抛出异常"><span class="toc-text">主动抛出异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#被动抛出异常"><span class="toc-text">被动抛出异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常的检查和捕捉"><span class="toc-text">异常的检查和捕捉</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2018Hackgame–confused-flxg"><span class="toc-text">2018Hackgame–confused_flxg</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        C++异常处理机制
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-03-16 13:11:28</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#逆向" title="逆向">逆向</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>以一道ctf逆向题来谈C++异常处理机制</p>
+<a id="more"></a>
+
+<h2 id="C-异常处理机制"><a href="#C-异常处理机制" class="headerlink" title="C ++异常处理机制"></a>C ++异常处理机制</h2><p>C++处理异常的机制是由检查、抛出和捕获3个部分组成，分别由3种语句来完成：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span><span class="comment">---检查</span></span><br><span class="line">throw<span class="comment">---抛出</span></span><br><span class="line"><span class="keyword">catch</span><span class="comment">---捕获</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="主动抛出异常"><a href="#主动抛出异常" class="headerlink" title="主动抛出异常"></a>主动抛出异常</h3><p>主动抛出异常是用throw语句。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">throw 表达式<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果某段程序中出现了异常，就可以使用throw语句来抛出这个异常给调用者，该异常与之匹配的catch语句来捕获。throw语句中的“表达式”是表示抛出的异常类型，异常类型由表达式的类型来表示</p>
+<h3 id="被动抛出异常"><a href="#被动抛出异常" class="headerlink" title="被动抛出异常"></a>被动抛出异常</h3><p>也就是说程序代码本身有问题，运行的时候遇到了错误等导致无法继续运行程序，直接导致异常，使程序转到catch代码块中去执行</p>
+<h3 id="异常的检查和捕捉"><a href="#异常的检查和捕捉" class="headerlink" title="异常的检查和捕捉"></a>异常的检查和捕捉</h3><p>使用try和catch来检查和捕捉：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">try&#123;</span><br><span class="line">	被检查的语句<span class="comment">;</span></span><br><span class="line">&#125;</span><br><span class="line">catch(异常类型声明一)</span><br><span class="line">&#123;</span><br><span class="line">	进行异常处理的复合语句一<span class="comment">;</span></span><br><span class="line">&#125;</span><br><span class="line">catch(异常类型声明二)</span><br><span class="line">&#123;</span><br><span class="line">	进行异常处理的复合语句二<span class="comment">;</span></span><br><span class="line">&#125;</span><br><span class="line">catch(异常类型声明三)</span><br><span class="line">&#123;</span><br><span class="line">	进行异常处理的复合语句三<span class="comment">;</span></span><br><span class="line">&#125;</span><br><span class="line">……</span><br><span class="line">catch(异常类型声明n)</span><br><span class="line">&#123;</span><br><span class="line">	进行异常处理的复合语句n<span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2018Hackgame–confused-flxg"><a href="#2018Hackgame–confused-flxg" class="headerlink" title="2018Hackgame–confused_flxg"></a>2018Hackgame–confused_flxg</h2><p>这道题是运用了C++异常机制</p>
+<p>首先用die查一下发现没有加壳，是C++的64位程序</p>
+<p>尝试着先在dos下运行这个程序，出现关键字符串，以及在用户输入之后会得到一串类似与被base64加密了的字符串<br><img src="https://s2.ax1x.com/2019/03/16/AV07GQ.png" alt> </p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import <span class="built_in">base64</span></span><br><span class="line"><span class="built_in">print</span> <span class="built_in">base64</span>.b64decode(<span class="string">"==QfzMzMzIzXnFGbm9VZrFmZfF0XtF2XJt3Z4xmZ"</span>[::-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">out：</span><br><span class="line">flxg&#123;I_am_A_fake_flag_23333&#125;</span><br></pre></td></tr></table></figure>
+
+<p>载入IDA中查找关键字符串，然后再跟踪找到关键代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">__int64 __<span class="function">fastcall <span class="title">sub_13F041900</span><span class="params">(<span class="keyword">signed</span> <span class="keyword">int</span> a1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  __int64 v1; <span class="comment">// ST60_8</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">wchar_t</span> *v3; <span class="comment">// [rsp+68h] [rbp-410h]</span></span><br><span class="line">  __int64 v4; <span class="comment">// [rsp+80h] [rbp-3F8h]</span></span><br><span class="line">  <span class="keyword">char</span> v5; <span class="comment">// [rsp+180h] [rbp-2F8h]</span></span><br><span class="line">  <span class="keyword">char</span> v6; <span class="comment">// [rsp+3F0h] [rbp-88h]</span></span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> v7; <span class="comment">// [rsp+480h] [rbp+8h]</span></span><br><span class="line"></span><br><span class="line">  v7 = a1;                                      <span class="comment">// 命令行参数个数赋值给v7</span></span><br><span class="line">  v4 = <span class="number">-2</span>i64;</span><br><span class="line">  <span class="built_in">memset</span>(&amp;v5, <span class="number">0</span>, <span class="number">0xC8</span>ui64);</span><br><span class="line">  sub_13F0424B0(<span class="built_in">std</span>::<span class="built_in">cout</span>, <span class="string">"请输入你要验证的flxg,格式为flxg&#123;xxxxx&#125;:"</span>);</span><br><span class="line">  sub_13F042890(<span class="built_in">std</span>::<span class="built_in">cin</span>, &amp;v5);</span><br><span class="line">  <span class="keyword">if</span> ( v7 &gt;= <span class="number">60</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( v7 == <span class="number">60</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      v3 = <span class="string">L"enter in exception!"</span>;</span><br><span class="line">      CxxThrowException(&amp;v3, &amp;PE.(<span class="keyword">default</span> argument <span class="number">0</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ( v7 &gt; <span class="number">60</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      sub_13F0424B0(<span class="built_in">std</span>::<span class="built_in">cout</span>, &amp;unk_13F0454C0);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>i64;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    v1 = sub_13F0424B0(<span class="built_in">std</span>::<span class="built_in">cout</span>, <span class="string">"你解密到得到的flxg为:"</span>);</span><br><span class="line">    sub_13F0424B0(v1, <span class="string">"==QfzMzMzIzXnFGbm9VZrFmZfF0XtF2XJt3Z4xmZ"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  sub_13F042890(<span class="built_in">std</span>::<span class="built_in">cin</span>, &amp;v6);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>i64;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以很明显的判断出4b0函数是输出函数，890函数是输入函数，有一个if判断，看不出来v7到底是什么，好像跟这个函数没有什么关系</p>
+<p>但是发现一个没见过的函数“CxxThrowException”，经过查资料发现这是一个异常处理函数，相当于throw，用来抛出异常</p>
+<p>查看交叉引用发现该函数就被调用了一次，跟踪调用者：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">signed __int64 __usercall sub_13F043E84@&lt;rax&gt;(unsigned<span class="built_in"> int </span>a1@&lt;ebx&gt;)</span><br><span class="line">&#123;</span><br><span class="line">  __int64 v1; // rcx</span><br><span class="line">  char v2; // si</span><br><span class="line">  __int64 v3; // rcx</span><br><span class="line">  __int64 v5; // rcx</span><br><span class="line">  __int64 *v6; // rax</span><br><span class="line">  __int64 v7; // rcx</span><br><span class="line">  __int64 *v8; // rbx</span><br><span class="line">  __int64 v9; // rax</span><br><span class="line">  _QWORD *v10; // rax</span><br><span class="line">  __int64 v11; // rcx</span><br><span class="line">  _QWORD *v12; // rbx</span><br><span class="line">  __int64 v13; // rdi</span><br><span class="line">  __int64 v14; // rcx</span><br><span class="line">  signed<span class="built_in"> int </span>*v15; // rbx</span><br><span class="line">  __int64 v16; // rcx</span><br><span class="line">  __int64 v17; // rcx</span><br><span class="line">  __int64 v18; // rcx</span><br><span class="line"></span><br><span class="line"> <span class="built_in"> if </span>( !sub_13F043890(1i64) )</span><br><span class="line">  &#123;</span><br><span class="line">    sub_13F04434C(7i64);</span><br><span class="line">   <span class="built_in"> goto </span><span class="class">LABEL_20;</span></span><br><span class="line">  &#125;</span><br><span class="line">  v2 = 0;</span><br><span class="line">  LOBYTE(a1) = sub_13F043854(v1);</span><br><span class="line">  v3 = dword_13F048130;</span><br><span class="line"> <span class="built_in"> if </span>( dword_13F048130 == 1 )</span><br><span class="line">  &#123;</span><br><span class="line">LABEL_20:</span><br><span class="line">    sub_13F04434C(7i64);</span><br><span class="line">   <span class="built_in"> goto </span><span class="class">LABEL_21;</span></span><br><span class="line">  &#125;</span><br><span class="line"> <span class="built_in"> if </span>( dword_13F048130 )</span><br><span class="line">  &#123;</span><br><span class="line">    v2 = 1;</span><br><span class="line">  &#125;</span><br><span class="line">  else</span><br><span class="line">  &#123;</span><br><span class="line">    dword_13F048130 = 1;</span><br><span class="line">   <span class="built_in"> if </span>( initterm_e(&amp;unk_13F0452F0, &amp;unk_13F045308) )</span><br><span class="line">     <span class="built_in"> return </span>255i64;</span><br><span class="line">    initterm(&amp;unk_13F0452C8, &amp;unk_13F0452E8);</span><br><span class="line">    dword_13F048130 = 2;</span><br><span class="line">  &#125;</span><br><span class="line">  LOBYTE(v3) = a1;</span><br><span class="line">  sub_13F043A54(v3);</span><br><span class="line">  v6 = sub_13F044640(v5);</span><br><span class="line">  v8 = v6;</span><br><span class="line"> <span class="built_in"> if </span>( *v6 &amp;&amp; sub_13F0439B8(v6) )</span><br><span class="line">  &#123;</span><br><span class="line">    v9 = *v8;</span><br><span class="line">    sub_13F044950(0i64, 2i64);</span><br><span class="line">  &#125;</span><br><span class="line">  v10 = sub_13F044648(v7);</span><br><span class="line">  v12 = v10;</span><br><span class="line"> <span class="built_in"> if </span>( *v10 &amp;&amp; sub_13F0439B8(v10) )</span><br><span class="line">    register_thread_local_exe_atexit_callback(*v12);</span><br><span class="line">  v13 = *_p___argv(v11);</span><br><span class="line">  v15 = _p___argc(v14);                         // 返回命令行参数</span><br><span class="line">  get_initial_narrow_environment(v16);</span><br><span class="line">  a1 = sub_13F041900(*v15);</span><br><span class="line"> <span class="built_in"> if </span>( !sub_13F04449C(v17) )</span><br><span class="line">LABEL_21:</span><br><span class="line">    exit(a1);</span><br><span class="line"> <span class="built_in"> if </span>( !v2 )</span><br><span class="line">    cexit();</span><br><span class="line">  LOBYTE(v18) = 1;</span><br><span class="line">  sub_13F043A78(v18, 0i64);</span><br><span class="line"> <span class="built_in"> return </span>a1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到传入900函数的是v15，那么向上找到v15，是函数_p__argc函数的返回值</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="strong">__p__</span>argc( )</span><br><span class="line"><span class="strong">__p__</span>argv( )</span><br></pre></td></tr></table></figure>
+
+<p>这两个函数都没有参数，分别返回__argc、__argv 变量，那这两个变量是什么呢？</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">argc</span>: 整数,用来统计你运行程序时送给main函数的命令行参数的个数，等于文件名+命令行参数个数</span><br><span class="line"></span><br><span class="line"><span class="attribute">argv：指针数组，用来存放指向你的字符串参数的指针，每一个元素指向一个参数</span></span><br></pre></td></tr></table></figure>
+
+<p>那么现在我们知道了v15其实是argc，也就是命令行参数个数+1，那么现在我们给程序添加上59个命令行参数再次运行这个程序，发现程序的流程又不一样了，没有了杠杠的base64，而是出现了“你的flxg不正确！”<br><img src="https://s2.ax1x.com/2019/03/16/AV0H2j.png" alt> </p>
+<p>从这我们可以看出来，程序通过利用抛出异常来跳转到catch块中执行另外的关键代码，在IDA中通过字符串来定位另外的关键代码</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> __<span class="function">usercall <span class="title">sub_13F04498F</span><span class="params">(__int64 a1@&lt;rbp&gt;)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> __int8 *v1; <span class="comment">// rax</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int8 v2; <span class="comment">// dl</span></span><br><span class="line">  <span class="keyword">int</span> v3; <span class="comment">// eax</span></span><br><span class="line"></span><br><span class="line">  *(a1 + <span class="number">112</span>) = a1 + <span class="number">384</span>;</span><br><span class="line">  *(a1 + <span class="number">40</span>) = <span class="number">-1</span>i64;</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">    ++*(a1 + <span class="number">40</span>);</span><br><span class="line">  <span class="keyword">while</span> ( *(*(a1 + <span class="number">112</span>) + *(a1 + <span class="number">40</span>)) );</span><br><span class="line">  *(a1 + <span class="number">64</span>) = *(a1 + <span class="number">40</span>);                      <span class="comment">// 求出我们输入字符串的长度，存到*(a1+64)</span></span><br><span class="line">  qmemcpy((a1 + <span class="number">0x320</span>), &amp;byte_13F0454D8, <span class="number">57u</span>i64);</span><br><span class="line">  <span class="built_in">memset</span>((a1 + <span class="number">0x359</span>), <span class="number">0</span>, <span class="number">143u</span>i64);</span><br><span class="line">  base_encode(a1 + <span class="number">0x90</span>, (a1 + <span class="number">0x180</span>), *(a1 + <span class="number">64</span>));</span><br><span class="line">  <span class="built_in">memset</span>((a1 + <span class="number">176</span>), <span class="number">0</span>, <span class="number">0xC8</span>ui64);</span><br><span class="line">  *(a1 + <span class="number">80</span>) = sub_13F041A40(a1 + <span class="number">144</span>);</span><br><span class="line">  *(a1 + <span class="number">0x30</span>) = a1 + <span class="number">0xB0</span>;</span><br><span class="line">  *(a1 + <span class="number">0x88</span>) = *(a1 + <span class="number">0x30</span>);</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">  &#123;</span><br><span class="line">    *(a1 + <span class="number">32</span>) = **(a1 + <span class="number">80</span>);</span><br><span class="line">    **(a1 + <span class="number">48</span>) = *(a1 + <span class="number">32</span>);</span><br><span class="line">    ++*(a1 + <span class="number">80</span>);</span><br><span class="line">    ++*(a1 + <span class="number">48</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> ( *(a1 + <span class="number">0x20</span>) );</span><br><span class="line">  strrev((a1 + <span class="number">0xB0</span>));                          <span class="comment">// base64(input)翻转</span></span><br><span class="line">  <span class="built_in">memset</span>((a1 + <span class="number">0x250</span>), <span class="number">0</span>, <span class="number">200u</span>i64);</span><br><span class="line">  <span class="keyword">for</span> ( *(a1 + <span class="number">0x24</span>) = <span class="number">0</span>; ; ++*(a1 + <span class="number">0x24</span>) )</span><br><span class="line">  &#123;</span><br><span class="line">    *(a1 + <span class="number">0x78</span>) = a1 + <span class="number">0xB0</span>;</span><br><span class="line">    *(a1 + <span class="number">0x38</span>) = <span class="number">0xFFFFFFFFFFFFFFFF</span>i64;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">      ++*(a1 + <span class="number">56</span>);</span><br><span class="line">    <span class="keyword">while</span> ( *(*(a1 + <span class="number">120</span>) + *(a1 + <span class="number">56</span>)) );      <span class="comment">// 求出base64后的长度，存在a1+56</span></span><br><span class="line">    <span class="keyword">if</span> ( *(a1 + <span class="number">0x24</span>) &gt;= *(a1 + <span class="number">56</span>) )</span><br><span class="line">      <span class="keyword">break</span>;                                    <span class="comment">// 以上四行是为了加for语句中间的一个条件，相当于加一个i&lt;len(base64(input))</span></span><br><span class="line">    *(a1 + *(a1 + <span class="number">36</span>) + <span class="number">0x250</span>) = *(a1 + <span class="number">0x24</span>) ^ *(a1 + *(a1 + <span class="number">36</span>) + <span class="number">0xB0</span>);<span class="comment">// 相当于 i ^ base64(input)[i]</span></span><br><span class="line">  &#125;</span><br><span class="line">  v1 = (a1 + <span class="number">592</span>);</span><br><span class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    v2 = *v1;</span><br><span class="line">    <span class="keyword">if</span> ( *v1 != v1[<span class="number">208</span>] )</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    ++v1;</span><br><span class="line">    <span class="keyword">if</span> ( !v2 )</span><br><span class="line">    &#123;</span><br><span class="line">      v3 = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">goto</span> LABEL_15;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;                                             <span class="comment">// 跟正确的字符串进行比较</span></span><br><span class="line">  v3 = -(v2 &lt; v1[<span class="number">208</span>]) | <span class="number">1</span>;</span><br><span class="line">LABEL_15:</span><br><span class="line">  <span class="keyword">if</span> ( v3 )</span><br><span class="line">  &#123;</span><br><span class="line">    sub_13F0424B0(<span class="built_in">std</span>::<span class="built_in">cout</span>, &amp;unk_13F045538);   <span class="comment">// 失败</span></span><br><span class="line">    *(a1 + <span class="number">68</span>) = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    sub_13F0424B0(<span class="built_in">std</span>::<span class="built_in">cout</span>, &amp;unk_13F045518);   <span class="comment">// 成功</span></span><br><span class="line">    *(a1 + <span class="number">72</span>) = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  sub_13F041AE0(a1 + <span class="number">144</span>);</span><br><span class="line">  JUMPOUT(&amp;loc_13F0419F4);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>刚打开这个函数的时候发现有很多的数据以及分支结构，有点烦，静态分析有点难以理解程序的流程，这个适合IDA本地动态调试，慢慢调试会发现程序没那么复杂，主要还是耐心吧。</p>
+<p>主要流程：</p>
+<ul>
+<li>将我们输入的字符串base64加密后翻转</li>
+<li>将每一位和在字符串中的索引进行异或</li>
+<li>与程序中正确字符串进行比较</li>
+</ul>
+<p>正确字符串是在byte_13F0454D8，可以很快的找到</p>
+<p>解题代码：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import base64</span><br><span class="line"></span><br><span class="line">date = [<span class="number">0x39</span>,<span class="number">0x65</span>,<span class="number">0x45</span>,<span class="number">0x54</span>,<span class="number">0x77</span>,<span class="number">0x5F</span>,<span class="number">0x34</span>,<span class="number">0x5F</span>,<span class="number">0x64</span>,<span class="number">0x5F</span>,<span class="number">0x66</span>,<span class="number">0x68</span>,<span class="number">0x3C</span>,<span class="number">0x34</span>,<span class="number">0x58</span>,<span class="number">0x55</span>,<span class="number">0x7F</span>,<span class="number">0x43</span>,<span class="number">0x21</span>,<span class="number">0x4B</span>,<span class="number">0x7F</span>,<span class="number">0x20</span>,<span class="number">0x43</span>,<span class="number">0x76</span>,<span class="number">0x5F</span>,<span class="number">0x20</span>,<span class="number">0x4C</span>,<span class="number">0x4D</span>,<span class="number">0x7A</span>,<span class="number">0x53</span>,<span class="number">0x70</span>,<span class="number">0x7D</span>,<span class="number">0x56</span>,<span class="number">0x4D</span>,<span class="number">0x65</span>,<span class="number">0x47</span>,<span class="number">0x4C</span>,<span class="number">0x5D</span>,<span class="number">0x71</span>,<span class="number">0x43</span>,<span class="number">0x18</span>,<span class="number">0x6F</span>,<span class="number">0x47</span>,<span class="number">0x48</span>,<span class="number">0x42</span>,<span class="number">0x18</span>,<span class="number">0x1C</span>,<span class="number">0x4D</span>,<span class="number">0x74</span>,<span class="number">0x45</span>,<span class="number">0x1</span>,<span class="number">0x69</span>,<span class="number">0x0</span>,<span class="number">0x4D</span>,<span class="number">0x5B</span>,<span class="number">0x6D</span>]</span><br><span class="line"></span><br><span class="line">base64_flag = <span class="string">''</span></span><br><span class="line"><span class="string">for x in xrange(len(date)):</span></span><br><span class="line"><span class="string">	base64_flag += chr(x^date[x])</span></span><br><span class="line"><span class="string">print base64.b64decode(base64_flag[::-1])</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">out：flxg&#123;Congratulations_U_FiNd_the_trUe_flXg&#125;</span></span><br></pre></td></tr></table></figure>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

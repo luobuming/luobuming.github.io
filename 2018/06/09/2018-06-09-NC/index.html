@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        常用工具之NC - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#NC"><span class="toc-text">NC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#NetCat是一个非常简单的Unix工具，可以读、写TCP或UDP网络连接-network-connection-。它被设计成一个可靠的后端-back-end-工具，能被其它的程序或脚本直接地或容易地驱动。同时，它又是一个功能丰富的网络调试和开发工具，因为它可以建立你可能用到的几乎任何类型的连接，以及一些非常有意思的内建功能。NetCat，它的实际可运行的名字叫nc，应该早很就被提供，就象另一个没有公开但是标准的Unix工具。"><span class="toc-text">NetCat是一个非常简单的Unix工具，可以读、写TCP或UDP网络连接(network connection)。它被设计成一个可靠的后端(back-end) 工具，能被其它的程序或脚本直接地或容易地驱动。同时，它又是一个功能丰富的网络调试和开发工具，因为它可以建立你可能用到的几乎任何类型的连接，以及一些非常有意思的内建功能。NetCat，它的实际可运行的名字叫nc，应该早很就被提供，就象另一个没有公开但是标准的Unix工具。</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#语法"><span class="toc-text">语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#参数说明"><span class="toc-text">参数说明:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用法"><span class="toc-text">用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、聊天工具"><span class="toc-text">一、聊天工具</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#在192-168-1-151上执行"><span class="toc-text">在192.168.1.151上执行</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#在192-168-1-25上执行"><span class="toc-text">在192.168.1.25上执行</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、监听端口"><span class="toc-text">二、监听端口</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        常用工具之NC
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2018-06-09 21:03:46</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#工具" title="工具">工具</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>不得不用的工具</p>
+<a id="more"></a>
+<h1 id="NC"><a href="#NC" class="headerlink" title="NC"></a>NC</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h5 id="NetCat是一个非常简单的Unix工具，可以读、写TCP或UDP网络连接-network-connection-。它被设计成一个可靠的后端-back-end-工具，能被其它的程序或脚本直接地或容易地驱动。同时，它又是一个功能丰富的网络调试和开发工具，因为它可以建立你可能用到的几乎任何类型的连接，以及一些非常有意思的内建功能。NetCat，它的实际可运行的名字叫nc，应该早很就被提供，就象另一个没有公开但是标准的Unix工具。"><a href="#NetCat是一个非常简单的Unix工具，可以读、写TCP或UDP网络连接-network-connection-。它被设计成一个可靠的后端-back-end-工具，能被其它的程序或脚本直接地或容易地驱动。同时，它又是一个功能丰富的网络调试和开发工具，因为它可以建立你可能用到的几乎任何类型的连接，以及一些非常有意思的内建功能。NetCat，它的实际可运行的名字叫nc，应该早很就被提供，就象另一个没有公开但是标准的Unix工具。" class="headerlink" title="NetCat是一个非常简单的Unix工具，可以读、写TCP或UDP网络连接(network connection)。它被设计成一个可靠的后端(back-end) 工具，能被其它的程序或脚本直接地或容易地驱动。同时，它又是一个功能丰富的网络调试和开发工具，因为它可以建立你可能用到的几乎任何类型的连接，以及一些非常有意思的内建功能。NetCat，它的实际可运行的名字叫nc，应该早很就被提供，就象另一个没有公开但是标准的Unix工具。"></a>NetCat是一个非常简单的Unix工具，可以读、写TCP或UDP网络连接(network connection)。它被设计成一个可靠的后端(back-end) 工具，能被其它的程序或脚本直接地或容易地驱动。同时，它又是一个功能丰富的网络调试和开发工具，因为它可以建立你可能用到的几乎任何类型的连接，以及一些非常有意思的内建功能。NetCat，它的实际可运行的名字叫nc，应该早很就被提供，就象另一个没有公开但是标准的Unix工具。</h5><h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc [<span class="string">-hlnruz</span>][<span class="symbol">-g&lt;网关...&gt;</span>][<span class="string">-G&lt;指向器数目&gt;</span>][<span class="symbol">-i&lt;延迟秒数&gt;</span>][<span class="string">-o&lt;输出文件&gt;</span>][<span class="symbol">-p&lt;通信端口&gt;</span>][<span class="string">-s&lt;来源位址&gt;</span>][<span class="symbol">-v...</span>][<span class="string">-w&lt;超时秒数&gt;</span>][<span class="symbol">主机名称</span>][<span class="string">通信端口...</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明:"></a>参数说明:</h3><ul>
+<li>-g&lt;网关&gt; 设置路由器跃程通信网关，最多可设置8个。</li>
+<li>-G&lt;指向器数目&gt; 设置来源路由指向器，其数值为4的倍数。</li>
+<li>-h 在线帮助。-i&lt;延迟秒数&gt; 设置时间间隔，以便传送信息及扫描通信端口。</li>
+<li>-l 使用监听模式，管控传入的资料。</li>
+<li>-n 直接使用IP地址，而不通过域名服务器。</li>
+<li>-o&lt;输出文件&gt; 指定文件名称，把往来传输的数据以16进制字码倾倒成该文件保存。</li>
+<li>-p&lt;通信端口&gt; 设置本地主机使用的通信端口。</li>
+<li>-r 乱数指定本地与远端主机的通信端口。</li>
+<li>-s&lt;来源位址&gt; 设置本地主机送出数据包的IP地址。</li>
+<li>-u 使用UDP传输协议。</li>
+<li>-v 显示指令执行过程。</li>
+<li>-w&lt;超时秒数&gt; 设置等待连线的时间。</li>
+<li>-z 使用0输入/输出模式，只在扫描通信端口时使用。<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><h3 id="一、聊天工具"><a href="#一、聊天工具" class="headerlink" title="一、聊天工具"></a>一、聊天工具</h3><h5 id="在192-168-1-151上执行"><a href="#在192-168-1-151上执行" class="headerlink" title="在192.168.1.151上执行"></a>在192.168.1.151上执行</h5><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -l <span class="number">1234</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h5 id="在192-168-1-25上执行"><a href="#在192-168-1-25上执行" class="headerlink" title="在192.168.1.25上执行"></a>在192.168.1.25上执行</h5><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc <span class="number">192.168</span><span class="number">.1</span><span class="number">.151</span> <span class="number">1234</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="二、监听端口"><a href="#二、监听端口" class="headerlink" title="二、监听端口"></a>二、监听端口</h3><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp <span class="number">9999</span></span><br></pre></td></tr></table></figure>
+
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

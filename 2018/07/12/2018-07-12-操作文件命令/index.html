@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Linux操作文件命令总结 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#操作文件命令"><span class="toc-text">操作文件命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍："><span class="toc-text">介绍：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#linux是免费开源的，多用户多任务系统。基于Linux有多个衍生版本。RedHat、Ubuntu、Debian等。下面是一些基本文件操作的命令："><span class="toc-text">linux是免费开源的，多用户多任务系统。基于Linux有多个衍生版本。RedHat、Ubuntu、Debian等。下面是一些基本文件操作的命令：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ls"><span class="toc-text">ls</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ls命令主要是显示打印出目录下的文件或者目录等，常用的参数有："><span class="toc-text">ls命令主要是显示打印出目录下的文件或者目录等，常用的参数有：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ls-al-显示用户家目录的信息"><span class="toc-text">ls -al:显示用户家目录的信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ls-d-etc：显示目录本身-我也不知道为啥要有这个命令，本身不直接可以看到嘛！"><span class="toc-text">ls -d /etc：显示目录本身(我也不知道为啥要有这个命令，本身不直接可以看到嘛！)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cd-home：cd命令主要是改变目录的功能"><span class="toc-text">cd /home：cd命令主要是改变目录的功能</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pwd：此命令用于显示用户当前所在的路径、目录"><span class="toc-text">pwd：此命令用于显示用户当前所在的路径、目录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cp：此命令用于复制文件到其他目录中"><span class="toc-text">cp：此命令用于复制文件到其他目录中</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mv：此命令用于移动文件到其他目录，想到与剪切"><span class="toc-text">mv：此命令用于移动文件到其他目录，想到与剪切</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Linux操作文件命令总结
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2018-07-12 14:37:20</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>linux之旅</p>
+<a id="more"></a>
+<h2 id="操作文件命令"><a href="#操作文件命令" class="headerlink" title="操作文件命令"></a>操作文件命令</h2><h3 id="介绍："><a href="#介绍：" class="headerlink" title="介绍："></a>介绍：</h3><h5 id="linux是免费开源的，多用户多任务系统。基于Linux有多个衍生版本。RedHat、Ubuntu、Debian等。下面是一些基本文件操作的命令："><a href="#linux是免费开源的，多用户多任务系统。基于Linux有多个衍生版本。RedHat、Ubuntu、Debian等。下面是一些基本文件操作的命令：" class="headerlink" title="linux是免费开源的，多用户多任务系统。基于Linux有多个衍生版本。RedHat、Ubuntu、Debian等。下面是一些基本文件操作的命令："></a>linux是免费开源的，多用户多任务系统。基于Linux有多个衍生版本。RedHat、Ubuntu、Debian等。下面是一些基本文件操作的命令：</h5><h4 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h4><h5 id="ls命令主要是显示打印出目录下的文件或者目录等，常用的参数有："><a href="#ls命令主要是显示打印出目录下的文件或者目录等，常用的参数有：" class="headerlink" title="ls命令主要是显示打印出目录下的文件或者目录等，常用的参数有："></a>ls命令主要是显示打印出目录下的文件或者目录等，常用的参数有：</h5><figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">-a：全部的文件连同隐藏文件一起输入</span></span><br><span class="line"><span class="deletion">-l：完整的显示档案的信息，包括权限，属性</span></span><br><span class="line"><span class="deletion">-d：仅显示目录本身，不现实目录中的文件</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="ls-al-显示用户家目录的信息"><a href="#ls-al-显示用户家目录的信息" class="headerlink" title="ls -al:显示用户家目录的信息"></a>ls -al:显示用户家目录的信息</h4><figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ls -al</span></span><br><span class="line">总用量 2964</span><br><span class="line">dr-xr-x---. <span class="number"> 2 </span>root root   <span class="number"> 4096 </span>7月 <span class="number"> 12 </span>18:53 .</span><br><span class="line">dr-xr-xr-x.<span class="number"> 23 </span>root root   <span class="number"> 4096 </span>7月 <span class="number"> 12 </span>18:33 ..</span><br><span class="line">-rw-------. <span class="number"> 1 </span>root root   <span class="number"> 1098 </span>7月 <span class="number"> 11 </span>23:50 anaconda-ks.cfg</span><br><span class="line">-rw-------. <span class="number"> 1 </span>root root   <span class="number"> 1646 </span>7月 <span class="number"> 12 </span>02:27 .bash_history</span><br><span class="line">-rw-r--r--. <span class="number"> 1 </span>root root     <span class="number"> 18 </span>5月 <span class="number"> 20 </span>2009 .bash_logout</span><br><span class="line">-rw-r--r--  <span class="number"> 1 </span>root root    <span class="number"> 204 </span>7月 <span class="number"> 12 </span>18:42 .bash_profile</span><br><span class="line">-rw-r--r--. <span class="number"> 1 </span>root root    <span class="number"> 176 </span>9月 <span class="number"> 23 </span>2004 .bashrc</span><br><span class="line">-rw-r--r--. <span class="number"> 1 </span>root root    <span class="number"> 100 </span>9月 <span class="number"> 23 </span>2004 .cshrc</span><br><span class="line">-rw-r--r--. <span class="number"> 1 </span>root root   <span class="number"> 8025 </span>7月 <span class="number"> 11 </span>23:50 install.log</span><br><span class="line">-rw-r--r--. <span class="number"> 1 </span>root root   <span class="number"> 3384 </span>7月 <span class="number"> 11 </span>23:49 install.log.syslog</span><br><span class="line">-rw-------. <span class="number"> 1 </span>root root    <span class="number"> 472 </span>7月 <span class="number"> 12 </span>01:13 .mysql_history</span><br><span class="line">-rwxr-xr-x. <span class="number"> 1 </span>root root<span class="number"> 2977464 </span>3月 <span class="number"> 15 </span>2014 phpstudy.bin</span><br><span class="line">-rw-r--r--. <span class="number"> 1 </span>root root    <span class="number"> 129 </span>12月 <span class="number"> 4 </span>2004 .tcshrc</span><br><span class="line">-rw-------  <span class="number"> 1 </span>root root   <span class="number"> 2024 </span>7月 <span class="number"> 12 </span>18:53 .viminfo</span><br></pre></td></tr></table></figure>
+
+<h4 id="ls-d-etc：显示目录本身-我也不知道为啥要有这个命令，本身不直接可以看到嘛！"><a href="#ls-d-etc：显示目录本身-我也不知道为啥要有这个命令，本身不直接可以看到嘛！" class="headerlink" title="ls -d /etc：显示目录本身(我也不知道为啥要有这个命令，本身不直接可以看到嘛！)"></a>ls -d /etc：显示目录本身(我也不知道为啥要有这个命令，本身不直接可以看到嘛！)</h4><figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># ls -d</span></span><br><span class="line">.</span><br><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># ls -d /etc</span></span><br><span class="line">/etc</span><br></pre></td></tr></table></figure>
+
+<h4 id="cd-home：cd命令主要是改变目录的功能"><a href="#cd-home：cd命令主要是改变目录的功能" class="headerlink" title="cd /home：cd命令主要是改变目录的功能"></a>cd /home：cd命令主要是改变目录的功能</h4><figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># cd /home/</span></span><br><span class="line">[root<span class="symbol">@localhost</span> home]<span class="meta">#</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="pwd：此命令用于显示用户当前所在的路径、目录"><a href="#pwd：此命令用于显示用户当前所在的路径、目录" class="headerlink" title="pwd：此命令用于显示用户当前所在的路径、目录"></a>pwd：此命令用于显示用户当前所在的路径、目录</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost <span class="built_in">home</span>]<span class="meta"># pwd</span></span><br><span class="line">/<span class="built_in">home</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="cp：此命令用于复制文件到其他目录中"><a href="#cp：此命令用于复制文件到其他目录中" class="headerlink" title="cp：此命令用于复制文件到其他目录中"></a>cp：此命令用于复制文件到其他目录中</h4><figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> www]<span class="meta"># ls</span></span><br><span class="line"><span class="number">1</span>  <span class="number">1.</span>php  phpinfo.php  phpmyadmin</span><br><span class="line">[root<span class="symbol">@localhost</span> www]<span class="meta"># cd 1</span></span><br><span class="line">[root<span class="symbol">@localhost</span> <span class="number">1</span>]<span class="meta"># ls</span></span><br><span class="line">[root<span class="symbol">@localhost</span> <span class="number">1</span>]<span class="meta"># cp /phpstudy/www/1.php ./</span></span><br><span class="line">[root<span class="symbol">@localhost</span> <span class="number">1</span>]<span class="meta"># ls</span></span><br><span class="line"><span class="number">1.</span>php</span><br></pre></td></tr></table></figure>
+
+<h4 id="mv：此命令用于移动文件到其他目录，想到与剪切"><a href="#mv：此命令用于移动文件到其他目录，想到与剪切" class="headerlink" title="mv：此命令用于移动文件到其他目录，想到与剪切"></a>mv：此命令用于移动文件到其他目录，想到与剪切</h4><figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> www]<span class="meta"># ls</span></span><br><span class="line"><span class="number">1</span>  <span class="number">1.</span>php  phpinfo.php  phpmyadmin</span><br><span class="line">[root<span class="symbol">@localhost</span> www]<span class="meta"># cd 1</span></span><br><span class="line">[root<span class="symbol">@localhost</span> <span class="number">1</span>]<span class="meta"># ls</span></span><br><span class="line">[root<span class="symbol">@localhost</span> <span class="number">1</span>]<span class="meta"># mv /phpstudy/www/1.php ./</span></span><br><span class="line">[root<span class="symbol">@localhost</span> <span class="number">1</span>]<span class="meta"># ls</span></span><br><span class="line"><span class="number">1.</span>php</span><br><span class="line">[root<span class="symbol">@localhost</span> <span class="number">1</span>]<span class="meta"># cd ..</span></span><br><span class="line">[root<span class="symbol">@localhost</span> www]<span class="meta"># ls</span></span><br><span class="line"><span class="number">1</span>  phpinfo.php  phpmyadmin</span><br></pre></td></tr></table></figure>
+
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

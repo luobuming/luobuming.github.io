@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        php中随机数的缺陷 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#php中随机数函数"><span class="toc-text">php中随机数函数</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        php中随机数的缺陷
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-04-09 17:41:21</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#常见漏洞" title="常见漏洞">常见漏洞</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>之前在逆向中见过这个知识点，这次西湖论剑杯出现在了web上面。</p>
+<a id="more"></a>
+<h3 id="php中随机数函数"><a href="#php中随机数函数" class="headerlink" title="php中随机数函数"></a>php中随机数函数</h3><p>mt_srand:</p>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">播下一个更好的随机数发生器种子</span><br><span class="line"></span><br><span class="line">说明</span><br><span class="line">mt_srand ([ <span class="keyword">int</span> $seed ] ) : void</span><br><span class="line">用 <span class="keyword">seed</span> 来给随机数发生器播种。 没有设定 <span class="keyword">seed</span> 参数时，会被设为随时数。</span><br><span class="line"></span><br><span class="line">Note: 自 PHP <span class="number">4.2</span><span class="number">.0</span> 起，不再需要用 srand() 或 mt_srand() 给随机数发生器播种 ，因为现在是由系统自动完成的。</span><br></pre></td></tr></table></figure>
+
+<p>mt_rand:</p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mt_rand — 生成更好的随机数</span><br><span class="line"></span><br><span class="line">说明</span><br><span class="line">mt_rand ( void ) <span class="symbol">:</span> <span class="built_in">int</span></span><br><span class="line">mt_rand ( <span class="built_in">int</span> $<span class="built_in">min</span> , <span class="built_in">int</span> $<span class="built_in">max</span> ) <span class="symbol">:</span> <span class="built_in">int</span></span><br><span class="line">很多老的 libc 的随机数发生器具有一些不确定和未知的特性而且很慢。PHP 的 <span class="built_in">rand</span>() 函数默认使用 libc 随机数发生器。mt_rand() 函数是非正式用来替换它的。该函数用了 » Mersenne Twister 中已知的特性作为随机数发生器，它可以产生随机数值的平均速度比 libc 提供的 <span class="built_in">rand</span>() 快四倍。</span><br><span class="line"></span><br><span class="line">如果没有提供可选参数 <span class="built_in">min</span> 和 <span class="built_in">max</span>，mt_rand() 返回 <span class="number">0</span> 到 mt_getrandmax() 之间的伪随机数。例如想要 <span class="number">5</span> 到 <span class="number">15</span>（包括 <span class="number">5</span> 和 <span class="number">15</span>）之间的随机数，用 mt_rand(<span class="number">5</span>, <span class="number">15</span>)。</span><br></pre></td></tr></table></figure>
+
+<p>官方解释的有点多，以我的理解就是，在php中随机数函数生成和在C语言中是一样的，先用mt_srand设置一个种子，然后再用mt_rand来生成随机数，若没有直接声明种子，那么系统会随机设置一个种子，这个种子的范围是0到0x7fffffff</p>
+<p>随机数生成规则和C语言是相似的，只要设置的种子一样，那么生成随机数的序列就是一样的</p>
+<p>例子：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span> </span></span><br><span class="line"><span class="php">mt_srand(<span class="number">123456</span>);</span></span><br><span class="line"><span class="php"><span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;<span class="number">5</span>;$i++)</span></span><br><span class="line"><span class="php">&#123;</span></span><br><span class="line"><span class="php">	<span class="keyword">echo</span> mt_rand().<span class="string">"&lt;br&gt;"</span>;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>页面输出：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1863022934</span></span><br><span class="line"><span class="number">1105767797</span></span><br><span class="line"><span class="number">2076010745</span></span><br><span class="line"><span class="number">1928709656</span></span><br><span class="line"><span class="number">559367964</span></span><br></pre></td></tr></table></figure>
+
+<p>多次刷新页面，可以看出来这些数字是不变的</p>
+<p>我们就可以通过这个规则，在不知道种子的情况下，爆破出种子的值，利用到的工具是<a href="https://github.com/lepiaf/php_mt_seed" target="_blank" rel="noopener">php_mt_seed</a> </p>
+<p><img src="https://s2.ax1x.com/2019/04/09/AI41HJ.png" alt><br>可以看出来已经把种子爆破出来了</p>
+<blockquote>
+<p>在php中，如果没有指定设置种子，那么系统默认只设置一次种子</p>
+</blockquote>
+<p>网上找了一个例子：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"><span class="function"><span class="keyword">function</span> <span class="title">wp_generate_password</span><span class="params">($length = <span class="number">12</span>, $special_chars = true)</span> </span>&#123;</span></span><br><span class="line"><span class="php">  $chars = <span class="string">'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'</span>;</span></span><br><span class="line"><span class="php">  <span class="keyword">if</span> ( $special_chars )</span></span><br><span class="line"><span class="php">  $chars .= <span class="string">'!@#$%^&amp;*()'</span>;</span></span><br><span class="line"><span class="php"> </span></span><br><span class="line"><span class="php">  $password = <span class="string">''</span>;</span></span><br><span class="line"><span class="php">  <span class="keyword">for</span> ( $i = <span class="number">0</span>; $i &lt; $length; $i++ )</span></span><br><span class="line"><span class="php">  $password .= substr($chars, mt_rand(<span class="number">0</span>, strlen($chars) - <span class="number">1</span>), <span class="number">1</span>);</span></span><br><span class="line"><span class="php">  <span class="keyword">return</span> $password;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php">$key = wp_generate_password(<span class="number">16</span>, <span class="keyword">false</span>);</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> <span class="string">"[*] This is a key for public:"</span>.$key.<span class="string">"\n"</span>;</span></span><br><span class="line"><span class="php"> </span></span><br><span class="line"><span class="php">$private = wp_generate_password(<span class="number">10</span>,<span class="keyword">false</span>);</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> <span class="string">"[*] Create a private key which you don't know:"</span>.$private.<span class="string">"\n"</span>;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>上述代码是根据mt_rand(0,61)来随机生成随机数，没有种子</p>
+<p>第一次访问页面输出情况：</p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[*] This <span class="keyword">is</span> a <span class="keyword">key</span> <span class="keyword">for</span> <span class="keyword">public</span>:UnHPoeq27cYoJRuL</span><br><span class="line">[*] Create a <span class="keyword">private</span> <span class="keyword">key</span> which you don<span class="comment">'t know:BgEt3qw42E</span></span><br></pre></td></tr></table></figure>
+
+<p>生成payload：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">data = <span class="string">"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"</span></span><br><span class="line">key = <span class="string">"UnHPoeq27cYoJRuL"</span> </span><br><span class="line"></span><br><span class="line"><span class="built_in">index</span> = []</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">x</span> in <span class="built_in">range</span>(<span class="built_in">len</span>(key)):</span><br><span class="line">	<span class="built_in">index</span>.<span class="keyword">append</span>(data.<span class="built_in">index</span>(key[<span class="keyword">x</span>]))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="keyword">x</span> in <span class="built_in">range</span>(<span class="built_in">len</span>(<span class="built_in">index</span>)):</span><br><span class="line">	<span class="keyword">print</span> str(<span class="built_in">index</span>[<span class="keyword">x</span>])+<span class="string">" "</span>+str(<span class="built_in">index</span>[<span class="keyword">x</span>])+<span class="string">" 0 "</span>+<span class="string">"61"</span>,</span><br></pre></td></tr></table></figure>
+
+<p>爆破种子：<br><img src="https://s2.ax1x.com/2019/04/09/AI4wuD.png" alt> </p>
+<p>然后把爆破出来的种子添加到php代码中</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"><span class="function"><span class="keyword">function</span> <span class="title">wp_generate_password</span><span class="params">($length = <span class="number">12</span>, $special_chars = true)</span> </span>&#123;</span></span><br><span class="line"><span class="php">  $chars = <span class="string">'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'</span>;</span></span><br><span class="line"><span class="php">  <span class="keyword">if</span> ( $special_chars )</span></span><br><span class="line"><span class="php">  $chars .= <span class="string">'!@#$%^&amp;*()'</span>;</span></span><br><span class="line"><span class="php">  $password = <span class="string">''</span>;</span></span><br><span class="line"><span class="php">  <span class="keyword">for</span> ( $i = <span class="number">0</span>; $i &lt; $length; $i++ )</span></span><br><span class="line"><span class="php">  $password .= substr($chars, mt_rand(<span class="number">0</span>, strlen($chars) - <span class="number">1</span>), <span class="number">1</span>);</span></span><br><span class="line"><span class="php">  <span class="keyword">return</span> $password;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php">mt_srand(<span class="number">655388788</span>);</span></span><br><span class="line"><span class="php">$key = wp_generate_password(<span class="number">16</span>, <span class="keyword">false</span>);</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> <span class="string">"[*] This is a key for public:"</span>.$key.<span class="string">"&lt;br&gt;"</span>;</span></span><br><span class="line"><span class="php"> </span></span><br><span class="line"><span class="php">$private = wp_generate_password(<span class="number">10</span>,<span class="keyword">false</span>);</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> <span class="string">"[*] Create a private key which you don't know:"</span>.$private.<span class="string">"&lt;br&gt;"</span>;</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>然后刷新页面，发现生辰过得序列已经是固定的值了，说明爆破出来的就是一开始的种子</p>
+<p>再来通过生成第二个字符串来爆破一下，验证一下是否是一个种子</p>
+<p><img src="https://s2.ax1x.com/2019/04/09/AI4fKS.png" alt> </p>
+<p>事实证明确实是一个种子来生成的两个字符串</p>
+<p>以一个CTF题在 实践一下（稍微有改动）：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"><span class="function"><span class="keyword">function</span> <span class="title">random_str</span><span class="params">($length = <span class="string">"32"</span>)</span></span></span></span><br><span class="line"><span class="php">&#123;</span></span><br><span class="line"><span class="php">    $set = <span class="keyword">array</span>(<span class="string">"a"</span>, <span class="string">"A"</span>, <span class="string">"b"</span>, <span class="string">"B"</span>, <span class="string">"c"</span>, <span class="string">"C"</span>, <span class="string">"d"</span>, <span class="string">"D"</span>, <span class="string">"e"</span>, <span class="string">"E"</span>, <span class="string">"f"</span>, <span class="string">"F"</span>,</span></span><br><span class="line"><span class="php">        <span class="string">"g"</span>, <span class="string">"G"</span>, <span class="string">"h"</span>, <span class="string">"H"</span>, <span class="string">"i"</span>, <span class="string">"I"</span>, <span class="string">"j"</span>, <span class="string">"J"</span>, <span class="string">"k"</span>, <span class="string">"K"</span>, <span class="string">"l"</span>, <span class="string">"L"</span>,</span></span><br><span class="line"><span class="php">        <span class="string">"m"</span>, <span class="string">"M"</span>, <span class="string">"n"</span>, <span class="string">"N"</span>, <span class="string">"o"</span>, <span class="string">"O"</span>, <span class="string">"p"</span>, <span class="string">"P"</span>, <span class="string">"q"</span>, <span class="string">"Q"</span>, <span class="string">"r"</span>, <span class="string">"R"</span>,</span></span><br><span class="line"><span class="php">        <span class="string">"s"</span>, <span class="string">"S"</span>, <span class="string">"t"</span>, <span class="string">"T"</span>, <span class="string">"u"</span>, <span class="string">"U"</span>, <span class="string">"v"</span>, <span class="string">"V"</span>, <span class="string">"w"</span>, <span class="string">"W"</span>, <span class="string">"x"</span>, <span class="string">"X"</span>,</span></span><br><span class="line"><span class="php">        <span class="string">"y"</span>, <span class="string">"Y"</span>, <span class="string">"z"</span>, <span class="string">"Z"</span>, <span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>, <span class="string">"4"</span>, <span class="string">"5"</span>, <span class="string">"6"</span>, <span class="string">"7"</span>, <span class="string">"8"</span>, <span class="string">"9"</span>);</span></span><br><span class="line"><span class="php">    $str = <span class="string">''</span>;</span></span><br><span class="line"><span class="php">    <span class="keyword">for</span> ($i = <span class="number">1</span>; $i &lt;= $length; ++$i) &#123;</span></span><br><span class="line"><span class="php">        $ch = mt_rand(<span class="number">0</span>, count($set) - <span class="number">1</span>);</span></span><br><span class="line"><span class="php">        $str .= $set[$ch];</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"><span class="php">    <span class="keyword">return</span> $str;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php">session_start();</span></span><br><span class="line"><span class="php"> </span></span><br><span class="line"><span class="php">$seed = rand(<span class="number">0</span>,<span class="number">999999999</span>);</span></span><br><span class="line"><span class="php">mt_srand($seed);</span></span><br><span class="line"><span class="php">$ss = mt_rand();</span></span><br><span class="line"><span class="php">$hash = md5($ss);</span></span><br><span class="line"><span class="php">setcookie(<span class="string">'SESSI0N'</span>, $hash, time() + <span class="number">3600</span>);</span></span><br><span class="line"><span class="php">$filename = <span class="string">'./uP1O4Ds/'</span>.random_str().<span class="string">".txt"</span>;</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> $filename;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>题目意思就是在0~999999999随机生成一个数当做种子，然后利用这个种子生成一个随机数，把这个随机数md5加密后存到cookie中，再通过生成随机数来生成一个文件名，这里我直接把文件名输出出来</p>
+<p>我们通过session来爆破种子</p>
+<p>首先找到session：8638d8dae4ac929376e12f56cee9e782，md5解密得到：990143368，再利用工具php_mt_seed来爆破种子<br><img src="https://s2.ax1x.com/2019/04/09/AI4IEj.png" alt><br>发现有三个都符合条件，那么我们就一个一个试着生成文件名，当前文件名是：“bx2syTaibaCT5IEyNTsMwlxrIvoUvhv7.txt”</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span> </span></span><br><span class="line"><span class="php"><span class="function"><span class="keyword">function</span> <span class="title">random_str</span><span class="params">($length = <span class="string">"32"</span>)</span></span></span></span><br><span class="line"><span class="php">&#123;</span></span><br><span class="line"><span class="php">    $set = <span class="keyword">array</span>(<span class="string">"a"</span>, <span class="string">"A"</span>, <span class="string">"b"</span>, <span class="string">"B"</span>, <span class="string">"c"</span>, <span class="string">"C"</span>, <span class="string">"d"</span>, <span class="string">"D"</span>, <span class="string">"e"</span>, <span class="string">"E"</span>, <span class="string">"f"</span>, <span class="string">"F"</span>,</span></span><br><span class="line"><span class="php">        <span class="string">"g"</span>, <span class="string">"G"</span>, <span class="string">"h"</span>, <span class="string">"H"</span>, <span class="string">"i"</span>, <span class="string">"I"</span>, <span class="string">"j"</span>, <span class="string">"J"</span>, <span class="string">"k"</span>, <span class="string">"K"</span>, <span class="string">"l"</span>, <span class="string">"L"</span>,</span></span><br><span class="line"><span class="php">        <span class="string">"m"</span>, <span class="string">"M"</span>, <span class="string">"n"</span>, <span class="string">"N"</span>, <span class="string">"o"</span>, <span class="string">"O"</span>, <span class="string">"p"</span>, <span class="string">"P"</span>, <span class="string">"q"</span>, <span class="string">"Q"</span>, <span class="string">"r"</span>, <span class="string">"R"</span>,</span></span><br><span class="line"><span class="php">        <span class="string">"s"</span>, <span class="string">"S"</span>, <span class="string">"t"</span>, <span class="string">"T"</span>, <span class="string">"u"</span>, <span class="string">"U"</span>, <span class="string">"v"</span>, <span class="string">"V"</span>, <span class="string">"w"</span>, <span class="string">"W"</span>, <span class="string">"x"</span>, <span class="string">"X"</span>,</span></span><br><span class="line"><span class="php">        <span class="string">"y"</span>, <span class="string">"Y"</span>, <span class="string">"z"</span>, <span class="string">"Z"</span>, <span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>, <span class="string">"4"</span>, <span class="string">"5"</span>, <span class="string">"6"</span>, <span class="string">"7"</span>, <span class="string">"8"</span>, <span class="string">"9"</span>);</span></span><br><span class="line"><span class="php">    $str = <span class="string">''</span>;</span></span><br><span class="line"><span class="php">    <span class="keyword">for</span> ($i = <span class="number">1</span>; $i &lt;= $length; ++$i) &#123;</span></span><br><span class="line"><span class="php">        $ch = mt_rand(<span class="number">0</span>, count($set) - <span class="number">1</span>);</span></span><br><span class="line"><span class="php">        $str .= $set[$ch];</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"><span class="php">    <span class="keyword">return</span> $str;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php">mt_srand(<span class="number">738128662</span>);</span></span><br><span class="line"><span class="php">mt_rand();</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> random_str();</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>经过测试发现种子应该是：738128662<br><img src="https://s2.ax1x.com/2019/04/09/AI4LvT.png" alt> </p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        2019看雪CTF部分解题思路 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#流浪者"><span class="toc-text">流浪者</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#序列号：j0rXI4bTeustBiIGHeCF70DDM"><span class="toc-text">序列号：j0rXI4bTeustBiIGHeCF70DDM</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#初入好望角"><span class="toc-text">初入好望角</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#序列号：Kanxue2019Q1CTF"><span class="toc-text">序列号：Kanxue2019Q1CTF</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Repwn"><span class="toc-text">Repwn</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#序列号：20101001X1Y0uN3tG00dHaCkWel1C0me"><span class="toc-text">序列号：20101001X1Y0uN3tG00dHaCkWel1C0me</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        2019看雪CTF部分解题思路
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-03-26 22:48:28</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>第一次做这个看雪的CTF</p>
+<a id="more"></a>
+<h3 id="流浪者"><a href="#流浪者" class="headerlink" title="流浪者"></a>流浪者</h3><p>首先拿到程序之后发现是MFC程序，查壳发现没有壳，拖入IDA中通过查看关键字符串来定位到关键代码</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">int</span> __thiscall <span class="keyword">sub_401890(CWnd </span>*this)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">struct </span>CString *<span class="built_in">v1</span><span class="comment">; // ST08_4</span></span><br><span class="line">  CWnd *<span class="built_in">v2</span><span class="comment">; // eax</span></span><br><span class="line">  int <span class="built_in">v3</span><span class="comment">; // eax</span></span><br><span class="line">  int <span class="built_in">v5</span>[<span class="number">26</span>]<span class="comment">; // [esp+4Ch] [ebp-74h]</span></span><br><span class="line">  int i<span class="comment">; // [esp+B4h] [ebp-Ch]</span></span><br><span class="line">  char *<span class="keyword">Str; </span>// [esp+<span class="keyword">B8h] </span>[ebp-<span class="number">8</span>h]</span><br><span class="line">  CWnd *<span class="built_in">v8</span><span class="comment">; // [esp+BCh] [ebp-4h]</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">v8</span> = this<span class="comment">;</span></span><br><span class="line">  <span class="built_in">v1</span> = (this + <span class="number">100</span>)<span class="comment">;</span></span><br><span class="line">  <span class="built_in">v2</span> = CWnd::GetDlgItem(this, <span class="number">1002</span>)<span class="comment">;</span></span><br><span class="line"><span class="symbol">  CWnd:</span>:GetWindowTextA(<span class="built_in">v2</span>, <span class="built_in">v1</span>)<span class="comment">;</span></span><br><span class="line">  <span class="built_in">v3</span> = <span class="keyword">sub_401A30(v8 </span>+ <span class="number">100</span>)<span class="comment">;</span></span><br><span class="line">  <span class="keyword">Str </span>= CString::GetBuffer((<span class="built_in">v8</span> + <span class="number">100</span>), <span class="built_in">v3</span>)<span class="comment">;</span></span><br><span class="line">  <span class="meta">if</span> ( !<span class="keyword">strlen(Str) </span>)</span><br><span class="line">    return CWnd::MessageBoxA(<span class="built_in">v8</span>, <span class="string">"请输入pass!"</span>, <span class="number">0</span>, <span class="number">0</span>)<span class="comment">;</span></span><br><span class="line">  for ( i = <span class="number">0</span><span class="comment">; Str[i]; ++i )</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="meta">if</span> ( <span class="keyword">Str[i] </span>&gt; <span class="number">57</span> <span class="title">||</span> <span class="keyword">Str[i] </span>&lt; <span class="number">48</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="meta">if</span> ( <span class="keyword">Str[i] </span>&gt; <span class="number">122</span> <span class="title">||</span> <span class="keyword">Str[i] </span>&lt; <span class="number">97</span> )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="meta">if</span> ( <span class="keyword">Str[i] </span>&gt; <span class="number">90</span> <span class="title">||</span> <span class="keyword">Str[i] </span>&lt; <span class="number">65</span> )</span><br><span class="line">          <span class="keyword">sub_4017B0();</span></span><br><span class="line"><span class="keyword"> </span>       <span class="meta">else</span></span><br><span class="line">          <span class="built_in">v5</span>[i] = <span class="keyword">Str[i] </span>- <span class="number">29</span><span class="comment">;</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="meta">else</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="built_in">v5</span>[i] = <span class="keyword">Str[i] </span>- <span class="number">87</span><span class="comment">;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">v5</span>[i] = <span class="keyword">Str[i] </span>- <span class="number">48</span><span class="comment">;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return <span class="keyword">sub_4017F0(v5);</span></span><br><span class="line"><span class="keyword">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>首先获取输入框中的字符串，限制字符串必须是数字、大写字母、小写字母，对于这三种有不同的处理方法</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 数字：减去<span class="number">48</span></span><br><span class="line"><span class="number">2.</span>大写字母：减去<span class="number">87</span></span><br><span class="line"><span class="number">3.</span>小写字母：减去<span class="number">29</span></span><br></pre></td></tr></table></figure>
+
+<p>然后进入到sub_4017F0函数中：</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">BOOL </span>__cdecl <span class="keyword">sub_4017F0(int </span><span class="built_in">a1</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">BOOL </span>result<span class="comment">; // eax</span></span><br><span class="line">  char <span class="keyword">Str1[28]; </span>// [esp+D8h] [ebp-<span class="number">24</span>h]</span><br><span class="line">  int <span class="built_in">v3</span><span class="comment">; // [esp+F4h] [ebp-8h]</span></span><br><span class="line">  int <span class="built_in">v4</span><span class="comment">; // [esp+F8h] [ebp-4h]</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">v4</span> = <span class="number">0</span><span class="comment">;</span></span><br><span class="line">  <span class="built_in">v3</span> = <span class="number">0</span><span class="comment">;</span></span><br><span class="line">  <span class="meta">while</span> ( *(<span class="built_in">a1</span> + <span class="number">4</span> * <span class="built_in">v4</span>) &lt; <span class="number">62</span> &amp;&amp; *(<span class="built_in">a1</span> + <span class="number">4</span> * <span class="built_in">v4</span>) &gt;= <span class="number">0</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">Str1[v4] </span>= aAbcdefghiabcde[*(<span class="built_in">a1</span> + <span class="number">4</span> * <span class="built_in">v4</span>)]<span class="comment">;</span></span><br><span class="line">    ++<span class="built_in">v4</span><span class="comment">;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">Str1[v4] </span>= <span class="number">0</span><span class="comment">;</span></span><br><span class="line">  <span class="meta">if</span> ( !<span class="keyword">strcmp(Str1, </span><span class="string">"KanXueCTF2019JustForhappy"</span>) )</span><br><span class="line">    result = <span class="keyword">sub_401770(); </span>                     // <span class="number">1</span></span><br><span class="line">  <span class="meta">else</span></span><br><span class="line">    result = <span class="keyword">sub_4017B0(); </span>                     // <span class="number">0</span></span><br><span class="line">  return result<span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个函数是将处理过后的字符串当做索引，“abcdefghiABCDEFGHIJKLMNjklmn0123456789opqrstuvwxyzOPQRSTUVWXYZ”来作为数组，生成一个新的字符串，然后对第二次处理过的字符串和“KanXueCTF2019JustForhappy”对比一下，一样则正确。</p>
+<p>根据题意解题脚本如下：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">current = <span class="string">"KanXueCTF2019JustForhappy"</span></span><br><span class="line">index = <span class="string">"abcdefghiABCDEFGHIJKLMNjklmn0123456789opqrstuvwxyzOPQRSTUVWXYZ"</span></span><br><span class="line">current_index = []</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="built_in">len</span>(current)):</span><br><span class="line">	current_index.append(index.index(current[x]))</span><br><span class="line"><span class="comment"># 0 9</span></span><br><span class="line"><span class="comment"># 10 35</span></span><br><span class="line"><span class="comment"># 36 61</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="number">0</span>,<span class="built_in">len</span>(current_index)):</span><br><span class="line">	<span class="keyword">if</span> current_index[x]&lt;=<span class="number">9</span> <span class="keyword">and</span> current_index[x]&gt;=<span class="number">0</span>:</span><br><span class="line">		current_index[x]+=<span class="number">48</span></span><br><span class="line">	elif current_index[x]&lt;=<span class="number">35</span> <span class="keyword">and</span> current_index&gt;=<span class="number">10</span>:</span><br><span class="line">		current_index[x]+=<span class="number">87</span></span><br><span class="line">	elif current_index[x]&lt;=<span class="number">61</span> <span class="keyword">and</span> current_index&gt;=<span class="number">35</span>:</span><br><span class="line">		current_index[x]+=<span class="number">29</span></span><br><span class="line">flag = <span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="built_in">len</span>(current_index)):</span><br><span class="line">	flag+=chr(current_index[x])</span><br><span class="line">print flag</span><br></pre></td></tr></table></figure>
+
+<h4 id="序列号：j0rXI4bTeustBiIGHeCF70DDM"><a href="#序列号：j0rXI4bTeustBiIGHeCF70DDM" class="headerlink" title="序列号：j0rXI4bTeustBiIGHeCF70DDM"></a>序列号：j0rXI4bTeustBiIGHeCF70DDM</h4><h3 id="初入好望角"><a href="#初入好望角" class="headerlink" title="初入好望角"></a>初入好望角</h3><p>PEID查发现是C#的程序，一开始我用的是x64dbg来调试这个程序，mmp，巨难受，受Dummy师傅指点，c#的程序逆向用Reflector比较容易一点。</p>
+<p>用这个软件打开程序之后发现，我靠，又有点牛逼了！<br><img src="https://s2.ax1x.com/2019/03/26/AUbecF.png" alt> </p>
+<p>第一个函数：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> a(<span class="keyword">string</span>[] A_0)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">Console</span>.WriteLine(<span class="string">"Please Input Serial:"</span>);![](imgs/<span class="number">20190325</span><span class="number">-220309.</span>png)</span><br><span class="line">    <span class="built_in">if</span> (a(<span class="built_in">Console</span>.ReadLine(), <span class="string">"Kanxue2019"</span>) == <span class="string">"4RTlF9Ca2+oqExJwx68FiA=="</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">Console</span>.WriteLine(<span class="string">"Congratulations!  : )"</span>);</span><br><span class="line">        <span class="built_in">Console</span>.ReadLine();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到将我们的输入和“kanxue2019”当做参数传进a函数，返回值和“4RTlF9Ca2+oqExJwx68FiA==”做比较。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public static string a(string A_0, string A_1)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">byte[] </span><span class="keyword">bytes </span>= Encoding.UTF8.GetBytes(<span class="string">"Kanxue2019CTF-Q1"</span>)<span class="comment">;</span></span><br><span class="line">		<span class="keyword">byte[] </span><span class="keyword">bytes2 </span>= Encoding.UTF8.GetBytes(A_0)<span class="comment">;</span></span><br><span class="line">		<span class="keyword">byte[] </span><span class="keyword">bytes3 </span>= new PasswordDeriveBytes(A_1, null).GetBytes(<span class="number">32</span>)<span class="comment">;</span></span><br><span class="line">		ICryptoTransform transform = new RijndaelManaged</span><br><span class="line">		&#123;</span><br><span class="line">			Mode = CipherMode.CBC</span><br><span class="line">		&#125;.CreateEncryptor(<span class="keyword">bytes3, </span><span class="keyword">bytes);</span></span><br><span class="line"><span class="keyword">	</span>	MemoryStream memoryStream = new MemoryStream()<span class="comment">;</span></span><br><span class="line">		CryptoStream cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Write)<span class="comment">;</span></span><br><span class="line">		cryptoStream.Write(<span class="keyword">bytes2, </span><span class="number">0</span>, <span class="keyword">bytes2.Length);</span></span><br><span class="line"><span class="keyword">	</span>	cryptoStream.FlushFinalBlock()<span class="comment">;</span></span><br><span class="line">		<span class="keyword">byte[] </span>inArray = memoryStream.ToArray()<span class="comment">;</span></span><br><span class="line">		memoryStream.<span class="keyword">Close();</span></span><br><span class="line"><span class="keyword">	</span>	cryptoStream.<span class="keyword">Close();</span></span><br><span class="line"><span class="keyword">	</span>	return Convert.ToBase64String(inArray)<span class="comment">;</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从这段代码中可以看出：AES加密，key、偏移<br>秘钥可以用dnspy调试的时候dump出来</p>
+<p><img src="https://s2.ax1x.com/2019/03/26/AUbWHs.jpg" alt> </p>
+<p>解题脚本：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">from Crypto.Cipher import AES</span><br><span class="line">import base64</span><br><span class="line">k = 'Kanxue2019CTF-Q1'</span><br><span class="line"><span class="type">key</span> = ''.join([chr(i) for i in [<span class="number">0x6D</span>, <span class="number">0xDE</span>, <span class="number">0xF7</span>, <span class="number">0xA4</span>, <span class="number">0x3C</span>, <span class="number">0x00</span>, <span class="number">0x4F</span>, <span class="number">0x7D</span>, <span class="number">0x69</span>, <span class="number">0x83</span>, <span class="number">0x04</span>, <span class="number">0x4B</span>, <span class="number">0x1E</span>, <span class="number">0x36</span>, <span class="number">0xA9</span>, <span class="number">0x34</span>, <span class="number">0x59</span>, <span class="number">0xF1</span>, <span class="number">0x8B</span>, <span class="number">0xC8</span>, <span class="number">0x37</span>, <span class="number">0xC4</span>, <span class="number">0x6E</span>, <span class="number">0xAF</span>, <span class="number">0x32</span>, <span class="number">0x11</span>, <span class="number">0x32</span>, <span class="number">0x73</span>, <span class="number">0x41</span>, <span class="number">0x63</span>, <span class="number">0xA0</span>, <span class="number">0xB4</span>]])</span><br><span class="line">ci = AES.new(<span class="type">key</span>,AES.MODE_CBC,k)</span><br><span class="line">print ci.decrypt(base64.b64decode(<span class="string">"4RTlF9Ca2+oqExJwx68FiA=="</span>))</span><br></pre></td></tr></table></figure>
+
+<h4 id="序列号：Kanxue2019Q1CTF"><a href="#序列号：Kanxue2019Q1CTF" class="headerlink" title="序列号：Kanxue2019Q1CTF"></a>序列号：Kanxue2019Q1CTF</h4><h3 id="Repwn"><a href="#Repwn" class="headerlink" title="Repwn"></a>Repwn</h3><p>第一次做windows平台上的pwn，没有经验</p>
+<p>程序没壳，32位程序，用PEID插件Krypto AnALyzer查看发现存在DES加密</p>
+<p>拖入IDA通过关键字符串定位到关键代码：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">int <span class="keyword">sub_4014C0()</span></span><br><span class="line"><span class="keyword">&#123;</span></span><br><span class="line"><span class="keyword"> </span> unsigned int <span class="built_in">v0</span><span class="comment">; // ebx</span></span><br><span class="line">  char Str[<span class="number">4</span>]<span class="comment">; // [esp+10h] [ebp-58h]</span></span><br><span class="line">  int v3<span class="comment">; // [esp+20h] [ebp-48h]</span></span><br><span class="line">  int v4<span class="comment">; // [esp+24h] [ebp-44h]</span></span><br><span class="line">  int v5<span class="comment">; // [esp+28h] [ebp-40h]</span></span><br><span class="line">  int v6<span class="comment">; // [esp+2Ch] [ebp-3Ch]</span></span><br><span class="line">  int v7<span class="comment">; // [esp+30h] [ebp-38h]</span></span><br><span class="line">  int v8<span class="comment">; // [esp+34h] [ebp-34h]</span></span><br><span class="line">  int v9<span class="comment">; // [esp+38h] [ebp-30h]</span></span><br><span class="line">  int v10<span class="comment">; // [esp+3Ch] [ebp-2Ch]</span></span><br><span class="line">  char v11<span class="comment">; // [esp+40h] [ebp-28h]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">sub_404930();</span></span><br><span class="line"><span class="keyword"> </span> <span class="keyword">sub_4044B0();</span></span><br><span class="line"><span class="keyword"> </span> <span class="built_in">v0</span> = <span class="number">0</span><span class="comment">;</span></span><br><span class="line">  v3 = <span class="number">2138666078</span><span class="comment">;</span></span><br><span class="line">  v4 = <span class="number">728779875</span><span class="comment">;</span></span><br><span class="line">  v5 = <span class="number">1630229319</span><span class="comment">;</span></span><br><span class="line">  v6 = <span class="number">1194152263</span><span class="comment">;</span></span><br><span class="line">  v7 = <span class="number">1198270550</span><span class="comment">;</span></span><br><span class="line">  v8 = <span class="number">695827786</span><span class="comment">;</span></span><br><span class="line">  v9 = <span class="number">1397178665</span><span class="comment">;</span></span><br><span class="line">  v10 = <span class="number">6644011</span><span class="comment">;</span></span><br><span class="line">  strcpy(Str, <span class="string">"Ansome_Is_Wrong"</span>)<span class="comment">;</span></span><br><span class="line">  while ( <span class="built_in">v0</span> &lt; strlen(&amp;v3) )</span><br><span class="line">    *(&amp;v3 + <span class="built_in">v0</span>++) ^= <span class="number">0x18</span>u<span class="comment">;</span></span><br><span class="line">  puts(<span class="string">"Please Input Your Key_ Now!"</span>)<span class="comment">;</span></span><br><span class="line">  <span class="keyword">scanf("%s", </span>&amp;v11)<span class="comment">;</span></span><br><span class="line">  if ( <span class="keyword">sub_4012F0(&amp;v11) </span>)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">sub_401460(&amp;v11);</span></span><br><span class="line"><span class="keyword"> </span>   system(<span class="string">"pause"</span>)<span class="comment">;</span></span><br><span class="line">  &#125;</span><br><span class="line">  else</span><br><span class="line">  &#123;</span><br><span class="line">    puts(Str)<span class="comment">;</span></span><br><span class="line">  &#125;</span><br><span class="line">  return <span class="number">0</span><span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先异或了一段数据，结果是一个字符串“Flag{Th3_K3y_I5_N0t_Rea11Y_K3y}”,然后要求输入一个字符串</p>
+<p>函数4012f0：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">signed<span class="built_in"> int </span>__cdecl sub_4012F0(int a1)</span><br><span class="line">&#123;</span><br><span class="line">  signed<span class="built_in"> int </span>v1; // ecx</span><br><span class="line">  signed<span class="built_in"> int </span>v2; // edx</span><br><span class="line">  signed<span class="built_in"> int </span>result; // eax</span><br><span class="line"> <span class="built_in"> int </span>v4; // [esp+0h] [ebp-38h]</span><br><span class="line"> <span class="built_in"> int </span>v5; // [esp+4h] [ebp-34h]</span><br><span class="line"> <span class="built_in"> int </span>v6; // [esp+8h] [ebp-30h]</span><br><span class="line">  char v7; // [esp+Ch] [ebp-2Ch]</span><br><span class="line"> <span class="built_in"> int </span>v8; // [esp+10h] [ebp-28h]</span><br><span class="line"> <span class="built_in"> int </span>v9; // [esp+14h] [ebp-24h]</span><br><span class="line"> <span class="built_in"> int </span>v10; // [esp+18h] [ebp-20h]</span><br><span class="line"> <span class="built_in"> int </span>v11; // [esp+1Ch] [ebp-1Ch]</span><br><span class="line"> <span class="built_in"> int </span>v12; // [esp+20h] [ebp-18h]</span><br><span class="line"></span><br><span class="line">  v1 = 8;</span><br><span class="line">  v2 = 0;</span><br><span class="line">  v8 = 'ruoY';</span><br><span class="line">  v9 = 'pnI_';</span><br><span class="line">  v10 = 'I_tu';</span><br><span class="line">  v11 = 'rW_s';</span><br><span class="line">  v12 = 'gno';</span><br><span class="line">  v4 = '0Y1X';</span><br><span class="line">  v5 = 't3Nu';</span><br><span class="line">  v6 = 'd00G';</span><br><span class="line">  v7 = 0;</span><br><span class="line">  while ( *(&amp;v4 + v2) == *(v1 + a1) )</span><br><span class="line">  &#123;</span><br><span class="line">    ++v2;</span><br><span class="line">    ++v1;</span><br><span class="line">   <span class="built_in"> if </span>( v2 &gt; 11 )</span><br><span class="line">    &#123;</span><br><span class="line">      result = 1;</span><br><span class="line">     <span class="built_in"> if </span>( *(a1 + 20) == 72 )</span><br><span class="line">       <span class="built_in"> return </span>result;</span><br><span class="line">     <span class="built_in"> return </span>0;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"> <span class="built_in"> return </span>0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>限制了字符串的8-20位必须是“X1Y0uN3tG00dH”</p>
+<p>函数401460：</p>
+<figure class="highlight hsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __cdecl sub_401460(char *<span class="keyword">Str</span>)</span><br><span class="line">&#123;</span><br><span class="line">  char Dest<span class="comment">; // [esp+8h] [ebp-10h]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ( <span class="keyword">strlen</span>(<span class="keyword">Str</span>) == <span class="number">24</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( sub_4013B0(<span class="keyword">Str</span>) )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">Str</span>[<span class="number">20</span>] -= <span class="number">88</span><span class="comment">;</span></span><br><span class="line">      <span class="keyword">Str</span>[<span class="number">21</span>] -= <span class="number">70</span><span class="comment">;</span></span><br><span class="line">      <span class="keyword">Str</span>[<span class="number">22</span>] -= <span class="number">3</span><span class="comment">;</span></span><br><span class="line">      <span class="keyword">Str</span>[<span class="number">23</span>] -= <span class="number">107</span><span class="comment">;</span></span><br><span class="line">      strcpy(&amp;Dest, <span class="keyword">Str</span>)<span class="comment">;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    printf(<span class="string">"String Length is Wrong"</span>)<span class="comment">;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span><span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先是判断了一下输入字符串的长度是否等于24，然后进入函数4013b0</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">signed<span class="built_in"> int </span>__cdecl sub_4013B0(int a1)</span><br><span class="line">&#123;</span><br><span class="line"> <span class="built_in"> int </span>v1; // ebx</span><br><span class="line"> <span class="built_in"> int </span>v2; // ecx</span><br><span class="line"> <span class="built_in"> int </span>v3; // esi</span><br><span class="line">  signed<span class="built_in"> int </span>result; // eax</span><br><span class="line"></span><br><span class="line">  sub_401380(a1);</span><br><span class="line">  v1 = dword_40802C + 1000 * dword_408020 + 100 * dword_408024 + 10 * dword_408028;</span><br><span class="line">  v2 = dword_408034 + 10 * dword_408030;</span><br><span class="line">  v3 = dword_40803C + 10 * dword_408038;</span><br><span class="line"> <span class="built_in"> if </span>( 2 * (v1 + v2) != 4040 || 3 * v2 / 2 + 100 * v3 != 115 )</span><br><span class="line">   <span class="built_in"> goto </span><span class="class">LABEL_2;</span></span><br><span class="line">  result = 1;</span><br><span class="line"> <span class="built_in"> if </span>( v1 - 110 * v3 != 1900 )</span><br><span class="line">  &#123;</span><br><span class="line">    printf(<span class="string">"Key_Is_Wrong,Please_Input_Again!"</span>);</span><br><span class="line">LABEL_2:</span><br><span class="line">    result = 0;</span><br><span class="line">  &#125;</span><br><span class="line"> <span class="built_in"> return </span>result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对前八位进行了限制，这里我们可以用z3来解出符合条件的值：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from z3 import *</span><br><span class="line">from Crypto.Cipher import DES</span><br><span class="line">x = BitVec('x',<span class="number">16</span>)</span><br><span class="line">y = BitVec('y',<span class="number">16</span>)</span><br><span class="line">z = BitVec('z',<span class="number">16</span>)</span><br><span class="line">solve((x+y)*<span class="number">2</span>==<span class="number">4040</span>,<span class="number">3</span>*y/<span class="number">2</span>+<span class="number">100</span>*z==<span class="number">115</span>,x<span class="number">-110</span>*z==<span class="number">1900</span>)</span><br><span class="line"></span><br><span class="line">out：</span><br><span class="line">[z = <span class="number">1</span>, y = <span class="number">10</span>, x = <span class="number">2010</span>]</span><br></pre></td></tr></table></figure>
+
+<p>可以得出来前八位是“20101001”</p>
+<p>如果前八位符合条件限制，会将后四位进行处理，并且将字符串复制到Dest里面：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Str[<span class="number">20</span>] -= <span class="number">88</span>;</span><br><span class="line"> Str[<span class="number">21</span>] -= <span class="number">70</span>;</span><br><span class="line"> Str[<span class="number">22</span>] -= <span class="number">3</span>;</span><br><span class="line"> Str[<span class="number">23</span>] -= <span class="number">107</span>;</span><br><span class="line"> strcpy(&amp;Dest, Str);</span><br></pre></td></tr></table></figure>
+
+<p>漏洞点就出现在这里，dest在栈上的位置是“ebp-0x10”，我们输入的字符串的长度是24，那么我们输入的字符串的后四位会覆盖点返回地址</p>
+<p>后四位现在已知的是“H×××”，我们知道函数的地址是“0x0040****”,那么我们就可以推断出最后以为就是“k”，倒数第二位就是“C”,倒数第三位我们可以猜测到是“A/a”，分别看看两种情况下的函数，发现是“a”的时候是关键函数，将已知的字符串拼接到一块输入发现是正确的</p>
+<p>进入函数401bf0：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">void __noreturn <span class="keyword">sub_401BF0()</span></span><br><span class="line"><span class="keyword">&#123;</span></span><br><span class="line"><span class="keyword"> </span> unsigned int <span class="built_in">v0</span><span class="comment">; // ebx</span></span><br><span class="line">  char *<span class="built_in">v1</span><span class="comment">; // ebx</span></span><br><span class="line">  int v2<span class="comment">; // [esp+10h] [ebp-48h]</span></span><br><span class="line">  int v3<span class="comment">; // [esp+14h] [ebp-44h]</span></span><br><span class="line">  char v4<span class="comment">; // [esp+18h] [ebp-40h]</span></span><br><span class="line">  char v5[<span class="number">28</span>]<span class="comment">; // [esp+20h] [ebp-38h]</span></span><br><span class="line">  __int16 v6<span class="comment">; // [esp+3Ch] [ebp-1Ch]</span></span><br><span class="line">  char v7<span class="comment">; // [esp+3Eh] [ebp-1Ah]</span></span><br><span class="line"></span><br><span class="line">  qmemcpy(v5, &amp;unk_4060A4, sizeof(v5))<span class="comment">;</span></span><br><span class="line">  <span class="built_in">v0</span> = <span class="number">0</span><span class="comment">;</span></span><br><span class="line">  v6 = word_4060C0<span class="comment">;</span></span><br><span class="line">  v7 = <span class="keyword">byte_4060C2;</span></span><br><span class="line"><span class="keyword"> </span> while ( <span class="built_in">v0</span> &lt; strlen(v5) )</span><br><span class="line">  &#123;</span><br><span class="line">    v5[<span class="built_in">v0</span>] += <span class="built_in">v0</span><span class="comment">;</span></span><br><span class="line">    ++<span class="built_in">v0</span><span class="comment">;</span></span><br><span class="line">  &#125;</span><br><span class="line">  system(<span class="string">"cls"</span>)<span class="comment">;</span></span><br><span class="line">  printf(<span class="string">"%.*s\n"</span>, <span class="number">29</span>, v5)<span class="comment">;</span></span><br><span class="line">  v2 = <span class="string">'oyiX'</span><span class="comment">;</span></span><br><span class="line">  v3 = <span class="string">'teNu'</span><span class="comment">;</span></span><br><span class="line">  v4 = <span class="number">0</span><span class="comment">;</span></span><br><span class="line">  fflush(iob)<span class="comment">;</span></span><br><span class="line">  <span class="built_in">v1</span> = (char *)<span class="keyword">sub_401CF0(8u);</span></span><br><span class="line"><span class="keyword"> </span> gets(<span class="built_in">v1</span>)<span class="comment">;</span></span><br><span class="line">  <span class="keyword">sub_401730((int)&amp;v2);</span></span><br><span class="line"><span class="keyword"> </span> <span class="keyword">sub_4018B0(v1, </span><span class="built_in">v1</span>)<span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为刚刚我们用PEID检测出程序用到了DES加密  ，在之前的验证都没有用到这个加密，所以这里是用到的DES加密</p>
+<p>函数401730是初始化向量，函数4018b0中是对字符串进行加密</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( Dst[v9] != v13[v9] )</span><br><span class="line">      v10 = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> ( ++v9 &gt; <span class="number">31</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> ( !v10 )</span><br><span class="line">        <span class="built_in">printf</span>(Format);</span><br><span class="line">      <span class="built_in">putchar</span>(<span class="number">10</span>);</span><br><span class="line">      <span class="keyword">system</span>(<span class="string">"pause"</span>);</span><br><span class="line">      <span class="built_in">ExitProcess</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>Dst变量是加密后的输入，而v13是正确的数据，那么我们可以将v13提取出来：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">memcpy(<span class="name">v13</span>, <span class="symbol">&amp;unk_406010</span>, <span class="number">0</span>x94u)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>在函数前面有对v13赋值，把unk_406010提取出来</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">9</span>,<span class="number">13</span>,<span class="number">11</span>,<span class="number">8</span>,<span class="number">4</span>,<span class="number">10</span>,<span class="number">12</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">1</span>,<span class="number">14</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">13</span>,<span class="number">5</span>,<span class="number">10</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">9</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">5</span>,<span class="number">10</span>,<span class="number">2</span>,<span class="number">8</span>]</span><br></pre></td></tr></table></figure>
+
+<p>解密脚本：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from Crypto.Cipher import <span class="keyword">DES</span></span><br><span class="line">obj = <span class="keyword">DES</span>.new(<span class="string">"XiyouNet"</span>,<span class="keyword">DES</span>.MODE_ECB)</span><br><span class="line">mi = <span class="string">"9DB084AC97041E305697D5A499355A28"</span>.<span class="keyword">decode</span>(<span class="string">"hex"</span>)</span><br><span class="line"><span class="keyword">print</span> obj.decrypt(mi)</span><br><span class="line"></span><br><span class="line"><span class="keyword">out</span>：</span><br><span class="line">Wel1C0me</span><br></pre></td></tr></table></figure>
+
+<h4 id="序列号：20101001X1Y0uN3tG00dHaCkWel1C0me"><a href="#序列号：20101001X1Y0uN3tG00dHaCkWel1C0me" class="headerlink" title="序列号：20101001X1Y0uN3tG00dHaCkWel1C0me"></a>序列号：20101001X1Y0uN3tG00dHaCkWel1C0me</h4>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

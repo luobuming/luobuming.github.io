@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        python笔记--异常处理 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#语法错误：简单的来讲就是写的代码编译时错处，说明代码有关的语法写错了；"><span class="toc-text">语法错误：简单的来讲就是写的代码编译时错处，说明代码有关的语法写错了；</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#逻辑错误：由于不完整或不合法的输入所致，也可能是逻辑无法生成、计算或者输出结果需要的过程无法执行等"><span class="toc-text">逻辑错误：由于不完整或不合法的输入所致，也可能是逻辑无法生成、计算或者输出结果需要的过程无法执行等</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#python一场是一个对象，表示错误或意外情况"><span class="toc-text">python一场是一个对象，表示错误或意外情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在python检测到一个错误时，将触发一个异常"><span class="toc-text">在python检测到一个错误时，将触发一个异常</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#python异常也可以理解为：程序出现了错误而在正常控制流以外采取的行为"><span class="toc-text">python异常也可以理解为：程序出现了错误而在正常控制流以外采取的行为</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常的共用"><span class="toc-text">异常的共用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#错误处理"><span class="toc-text">错误处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#时间通知"><span class="toc-text">时间通知</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#特殊情况处理"><span class="toc-text">特殊情况处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#终止行为"><span class="toc-text">终止行为</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#非常规控制流程"><span class="toc-text">非常规控制流程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检测和处理异常"><span class="toc-text">检测和处理异常</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#异常通过tyr语句来检测"><span class="toc-text">异常通过tyr语句来检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#try语句主要有两种形式"><span class="toc-text">try语句主要有两种形式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#try语句的复合形式"><span class="toc-text">try语句的复合形式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#try-except-else-finally"><span class="toc-text">try-except-else-finally</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义异常"><span class="toc-text">自定义异常</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#raise语句可显式触发异常"><span class="toc-text">raise语句可显式触发异常</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        python笔记--异常处理
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2018-07-23 20:51:41</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#python" title="python">python</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>合理抛出错误！</p>
+<a id="more"></a>
+<h4 id="语法错误：简单的来讲就是写的代码编译时错处，说明代码有关的语法写错了；"><a href="#语法错误：简单的来讲就是写的代码编译时错处，说明代码有关的语法写错了；" class="headerlink" title="语法错误：简单的来讲就是写的代码编译时错处，说明代码有关的语法写错了；"></a>语法错误：简单的来讲就是写的代码编译时错处，说明代码有关的语法写错了；</h4><h4 id="逻辑错误：由于不完整或不合法的输入所致，也可能是逻辑无法生成、计算或者输出结果需要的过程无法执行等"><a href="#逻辑错误：由于不完整或不合法的输入所致，也可能是逻辑无法生成、计算或者输出结果需要的过程无法执行等" class="headerlink" title="逻辑错误：由于不完整或不合法的输入所致，也可能是逻辑无法生成、计算或者输出结果需要的过程无法执行等"></a>逻辑错误：由于不完整或不合法的输入所致，也可能是逻辑无法生成、计算或者输出结果需要的过程无法执行等</h4><h4 id="python一场是一个对象，表示错误或意外情况"><a href="#python一场是一个对象，表示错误或意外情况" class="headerlink" title="python一场是一个对象，表示错误或意外情况"></a>python一场是一个对象，表示错误或意外情况</h4><h4 id="在python检测到一个错误时，将触发一个异常"><a href="#在python检测到一个错误时，将触发一个异常" class="headerlink" title="在python检测到一个错误时，将触发一个异常"></a>在python检测到一个错误时，将触发一个异常</h4><blockquote>
+<p> python可以通过异常传导机制传递一个异常对象，发出一个异常情况出现的信号<br> 我们自己也可以在代码中手动触发异常</p>
+</blockquote>
+<h4 id="python异常也可以理解为：程序出现了错误而在正常控制流以外采取的行为"><a href="#python异常也可以理解为：程序出现了错误而在正常控制流以外采取的行为" class="headerlink" title="python异常也可以理解为：程序出现了错误而在正常控制流以外采取的行为"></a>python异常也可以理解为：程序出现了错误而在正常控制流以外采取的行为</h4><blockquote>
+<p> 第一阶段：解释器触发异常，此时当前程序流将被打断<br> 异常处理，如忽略非致命性错误、减轻错误带来的影响</p>
+</blockquote>
+<h3 id="异常的共用"><a href="#异常的共用" class="headerlink" title="异常的共用"></a>异常的共用</h3><h4 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h4><ol>
+<li>python的默认处理：停止程序，打印错误消息</li>
+<li>使用try语句处理异常并从异常中恢复</li>
+</ol>
+<h4 id="时间通知"><a href="#时间通知" class="headerlink" title="时间通知"></a>时间通知</h4><ol>
+<li>用于发出有效状态信号(错误位置)</li>
+</ol>
+<h4 id="特殊情况处理"><a href="#特殊情况处理" class="headerlink" title="特殊情况处理"></a>特殊情况处理</h4><ol>
+<li>无法调整代码去处理的场景</li>
+</ol>
+<h4 id="终止行为"><a href="#终止行为" class="headerlink" title="终止行为"></a>终止行为</h4><ol>
+<li>try/finally语句可确保执行必须的结束处理机制</li>
+</ol>
+<h4 id="非常规控制流程"><a href="#非常规控制流程" class="headerlink" title="非常规控制流程"></a>非常规控制流程</h4><ol>
+<li>异常是一种高级跳转(goto)机制</li>
+</ol>
+<h3 id="检测和处理异常"><a href="#检测和处理异常" class="headerlink" title="检测和处理异常"></a>检测和处理异常</h3><h4 id="异常通过tyr语句来检测"><a href="#异常通过tyr语句来检测" class="headerlink" title="异常通过tyr语句来检测"></a>异常通过tyr语句来检测</h4><ol>
+<li>任何在try语句块中的代码都会被检测，以检查有无异常发生</li>
+</ol>
+<h4 id="try语句主要有两种形式"><a href="#try语句主要有两种形式" class="headerlink" title="try语句主要有两种形式"></a>try语句主要有两种形式</h4><ol>
+<li>try-expect：检测和处理异常<blockquote>
+<pre><code>1. 可以有多个expect
+2. 支持使用else子句处理没有探测异常的执行的代码</code></pre></blockquote>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    f = open(<span class="string">"d:\\123\abc.txt"</span>,<span class="string">"r"</span>)</span><br><span class="line"><span class="keyword">except</span> IOError, reason: <span class="comment"># 这里的reason指的是可以把错误报错在reason的变量里面，用于以后的输出</span></span><br><span class="line">    print(<span class="string">"不能打开该文件"</span>+reason)</span><br><span class="line"><span class="keyword">except</span> (exception1,exception2):<span class="comment">#当一个except语句处理多个异常的情况下，错误类型要用元组</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">else</span>: <span class="comment">#except分句个数没有限制，但是else只能有一个</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">    <span class="comment"># 当try中的代码没有产生任何的异常情况下才执行else中的代码</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>try-finally：进检查一场并做一些必要的清理工作<blockquote>
+<pre><code>1.仅能有一个finall</code></pre></blockquote>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    <span class="keyword">pass</span> <span class="comment">#无论异常是否发生，finally子句都会执行，而且finally中的所有代码执行完毕后悔继续向上一层引发异常</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="try语句的复合形式"><a href="#try语句的复合形式" class="headerlink" title="try语句的复合形式"></a>try语句的复合形式</h4><blockquote>
+<pre><code>1.try-except-finally</code></pre></blockquote>
+<h4 id="try-except-else-finally"><a href="#try-except-else-finally" class="headerlink" title="try-except-else-finally"></a>try-except-else-finally</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">	<span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span>:<span class="comment">#捕捉一切错误</span></span><br><span class="line">	<span class="keyword">pass</span></span><br><span class="line"><span class="keyword">except</span> error_name:<span class="comment">#捕捉特定的错误</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="keyword">pass</span><span class="comment">#如果没有引发异常，就运行</span></span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">	<span class="keyword">pass</span><span class="comment">#总是运行此代码</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a>自定义异常</h3><h4 id="raise语句可显式触发异常"><a href="#raise语句可显式触发异常" class="headerlink" title="raise语句可显式触发异常"></a>raise语句可显式触发异常</h4><blockquote>
+<p>  raise[someException[,args[,traceback]]]</p>
+</blockquote>
+<blockquote>
+<p>  someException:可选，异常的名字</p>
+</blockquote>
+<blockquote>
+<p>  args: 可选，以元组的形势传递给异常的参数</p>
+</blockquote>
+<blockquote>
+<p>  traceback: 可选，一场触发时新生成的一个用于异常-正常化的跟踪记录，多用于重新引发异常时</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(seq1,seq2)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> seq1 <span class="keyword">or</span> <span class="keyword">not</span> seq2:</span><br><span class="line">		<span class="keyword">raise</span> ValueError , <span class="string">"value must be empty!"</span></span><br><span class="line">	print([(x,y) <span class="keyword">for</span> x <span class="keyword">in</span> seq1 <span class="keyword">for</span> y <span class="keyword">in</span> seq2])</span><br><span class="line">list1 = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>]</span><br><span class="line">list2 = [<span class="string">'1'</span>,<span class="string">'2'</span>,<span class="string">'3'</span>]</span><br><span class="line">list3 = []</span><br><span class="line">test(list1,list2)</span><br><span class="line">test(list1,list3)</span><br><span class="line"></span><br><span class="line">C:\Users\WDM&gt;python D:\study\python\learn\test1.py</span><br><span class="line">[(<span class="string">'a'</span>, <span class="string">'1'</span>), (<span class="string">'a'</span>, <span class="string">'2'</span>), (<span class="string">'a'</span>, <span class="string">'3'</span>), (<span class="string">'b'</span>, <span class="string">'1'</span>), (<span class="string">'b'</span>, <span class="string">'2'</span>), (<span class="string">'b'</span>, <span class="string">'3'</span>), (<span class="string">'c'</span>, <span class="string">'1'</span>), (<span class="string">'c'</span>, <span class="string">'2'</span>), (<span class="string">'c'</span>, <span class="string">'3'</span>)]</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"D:\study\python\learn\test1.py"</span>, line <span class="number">9</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    test(list1,list3)</span><br><span class="line">  File <span class="string">"D:\study\python\learn\test1.py"</span>, line <span class="number">3</span>, <span class="keyword">in</span> test</span><br><span class="line">    <span class="keyword">raise</span> ValueError , <span class="string">"value must be empty!"</span></span><br><span class="line">ValueError: value must be empty!</span><br></pre></td></tr></table></figure>
+
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

