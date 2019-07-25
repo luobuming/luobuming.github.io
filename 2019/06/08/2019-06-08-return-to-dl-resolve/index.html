@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
@@ -45,7 +45,7 @@
 <div class="nav" id="nav">
     <div class="avatar-name">
         <div class="avatar radius">
-            <img src="/img/avatar.jpg" />
+            <img src="/img/avatar.jpg">
         </div>
         <div class="name">
             <i>一筐萝卜</i>
@@ -53,25 +53,25 @@
     </div>
     <div class="contents" id="nav-content">
         <ul>
-            <li >
+            <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
                     <span>HOME</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
                     <span>TAGS</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
                     <span>ARCHIVES</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
                     <span>ABOUT</span>
@@ -99,7 +99,7 @@
     <div class="search-container">
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
-            <input id="search-input"/>
+            <input id="search-input">
             <span id="begin-search">search</span>
         </div>
         <div class="search-result-container" id="search-result-container">
@@ -135,36 +135,24 @@
         </span>
         <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
 </span>
-</span>
+
     </div>
     <div class="post-content no-indent">
         <p>高级ROP！</p>
 <a id="more"></a>
-
 <h3 id="延迟绑定"><a href="#延迟绑定" class="headerlink" title="延迟绑定"></a>延迟绑定</h3><p>基本思想当函数第一次用到时才进行绑定（符号查找、重定位），如果没有用到的话就不进行绑定。</p>
 <p>当我们在调用某个外部的模块时，如果按照通常的做法应该是通过GOT表中相应的项进行间接跳转。PLT为了实现延迟绑定，在这个过程中间又增加了一层间接跳转。调用函数并不直接通过GOT跳转，而是通过一个叫做PLT项的结构在进行跳转。每个外部函数在PLT中都有一个相应的项</p>
 <p>通过readelf可以查看ELF格式的文件信息</p>
-<p>首先看一下节头信息<br><img src="https://s2.ax1x.com/2019/06/08/VBqZE6.png" alt><br>找到.plt表，跟进看.plt中具体的汇编代码<br><img src="https://s2.ax1x.com/2019/06/08/VBqm4O.png" alt><br>可以看出来，前两句汇编</p>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x8048380</span>:	<span class="keyword">push</span>   <span class="built_in">DWORD</span> <span class="built_in">PTR</span> <span class="built_in">ds</span>:<span class="number">0x804a004</span></span><br><span class="line"><span class="number">0x8048386</span>:	<span class="keyword">jmp</span>    <span class="built_in">DWORD</span> <span class="built_in">PTR</span> <span class="built_in">ds</span>:<span class="number">0x804a008</span></span><br></pre></td></tr></table></figure>
-
-<p>接着规定每一项的长度是0x10个字节，刚好来存放3条指令，如</p>
-<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">=&gt; <span class="number">0</span>x8048390 &lt;read@plt&gt;<span class="symbol">:</span>	jmp    DWORD PTR <span class="symbol">ds:0</span>x804a00c</span><br><span class="line">   <span class="number">0</span>x8048396 &lt;read@plt+<span class="number">6</span>&gt;<span class="symbol">:</span>	push   <span class="number">0</span>x0</span><br><span class="line">   <span class="number">0</span>x804839b &lt;read@plt+<span class="number">11</span>&gt;<span class="symbol">:</span>	jmp    <span class="number">0</span>x8048380</span><br></pre></td></tr></table></figure>
-
+<p>首先看一下节头信息<br><img src="https://s2.ax1x.com/2019/06/08/VBqZE6.png" alt><br>找到.plt表，跟进看.plt中具体的汇编代码<br><img src="https://s2.ax1x.com/2019/06/08/VBqm4O.png" alt><br>可以看出来，前两句汇编<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x8048380</span>:	<span class="keyword">push</span>   <span class="built_in">DWORD</span> <span class="built_in">PTR</span> <span class="built_in">ds</span>:<span class="number">0x804a004</span></span><br><span class="line"><span class="number">0x8048386</span>:	<span class="keyword">jmp</span>    <span class="built_in">DWORD</span> <span class="built_in">PTR</span> <span class="built_in">ds</span>:<span class="number">0x804a008</span></span><br></pre></td></tr></table></figure></p>
+<p>接着规定每一项的长度是0x10个字节，刚好来存放3条指令，如<br><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">=&gt; <span class="number">0</span>x8048390 &lt;read@plt&gt;<span class="symbol">:</span>	jmp    DWORD PTR <span class="symbol">ds:0</span>x804a00c</span><br><span class="line">   <span class="number">0</span>x8048396 &lt;read@plt+<span class="number">6</span>&gt;<span class="symbol">:</span>	push   <span class="number">0</span>x0</span><br><span class="line">   <span class="number">0</span>x804839b &lt;read@plt+<span class="number">11</span>&gt;<span class="symbol">:</span>	jmp    <span class="number">0</span>x8048380</span><br></pre></td></tr></table></figure></p>
 <p>这里以第一次调用read函数为例，在.plt段的read函数处下断点<br><img src="https://s2.ax1x.com/2019/06/08/VBquCD.png" alt><br>首先执行了一句jmp跳转指令，这一句汇编的意思就跳到.got.plt相应的地址处，但是这是第一次调用read函数，got表中并没有read函数的真实地址，此时，got表中存放的是0x8048396，也就是.plt每一项的第二条汇编指令的地址，然后压入栈中一个num，这个数字是read这个符号在.rel.plt中的下标</p>
-<p>.rel.plt是什么呢？.rel.plt中保存了重定位表的信息，可以使用lazy的连接方式，内部结构如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    Elf32_Addr r_offset;    <span class="comment">// 对于可执行文件，此值为虚拟地址</span></span><br><span class="line">    Elf32_Word r_info;      <span class="comment">// 符号表索引</span></span><br><span class="line">&#125; Elf32_Rel;</span><br></pre></td></tr></table></figure>
-
-<p>该结构是一个结构体类型，结构体的第一个变量表示的是这个函数在GOT表中的地址，第二个数字代表这个函数在.dynsym段中的索引，但是这个索引需要计算(一般后两位是07)</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r.info <span class="meta">&gt;&gt; </span><span class="number">8</span></span><br></pre></td></tr></table></figure>
-
+<p>.rel.plt是什么呢？.rel.plt中保存了重定位表的信息，可以使用lazy的连接方式，内部结构如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    Elf32_Addr r_offset;    <span class="comment">// 对于可执行文件，此值为虚拟地址</span></span><br><span class="line">    Elf32_Word r_info;      <span class="comment">// 符号表索引</span></span><br><span class="line">&#125; Elf32_Rel;</span><br></pre></td></tr></table></figure></p>
+<p>该结构是一个结构体类型，结构体的第一个变量表示的是这个函数在GOT表中的地址，第二个数字代表这个函数在.dynsym段中的索引，但是这个索引需要计算(一般后两位是07)<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r.info <span class="meta">&gt;&gt; </span><span class="number">8</span></span><br></pre></td></tr></table></figure></p>
 <p>那.dynsym是什么呢？.dynsym只保存了与动态链接相关的符号，为了表示动态链接这些模块之间的符号导入导出关系。我们可以通过readelf来查看它的地址，结构如下</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Elf32_Word    st_name;   <span class="comment">/* Symbol name (string tbl index) */</span></span><br><span class="line">    Elf32_Addr    st_value;  <span class="comment">/* Symbol value */</span></span><br><span class="line">    Elf32_Word    st_size;   <span class="comment">/* Symbol size */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> st_info;   <span class="comment">/* Symbol type and binding */</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> st_other;  <span class="comment">/* Symbol visibility under glibc&gt;=2.2 */</span></span><br><span class="line">    Elf32_Section st_shndx;  <span class="comment">/* Section index */</span></span><br><span class="line">&#125; Elf32_Sym;</span><br></pre></td></tr></table></figure>
-
 <p>我们可以来验证一下，这是在.rel.plt段中各个函数结构体中的数据<br><img src="https://s2.ax1x.com/2019/06/08/VBqK8e.png" alt><br>下面这是.dynsym段：<br><img src="https://s2.ax1x.com/2019/06/08/VBq3DI.png" alt><br>下面这是.got.plt段：<br><img src="https://s2.ax1x.com/2019/06/08/VBqW24.png" alt><br>经过对比之后发现确实是一一照应的</p>
 <p>那么现在接着刚刚执行的流程继续走，刚刚执行到把一个数字压入栈中，然后跳转到plt段中的前两句指令，前两句指令的第一句是“push   DWORD PTR ds:0x804a004”，这一句的意思就是把当前模块ID压入栈中，这个模块ID的地址在.got.plt表的第二位数据</p>
-<p>.got.plt的结构</p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> .dynamic段的地址</span><br><span class="line"><span class="number">2.</span> Module ID <span class="string">"libc.so"</span></span><br><span class="line"><span class="number">3.</span> _dl_runtime_resolve()的地址</span><br><span class="line"><span class="number">4.</span> 每个函数的got表的位置</span><br><span class="line">……</span><br></pre></td></tr></table></figure>
-
+<p>.got.plt的结构<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> .dynamic段的地址</span><br><span class="line"><span class="number">2.</span> Module ID <span class="string">"libc.so"</span></span><br><span class="line"><span class="number">3.</span> _dl_runtime_resolve()的地址</span><br><span class="line"><span class="number">4.</span> 每个函数的got表的位置</span><br><span class="line">……</span><br></pre></td></tr></table></figure></p>
 <p>接着跳转到_dl_runtime_resolve()函数，这个函数进行一系列的工作以后讲read函数的真实地址填入到read@GOT中</p>
 <p>_dl_runtime_resolve具体都做了什么呢？</p>
 <p>首先是第一个参数[0x804a004],这个指针指向一个结构，该结构包含了.dynamic的指针，_dl_runtime_resolve通过第一个参数可以访问到.dynamic这个段，第二个参数就是要定位的函数在.rel.plt中的下标</p>
@@ -178,7 +166,7 @@
 </ol>
 
         
-        <br />
+        <br>
         <div id="comment-container">
         </div>
         <div id="disqus_thread"></div>
@@ -210,7 +198,7 @@
     
     <p>
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
         本站总访问量<span id="busuanzi_value_site_pv"></span>次
        </p>
 </footer>

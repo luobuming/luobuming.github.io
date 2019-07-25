@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
@@ -45,7 +45,7 @@
 <div class="nav" id="nav">
     <div class="avatar-name">
         <div class="avatar radius">
-            <img src="/img/avatar.jpg" />
+            <img src="/img/avatar.jpg">
         </div>
         <div class="name">
             <i>一筐萝卜</i>
@@ -53,25 +53,25 @@
     </div>
     <div class="contents" id="nav-content">
         <ul>
-            <li >
+            <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
                     <span>HOME</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
                     <span>TAGS</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
                     <span>ARCHIVES</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
                     <span>ABOUT</span>
@@ -99,7 +99,7 @@
     <div class="search-container">
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
-            <input id="search-input"/>
+            <input id="search-input">
             <span id="begin-search">search</span>
         </div>
         <div class="search-result-container" id="search-result-container">
@@ -135,11 +135,10 @@
         </span>
         <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
 </span>
-</span>
+
     </div>
     <div class="post-content no-indent">
-        <p>在pwn题中有遇见过！</p>
-<a id="more"></a>
+        <p>在pwn题中有遇见过！<br><a id="more"></a></p>
 <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>UNIX及类UNIX（UNIX-like）系统中的分叉函数。fork函数将运行着的程序分成2个（几乎）完全一样的进程，每个进程都启动一个从代码的同一位置开始执行的线程。这两个进程中的线程继续执行，就像是两个用户同时启动了该应用程序的两个副本。</p>
 <h4 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h4><ul>
 <li>若返回值为“-1”：则调用fork函数出错。</li>
@@ -148,15 +147,13 @@
 </ul>
 <h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>在网上讲fork时举例子举的最多的是：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt; </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">	<span class="keyword">pid_t</span> fpid; <span class="comment">//fpid表示fork函数返回的值</span></span><br><span class="line">	<span class="keyword">int</span> count=<span class="number">0</span>;</span><br><span class="line">	fpid=fork(); </span><br><span class="line">	<span class="keyword">if</span> (fpid &lt; <span class="number">0</span>) </span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"error in fork!\n"</span>); </span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (fpid == <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"i am the child process, my process id is %d\n"</span>,getpid()); </span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"子程序\n"</span>);</span><br><span class="line">		count++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"i am the parent process, my process id is %d\n"</span>,getpid()); </span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"主程序\n"</span>);</span><br><span class="line">		count++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"统计结果是: %d\n"</span>,count);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">    i am the child process, my process id is <span class="number">5574</span></span><br><span class="line">    我是爹的儿子</span><br><span class="line">    统计结果是: <span class="number">1</span></span><br><span class="line">    i am the parent process, my process id is <span class="number">5573</span></span><br><span class="line">    我是孩子他爹</span><br><span class="line">    统计结果是: <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
 <p>但是，在我电脑上运行这个程序的时候，运行结果是相反的：</p>
 <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">➜  fork函数 ./wxm </span><br><span class="line">i am <span class="keyword">the</span> parent process, <span class="keyword">my</span> process <span class="built_in">id</span> <span class="keyword">is</span> <span class="number">11373</span></span><br><span class="line">主程序</span><br><span class="line">统计结果是: <span class="number">1</span></span><br><span class="line">i am <span class="keyword">the</span> child process, <span class="keyword">my</span> process <span class="built_in">id</span> <span class="keyword">is</span> <span class="number">11374</span></span><br><span class="line">子程序</span><br><span class="line">统计结果是: <span class="number">1</span></span><br><span class="line">➜  fork函数</span><br></pre></td></tr></table></figure>
-
 <p>于是乎我就在虚拟机上有试了试，但是结果仍然是这个，那我就很纳闷了。IDA远程调试一波。fork函数下断点。单步执行fork函数，发现这个是先运行了子程序，然后再运行了主程序。<br><img src="https://s2.ax1x.com/2019/02/09/kUkZrQ.jpg" alt> </p>
 <p>然后我又用gdb在本机上调试了一下，同样在call fork函数下断点。但不执行发现是先运行了主程序，再运行了子程序。<br><img src="https://s2.ax1x.com/2019/02/09/kUkYqJ.jpg" alt> </p>
 
         
-        <br />
+        <br>
         <div id="comment-container">
         </div>
         <div id="disqus_thread"></div>
@@ -188,7 +185,7 @@
     
     <p>
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
         本站总访问量<span id="busuanzi_value_site_pv"></span>次
        </p>
 </footer>

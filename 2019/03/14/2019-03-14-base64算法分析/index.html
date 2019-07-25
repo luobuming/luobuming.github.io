@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
@@ -45,7 +45,7 @@
 <div class="nav" id="nav">
     <div class="avatar-name">
         <div class="avatar radius">
-            <img src="/img/avatar.jpg" />
+            <img src="/img/avatar.jpg">
         </div>
         <div class="name">
             <i>一筐萝卜</i>
@@ -53,25 +53,25 @@
     </div>
     <div class="contents" id="nav-content">
         <ul>
-            <li >
+            <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
                     <span>HOME</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
                     <span>TAGS</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
                     <span>ARCHIVES</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
                     <span>ABOUT</span>
@@ -99,7 +99,7 @@
     <div class="search-container">
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
-            <input id="search-input"/>
+            <input id="search-input">
             <span id="begin-search">search</span>
         </div>
         <div class="search-result-container" id="search-result-container">
@@ -135,15 +135,13 @@
         </span>
         <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
 </span>
-</span>
+
     </div>
     <div class="post-content no-indent">
-        <p>学不动其他了，哎！</p>
-<a id="more"></a>
+        <p>学不动其他了，哎！<br><a id="more"></a></p>
 <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>base64是网络上常见的加密方式之一，算法没有那么复杂，可以进行快速的解密，所以不是特别的安全</p>
 <h3 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h3><p>被Base64编码之后所得到的所有字符都是在一个表中：</p>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">index_table</span> = <span class="string">"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"</span></span><br></pre></td></tr></table></figure>
-
 <p>在进行base64加密的时候：</p>
 <ul>
 <li>每三个字符变成二进制后再分割成4个字符</li>
@@ -154,7 +152,7 @@
 <p>解密过程反之即可。</p>
 <h3 id="算法实现（python）"><a href="#算法实现（python）" class="headerlink" title="算法实现（python）"></a>算法实现（python）</h3><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">def mybase64encode(Plaintext):</span><br><span class="line">	index_table = <span class="string">"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"</span></span><br><span class="line">	binary_str = <span class="string">""</span></span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(Plaintext)%<span class="number">3</span>==<span class="number">0</span>:</span><br><span class="line">		<span class="built_in">num</span> = <span class="number">0</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="built_in">num</span>=<span class="number">3</span>-<span class="built_in">len</span>(Plaintext)%<span class="number">3</span></span><br><span class="line">	<span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="built_in">num</span>):</span><br><span class="line">		Plaintext += b<span class="string">"\x00"</span></span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="built_in">len</span>(Plaintext)):</span><br><span class="line">		binary_str += bin(ord(Plaintext[x]))[<span class="number">2</span>:].rjust(<span class="number">8</span>,<span class="string">"0"</span>)</span><br><span class="line">	ciphertext = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>,<span class="built_in">len</span>(binary_str),<span class="number">6</span>):</span><br><span class="line">		ciphertext+=index_table[eval(<span class="string">"0b"</span>+binary_str[x:x+<span class="number">6</span>])]</span><br><span class="line">	ciphertext = ciphertext[:<span class="built_in">len</span>(ciphertext)-<span class="built_in">num</span>]</span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="built_in">num</span>):</span><br><span class="line">		ciphertext+=<span class="string">"="</span></span><br><span class="line">	<span class="literal">return</span> ciphertext</span><br><span class="line"></span><br><span class="line">def mybase64decode(ciphertext):</span><br><span class="line">	index_table = <span class="string">"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"</span></span><br><span class="line">	<span class="built_in">num</span>=<span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="built_in">len</span>(ciphertext)):</span><br><span class="line">		<span class="keyword">if</span> ciphertext[x]==<span class="string">"="</span>:</span><br><span class="line">			<span class="built_in">num</span>+=<span class="number">1</span></span><br><span class="line">	ciphertext =ciphertext.<span class="built_in">replace</span>(<span class="string">"="</span>,<span class="string">""</span>)</span><br><span class="line">	arr = []</span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="built_in">len</span>(ciphertext)):</span><br><span class="line">		arr.append(index_table.index(ciphertext[x]))</span><br><span class="line">	binary_str = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="built_in">len</span>(arr)):</span><br><span class="line">		binary_str+=bin(arr[y])[<span class="number">2</span>:].rjust(<span class="number">6</span>,<span class="string">"0"</span>)</span><br><span class="line">	binary_str = binary_str[<span class="number">0</span>:<span class="built_in">len</span>(binary_str)-(<span class="built_in">num</span>*(<span class="number">8</span><span class="number">-6</span>))]</span><br><span class="line">	plaintext = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>,<span class="built_in">len</span>(binary_str),<span class="number">8</span>):</span><br><span class="line">		plaintext+=chr(eval(<span class="string">"0b"</span>+binary_str[x:x+<span class="number">8</span>]))</span><br><span class="line">	<span class="literal">return</span> plaintext</span><br></pre></td></tr></table></figure>
         
-        <br />
+        <br>
         <div id="comment-container">
         </div>
         <div id="disqus_thread"></div>
@@ -186,7 +184,7 @@
     
     <p>
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-        转发请备注<a href=“https://luobuming.github.io”>一筐萝卜</a>的个人博客 <br>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
         本站总访问量<span id="busuanzi_value_site_pv"></span>次
        </p>
 </footer>
