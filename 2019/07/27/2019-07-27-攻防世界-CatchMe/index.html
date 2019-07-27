@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        攻防世界-CatchMe - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        攻防世界-CatchMe
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-07-27 22:16:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <p>这道题有点晃我，下载下来的插件也不知道是什么东西，用winhex打开发现文件头是<code>7zXZ</code>，百度了一波发现是一个压缩方式吧</p>
+<p>还原方式如下：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">一筐萝卜➜ re  mv Catch_Me Catch_Me<span class="selector-class">.tar</span><span class="selector-class">.xz</span></span><br><span class="line">一筐萝卜➜ re  xz -d Catch_Me<span class="selector-class">.tar</span><span class="selector-class">.xz</span> </span><br><span class="line">一筐萝卜➜ re  ls</span><br><span class="line">Catch_Me.tar</span><br><span class="line">一筐萝卜➜ re  tar -xvf Catch_Me<span class="selector-class">.tar</span> </span><br><span class="line">Catch_Me</span><br><span class="line">一筐萝卜➜ re  ls</span><br><span class="line">Catch_Me  Catch_Me.tar</span><br><span class="line">一筐萝卜➜ re  ./Catch_Me</span><br><span class="line">Flag: ASIS&#123;bad_bad_bad_bad_bad_bad&#125;</span><br><span class="line">this flag is absolutely fake </span><br><span class="line">一筐萝卜➜ re</span><br></pre></td></tr></table></figure>
+<p>发现可以运行了</p>
+<p>用IDA查看发现main函数中存在sse指令，说实话我有点怕，我也不是太熟悉这种指令</p>
+<p>分析main函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">__int64 __<span class="function">fastcall <span class="title">main</span><span class="params">(__int64 a1, <span class="keyword">char</span> **a2, <span class="keyword">char</span> **a3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> v3; <span class="comment">// ebx</span></span><br><span class="line">  __int64 v4; <span class="comment">// rax</span></span><br><span class="line">  __m128i v5; <span class="comment">// xmm0</span></span><br><span class="line">  __m128i v6; <span class="comment">// xmm1</span></span><br><span class="line">  __m128i v7; <span class="comment">// xmm0</span></span><br><span class="line">  __m128i v8; <span class="comment">// xmm0</span></span><br><span class="line">  __m128i v9; <span class="comment">// xmm1</span></span><br><span class="line">  __m128i v10; <span class="comment">// xmm3</span></span><br><span class="line">  __m128i v11; <span class="comment">// xmm1</span></span><br><span class="line">  __m128i v12; <span class="comment">// xmm3</span></span><br><span class="line">  __m128i v13; <span class="comment">// xmm0</span></span><br><span class="line">  __m128i v14; <span class="comment">// xmm0</span></span><br><span class="line"></span><br><span class="line">  v3 = sub_400820(dword_6012B4);</span><br><span class="line">  byte_6012A8[<span class="number">0</span>] = HIBYTE(v3);</span><br><span class="line">  byte_6012A9 = BYTE2(v3) &amp; <span class="number">0xFD</span>;</span><br><span class="line">  byte_6012AA = BYTE1(v3) &amp; <span class="number">0xDF</span>;</span><br><span class="line">  byte_6012AB = v3 &amp; <span class="number">0xBF</span>;</span><br><span class="line">  <span class="keyword">if</span> ( getenv(dword_400D34) &amp;&amp; (*getenv(<span class="string">"CTF"</span>) ^ v3) == <span class="number">0xFEEBFEEB</span> )</span><br><span class="line">    dword_6012AC = *getenv(dword_400D34);</span><br><span class="line">  v4 = <span class="number">0L</span>L;</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">  &#123;</span><br><span class="line">    haystack[v4] ^= byte_6012A8[v4 &amp; <span class="number">7</span>];</span><br><span class="line">    ++v4;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> ( v4 != <span class="number">33</span> );</span><br><span class="line">  v5 = _mm_load_si128(haystack);</span><br><span class="line">  v6 = _mm_unpacklo_epi8(v5, <span class="number">0L</span>L);</span><br><span class="line">  v7 = _mm_unpackhi_epi8(v5, <span class="number">0L</span>L);</span><br><span class="line">  v8 = _mm_add_epi32(</span><br><span class="line">         _mm_unpackhi_epi16(v7, <span class="number">0L</span>L),</span><br><span class="line">         _mm_add_epi32(</span><br><span class="line">           _mm_add_epi32(_mm_unpackhi_epi16(v6, <span class="number">0L</span>L), _mm_unpacklo_epi16(v6, <span class="number">0L</span>L)),</span><br><span class="line">           _mm_unpacklo_epi16(v7, <span class="number">0L</span>L)));</span><br><span class="line">  v9 = _mm_load_si128(&amp;byte_601290);</span><br><span class="line">  v10 = v9;</span><br><span class="line">  v11 = _mm_unpackhi_epi8(v9, <span class="number">0L</span>L);</span><br><span class="line">  v12 = _mm_unpacklo_epi8(v10, <span class="number">0L</span>L);</span><br><span class="line">  v13 = _mm_add_epi32(</span><br><span class="line">          _mm_add_epi32(</span><br><span class="line">            _mm_add_epi32(_mm_add_epi32(v8, _mm_unpacklo_epi16(v12, <span class="number">0L</span>L)), _mm_unpackhi_epi16(v12, <span class="number">0L</span>L)),</span><br><span class="line">            _mm_unpacklo_epi16(v11, <span class="number">0L</span>L)),</span><br><span class="line">          _mm_unpackhi_epi16(v11, <span class="number">0L</span>L));</span><br><span class="line">  v14 = _mm_add_epi32(v13, _mm_srli_si128(v13, <span class="number">8</span>));</span><br><span class="line">  if ( _mm_cvtsi128_si32(_mm_add_epi32(v14, _mm_srli_si128(v14, 4))) != '\tT' )</span><br><span class="line">  &#123;</span><br><span class="line">    unk_601294 = <span class="number">1600414050</span>;</span><br><span class="line">    *haystack = '_dab';</span><br><span class="line">    unk_601284 = '_dab';</span><br><span class="line">    byte_601288 = '_dab';</span><br><span class="line">    unk_60128C = '_dab';</span><br><span class="line">    *&amp;byte_601290 = '_dab';</span><br><span class="line">    unk_601297 = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"Flag: ASIS&#123;%s&#125;\n"</span>, haystack);</span><br><span class="line">  <span class="keyword">if</span> ( <span class="built_in">strstr</span>(haystack, <span class="string">"bad_"</span>) )</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"this flag is absolutely fake "</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0L</span>L;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数的开头是一个<code>sub_400820</code>函数，这个函数的返回值是用来生成一个4字节的数据，经过动态调试发现这个函数的返回值是固定的<code>0xb11924e1</code>，那么<code>byte_6012A8</code>的四个字节的数据也是固定的<code>0xb1,0x19,0x04,0xa1</code>，接下来是调用getenv函数获取<code>ASIS</code>和<code>CTF</code>环境变量，且<code>CTF</code>环境变量的值亦或<code>0xb11924e1</code>等于<code>0xFEEBFEEB</code>，符合条件的话就将<code>ASIS</code>环境变量的四个字节赋值到<code>dword_6012AC</code>，然后用一串数据和这八位字符循环亦或，得到的就是flag</p>
+<p>经过一番测试后发现<code>ASIS</code>和<code>CTF</code>环境变量的值是<code>0x4ff2da0a</code>，直接将原数据经过亦或即可得到flag</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">data = [<span class="number">135</span>,<span class="number">41</span>,<span class="number">52</span>,<span class="number">197</span>,<span class="number">85</span>,<span class="number">176</span>,<span class="number">194</span>,<span class="number">45</span>,<span class="number">238</span>,<span class="number">96</span>,<span class="number">52</span>,<span class="number">212</span>,<span class="number">85</span>,<span class="number">238</span>,<span class="number">128</span>,<span class="number">124</span>,<span class="number">238</span>,<span class="number">47</span>,<span class="number">55</span>,<span class="number">150</span>,<span class="number">61</span>,<span class="number">235</span>,<span class="number">156</span>,<span class="number">121</span>,<span class="number">238</span>,<span class="number">44</span>,<span class="number">51</span>,<span class="number">149</span>,<span class="number">120</span>,<span class="number">237</span>,<span class="number">193</span>,<span class="number">43</span>,<span class="number">177</span>]</span><br><span class="line">data2 = [<span class="number">0xb1</span>,<span class="number">0x19</span>,<span class="number">0x04</span>,<span class="number">0xa1</span>,<span class="number">0x0a</span>,<span class="number">0xda</span>,<span class="number">0xf2</span>,<span class="number">0x4f</span>]<span class="comment">#0x4ff2da0a</span></span><br><span class="line">flag = <span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(len(data)):</span><br><span class="line">	flag += chr(data2[x%<span class="number">8</span>]^data[x])</span><br><span class="line"><span class="keyword">print</span> flag</span><br><span class="line"></span><br><span class="line"><span class="comment">#out:600d_j0b_y0u_4r3_63771n6_574r73d</span></span><br></pre></td></tr></table></figure>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
