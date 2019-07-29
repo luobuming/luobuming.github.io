@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        攻防世界-SecretGalaxy&amp;APK逆向2 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#APK-逆向2"><span class="toc-text">APK-逆向2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#secret-galaxy-300"><span class="toc-text">secret-galaxy-300</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        攻防世界-SecretGalaxy&amp;APK逆向2
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-07-29 16:03:00</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="APK-逆向2"><a href="#APK-逆向2" class="headerlink" title="APK-逆向2"></a>APK-逆向2</h2><p>看题目本以为是安卓逆向，没想到下载下来之后的PC逆向<br>尝试这运行程序发现<code>Cannot connect</code>，咱也不知道是啥</p>
+<p>die查壳发现是<code>.net</code>程序，<code>.net</code>逆向工具是Reflector<br>用这个工具打开可以查看反汇编出来的代码<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> Main(<span class="keyword">string</span>[] args)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">string</span> hostname = <span class="string">"127.0.0.1"</span>;</span><br><span class="line">    <span class="keyword">int</span> port = <span class="number">0x7a69</span>;</span><br><span class="line">    TcpClient client = <span class="keyword">new</span> TcpClient();</span><br><span class="line">    <span class="built_in">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">Console</span>.WriteLine(<span class="string">"Connecting..."</span>);</span><br><span class="line">        client.Connect(hostname, port);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span> (Exception)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">Console</span>.WriteLine(<span class="string">"Cannot connect!\nFail!"</span>);</span><br><span class="line">        <span class="built_in">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Socket socket = client.<span class="built_in">Client</span>;</span><br><span class="line">    <span class="keyword">string</span> str2 = <span class="string">"Super Secret Key"</span>;</span><br><span class="line">    <span class="keyword">string</span> <span class="built_in">text</span> = <span class="built_in">read</span>();</span><br><span class="line">    socket.Send(Encoding.ASCII.GetBytes(<span class="string">"CTF&#123;"</span>));</span><br><span class="line">    <span class="keyword">string</span> str4 = str2;</span><br><span class="line">    <span class="keyword">int</span> num2 = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">while</span> (true)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">if</span> (num2 &gt;= str4.Length)</span><br><span class="line">        &#123;</span><br><span class="line">            socket.Send(Encoding.ASCII.GetBytes(<span class="string">"&#125;"</span>));</span><br><span class="line">            socket.Close();</span><br><span class="line">            client.Close();</span><br><span class="line">            <span class="built_in">Console</span>.WriteLine(<span class="string">"Success!"</span>);</span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">char</span> x = str4[num2];</span><br><span class="line">        socket.Send(Encoding.ASCII.GetBytes(search(x, <span class="built_in">text</span>)));</span><br><span class="line">        num2++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> Main(<span class="keyword">string</span>[] args)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">string</span> hostname = <span class="string">"127.0.0.1"</span>;</span><br><span class="line">    <span class="keyword">int</span> port = <span class="number">0x7a69</span>;</span><br><span class="line">    TcpClient client = <span class="keyword">new</span> TcpClient();</span><br><span class="line">    <span class="built_in">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">Console</span>.WriteLine(<span class="string">"Connecting..."</span>);</span><br><span class="line">        client.Connect(hostname, port);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span> (Exception)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">Console</span>.WriteLine(<span class="string">"Cannot connect!\nFail!"</span>);</span><br><span class="line">        <span class="built_in">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Socket socket = client.<span class="built_in">Client</span>;</span><br><span class="line">    <span class="keyword">string</span> str2 = <span class="string">"Super Secret Key"</span>;</span><br><span class="line">    <span class="keyword">string</span> <span class="built_in">text</span> = <span class="built_in">read</span>();</span><br><span class="line">    socket.Send(Encoding.ASCII.GetBytes(<span class="string">"CTF&#123;"</span>));</span><br><span class="line">    <span class="keyword">string</span> str4 = str2;</span><br><span class="line">    <span class="keyword">int</span> num2 = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">while</span> (true)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">if</span> (num2 &gt;= str4.Length)</span><br><span class="line">        &#123;</span><br><span class="line">            socket.Send(Encoding.ASCII.GetBytes(<span class="string">"&#125;"</span>));</span><br><span class="line">            socket.Close();</span><br><span class="line">            client.Close();</span><br><span class="line">            <span class="built_in">Console</span>.WriteLine(<span class="string">"Success!"</span>);</span><br><span class="line">            <span class="built_in">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">char</span> x = str4[num2];</span><br><span class="line">        socket.Send(Encoding.ASCII.GetBytes(search(x, <span class="built_in">text</span>)));</span><br><span class="line">        num2++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我也没学过这种语言，半猜半蒙，</p>
+<ul>
+<li>首先程序开启了一个Tcp的连接，IP、Port分别是<code>127.0.0.1</code>、<code>0x7a69</code></li>
+<li>如果连接失败的话则退出程序，连接成功的话将<code>send flag</code></li>
+</ul>
+<p>很容易想到nc用的协议是TCP，那么我们就用nc监听<code>0x7a69</code>端口，然后再打开程序</p>
+<p><img src="https://s2.ax1x.com/2019/07/29/e3LrFA.png" alt></p>
+<p>果然可以得到flag，emmm！没什么技术含量</p>
+<h2 id="secret-galaxy-300"><a href="#secret-galaxy-300" class="headerlink" title="secret-galaxy-300"></a>secret-galaxy-300</h2><p>题目提供了三个文件，64位ELF、32位ELF、32位exe，程序是同一个程序，都没有加壳</p>
+<p>运行一下发现没什么东西</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">C:\radish&gt;re.exe</span><br><span class="line">--------------GALAXY DATABASE-------------</span><br><span class="line">Galaxy name | Existence of life | Distance from Earth</span><br><span class="line">-------------------------------------------</span><br><span class="line">   NGS 2366 |  IS NOT INHABITED | 41</span><br><span class="line">  Andromeda |  IS NOT INHABITED | 18467</span><br><span class="line">    Messier |  IS NOT INHABITED | 6334</span><br><span class="line">   Sombrero |  IS NOT INHABITED | 26500</span><br><span class="line"> Triangulum |  IS NOT INHABITED | 19169</span><br><span class="line"></span><br><span class="line">C:\radish&gt;</span><br></pre></td></tr></table></figure>
+<p>拖入IDA分析<br>main函数很简单<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __<span class="function">cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  __main();</span><br><span class="line">  fill_starbase(&amp;starbase);</span><br><span class="line">  print_starbase(&amp;starbase);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>调用了两个函数，第一个函数<code>fill_starbase</code>只做了一些初始化赋值的操作，也没有什么奇怪的操作，第二个函数是将第一个函数赋值后的数据全部输出出来，也没有什么奇怪的操作，那么来分析数据</p>
+<p>很容易的分析出来第一个函数是在给一个结构体数组赋值，在IDA中创建这个结构体，这样会好看一点</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> __<span class="function">cdecl <span class="title">fill_starbase</span><span class="params">(struc_1 *a1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> i; <span class="comment">// [esp+8h] [ebp-10h]</span></span><br><span class="line">  struc_1 *v2; <span class="comment">// [esp+Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  v2 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">4</span>; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    a1[i].str_addr = (<span class="keyword">int</span>)galaxy_name[i];</span><br><span class="line">    a1[i].random = rand();</span><br><span class="line">    a1[i].fill_1 = <span class="number">0</span>;</span><br><span class="line">    a1[i].fill_2 = <span class="number">0</span>;</span><br><span class="line">    a1[i].next = (<span class="keyword">int</span>)&amp;a1[i + <span class="number">1</span>];</span><br><span class="line">    a1[i].prev = (<span class="keyword">int</span>)v2;</span><br><span class="line">    v2 = &amp;a1[i];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是，这确实没什么透露出来flag的意思哈，</p>
+<p>最后通过在x32dbg中查找字符串给找出来了</p>
+<ul>
+<li>首先在程序开始之前查找一次字符串</li>
+<li>在程序退出之前再查找一次字符串<br><img src="https://s2.ax1x.com/2019/07/29/e3Lfeg.png" alt><br><img src="https://imgchr.com/i/e3LoYn" alt><br>进行对比，发现flag：<code>aliens_are_around_us</code></li>
+</ul>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
