@@ -138,8 +138,7 @@
 
     </div>
     <div class="post-content no-indent">
-        <p># </p>
-<h2 id="Unsorted-Bin"><a href="#Unsorted-Bin" class="headerlink" title="Unsorted Bin"></a>Unsorted Bin</h2><p><code>Unsorted Bin</code>可以看作成<code>small bins</code>和<code>large bins</code>的缓存存储区域，<code>Unsorted Bin</code>只有一个链表，并且是双链表，链表中的chunk不排序，所有的chunk在回收时都要先放到<code>Unsorted Bin</code>中，分配时，如果在<code>Unsorted Bin</code>中没有找到合适的chunk，就会把<code>Unsorted Bin</code>中的所有chunk分别分配到所属的bin中，然后在bin中本配合适的chunk，bins数组中的元素<code>bin[1]</code>用于存储<code>Unsorted Bin</code>的chunk链表的表头，<code>Unsorted Bin</code>链表采用的遍历顺序是FIFO</p>
+        <h2 id="Unsorted-Bin"><a href="#Unsorted-Bin" class="headerlink" title="Unsorted Bin"></a>Unsorted Bin</h2><p><code>Unsorted Bin</code>可以看作成<code>small bins</code>和<code>large bins</code>的缓存存储区域，<code>Unsorted Bin</code>只有一个链表，并且是双链表，链表中的chunk不排序，所有的chunk在回收时都要先放到<code>Unsorted Bin</code>中，分配时，如果在<code>Unsorted Bin</code>中没有找到合适的chunk，就会把<code>Unsorted Bin</code>中的所有chunk分别分配到所属的bin中，然后在bin中本配合适的chunk，bins数组中的元素<code>bin[1]</code>用于存储<code>Unsorted Bin</code>的chunk链表的表头，<code>Unsorted Bin</code>链表采用的遍历顺序是FIFO</p>
 <blockquote>
 <p>FIFO:先进先出（队列）<br>LIFO:后进先出（栈）</p>
 </blockquote>
