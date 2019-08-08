@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        2019-De1ctf-逆向 - 一筐萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>一筐萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Re-Sign"><span class="toc-text">Re_Sign</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        2019-De1ctf-逆向
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-08-08 12:46:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="Re-Sign"><a href="#Re-Sign" class="headerlink" title="Re_Sign"></a>Re_Sign</h2><p><img src="https://s2.ax1x.com/2019/08/08/eTU9bj.md.png" alt><br>题目提示UPX，尝试用<code>UPX -d</code>脱壳但是没成功，用upx脱壳机也没能脱</p>
+<p>用esp定律将程序停在程序入口点（OEP），用LordPE把程序dump下来分析</p>
+<p>动态调试+静态分析发现</p>
+<ul>
+<li><code>sub_401000</code>应该是main函数</li>
+<li><code>sub_402BA0</code>是输入函数，返回我们输入的字符串</li>
+<li><code>sub_401233</code>是加密函数，返回加密后的字符串</li>
+</ul>
+<p>发现加密后的字符串和base64有点相似，但又不是base64</p>
+<p>接着往下看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if ( sub_401F0A(&amp;v8) )</span><br><span class="line">  sub_403220(2, 0, 0, 0, (unsigned int)&quot;Success&quot;);</span><br><span class="line">else</span><br><span class="line">  sub_403220(2, 0, 0, 0, (unsigned int)&quot;Fail&quot;);</span><br></pre></td></tr></table></figure>
+<p>关键验证是<code>sub_401F0A</code>函数，而在<code>sub_401F0A</code>函数中有一个限制，就是加密后的字符串长度是0x30<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if ( sub_4034D0(1, v7) == 0x30 )</span><br></pre></td></tr></table></figure></p>
+<p>关键比较是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if ( *(_DWORD *)(4 * v20 + v21) != sub_402160(&amp;v33) )</span><br><span class="line">        break;</span><br></pre></td></tr></table></figure></p>
+<p>动态调试<br><img src="https://s2.ax1x.com/2019/08/08/eTUuqJ.md.png" alt><br>提取处正确加密后字符串的索引：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">02768790 08 00 00 00 3B 00 00 00 01 00 00 00 20 00 00 00 ....;....... ... </span><br><span class="line">027687A0 07 00 00 00 34 00 00 00 09 00 00 00 1F 00 00 00 ....4........... </span><br><span class="line">027687B0 18 00 00 00 24 00 00 00 13 00 00 00 03 00 00 00 ....$........... </span><br><span class="line">027687C0 10 00 00 00 38 00 00 00 09 00 00 00 1B 00 00 00 ....8........... </span><br><span class="line">027687D0 08 00 00 00 34 00 00 00 13 00 00 00 02 00 00 00 ....4........... </span><br><span class="line">027687E0 08 00 00 00 22 00 00 00 12 00 00 00 03 00 00 00 ....&quot;........... </span><br><span class="line">027687F0 05 00 00 00 06 00 00 00 12 00 00 00 03 00 00 00 ................ </span><br><span class="line">02768800 0F 00 00 00 22 00 00 00 12 00 00 00 17 00 00 00 ....&quot;........... </span><br><span class="line">02768810 08 00 00 00 01 00 00 00 29 00 00 00 22 00 00 00 ........)...&quot;... </span><br><span class="line">02768820 06 00 00 00 24 00 00 00 32 00 00 00 24 00 00 00 ....$...2...$... </span><br><span class="line">02768830 0F 00 00 00 1F 00 00 00 2B 00 00 00 24 00 00 00 ........+...$... </span><br><span class="line">02768840 03 00 00 00 15 00 00 00 41 00 00 00 41 00 00 00 ........A...A...</span><br></pre></td></tr></table></figure></p>
+<p>按照字符串索引：<code>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=</code>，还原出来字符串</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">index = [0x08, 0x3B,0x01,0x20,0x07, 0x34,0x09,0x1F,0x18, 0x24,0x13,0x03,0x10, 0x38,0x09,0x1B,0x08, 0x34,0x13,0x02,0x08, 0x22,0x12,0x03,0x05, 0x06,0x12,0x03,0x0F, 0x22,0x12,0x17,0x08, 0x01,0x29,0x22,0x06, 0x24,0x32,0x24,0x0F, 0x1F,0x2B,0x24,0x03, 0x15,0x41,0x41]</span><br><span class="line">index_str = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=&quot;</span><br><span class="line">current = &quot;&quot;</span><br><span class="line">for x in xrange(len(index)):</span><br><span class="line">	current += index_str[index[x]-1]</span><br><span class="line">print current</span><br><span class="line"></span><br><span class="line">#out: H6AfGzIeXjSCP3IaHzSBHhRCEFRCOhRWHAohFjxjOeqjCU==</span><br></pre></td></tr></table></figure>
+<p>尝试用base64解密发现解不了，然后怀疑加密前索引表被转换了，但是我当时没有去找索引表，而是找出来他们每个字符对应的字符，一个一个找出来，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ranstr</span><span class="params">(num)</span>:</span></span><br><span class="line">    H = <span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'</span></span><br><span class="line">    salt = <span class="string">''</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(num):</span><br><span class="line">        salt += random.choice(H)</span><br><span class="line">    <span class="keyword">return</span> salt</span><br><span class="line"></span><br><span class="line">salt = ranstr(<span class="number">6</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">	str1 = ranstr(<span class="number">6</span>)</span><br><span class="line">	<span class="keyword">if</span> <span class="string">"0"</span> <span class="keyword">in</span> base64.b64encode(str1):</span><br><span class="line">		<span class="keyword">print</span> str1</span><br><span class="line">		exit()</span><br></pre></td></tr></table></figure>
+<p>最后解出来flag：<code>de1ctf{E_L4nguag3_1s_K3KeK3_N4Ji4}</code></p>
+<p>但是如果花店时间分析encode函数的话是可以找到转换后的索引表的(当时心态爆炸了)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">for ( i = 0; ; i = v156 + 1 )</span><br><span class="line">      &#123;</span><br><span class="line">        v156 = i;</span><br><span class="line">        v142 = v35;</span><br><span class="line">        *v35 = i;</span><br><span class="line">        if ( i &gt; 63 )</span><br><span class="line">          break;</span><br><span class="line">        v37 = v194;</span><br><span class="line">        sub_401213(v194);</span><br><span class="line">        v135 = v37;</span><br><span class="line">        v131 = v38;</span><br><span class="line">        v39 = sub_401195((double)v193 + 1.0) - 1;</span><br><span class="line">        if ( v39 &lt; 0 )</span><br><span class="line">          v39 = sub_40226A(4, v131, v37);</span><br><span class="line">        v40 = v135;</span><br><span class="line">        if ( v39 &gt;= v131 )</span><br><span class="line">          v39 = sub_40226A(1, v142, v156);</span><br><span class="line">        v184 = (char *)v40 + v39;</span><br><span class="line">        v41 = v194;</span><br><span class="line">        sub_401213(v194);</span><br><span class="line">        v136 = v41;</span><br><span class="line">        v132 = v42;</span><br><span class="line">        v43 = sub_401195((double)v193 + 1.0) - 1;</span><br><span class="line">        if ( v43 &lt; 0 )</span><br><span class="line">          v43 = sub_40226A(4, v132, v41);</span><br><span class="line">        v44 = v136;</span><br><span class="line">        if ( v43 &gt;= v132 )</span><br><span class="line">          v43 = sub_40226A(1, v142, v156);</span><br><span class="line">        *v184 = sub_403380(2, *((unsigned __int8 *)v44 + v43), 0, -2147482879, v193);</span><br><span class="line">        v35 = v142;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p>伪C代码这一部分是对应的转换索引表，最后得到：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">026E7481 31 32 33 34 35 36 37 38 39 51 57 45 52 54 59 55 123456789QWERTYU </span><br><span class="line">026E7491 49 4F 50 41 53 44 46 47 48 4A 4B 4C 5A 58 43 56 IOPASDFGHJKLZXCV </span><br><span class="line">026E74A1 42 4E 4D 71 77 65 72 74 79 75 69 6F 70 61 73 64 BNMqwertyuiopasd </span><br><span class="line">026E74B1 66 67 68 6A 6B 6C 7A 78 63 76 62 6E 6D 2B 2F AB fghjklzxcvbnm+/«</span><br></pre></td></tr></table></figure></p>
+<p>然后直接替换字符串，解密即可：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mybase64encode</span><span class="params">(Plaintext)</span>:</span></span><br><span class="line">	index_table = <span class="string">"0123456789QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm+/"</span></span><br><span class="line">	binary_str = <span class="string">""</span></span><br><span class="line">	<span class="keyword">if</span> len(Plaintext)%<span class="number">3</span>==<span class="number">0</span>:</span><br><span class="line">		num = <span class="number">0</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		num=<span class="number">3</span>-len(Plaintext)%<span class="number">3</span></span><br><span class="line">	<span class="keyword">for</span> y <span class="keyword">in</span> range(num):</span><br><span class="line">		Plaintext += <span class="string">b"\x00"</span></span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(len(Plaintext)):</span><br><span class="line">		binary_str += bin(ord(Plaintext[x]))[<span class="number">2</span>:].rjust(<span class="number">8</span>,<span class="string">"0"</span>)</span><br><span class="line">	ciphertext = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>,len(binary_str),<span class="number">6</span>):</span><br><span class="line">		ciphertext+=index_table[eval(<span class="string">"0b"</span>+binary_str[x:x+<span class="number">6</span>])]</span><br><span class="line">	ciphertext = ciphertext[:len(ciphertext)-num]</span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(num):</span><br><span class="line">		ciphertext+=<span class="string">"="</span></span><br><span class="line">	<span class="keyword">return</span> ciphertext</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mybase64decode</span><span class="params">(ciphertext)</span>:</span></span><br><span class="line">	index_table = <span class="string">"0123456789QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm+/"</span></span><br><span class="line">	num=<span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(len(ciphertext)):</span><br><span class="line">		<span class="keyword">if</span> ciphertext[x]==<span class="string">"="</span>:</span><br><span class="line">			num+=<span class="number">1</span></span><br><span class="line">	ciphertext =ciphertext.replace(<span class="string">"="</span>,<span class="string">""</span>)</span><br><span class="line">	arr = []</span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(len(ciphertext)):</span><br><span class="line">		arr.append(index_table.index(ciphertext[x]))</span><br><span class="line">	binary_str = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> y <span class="keyword">in</span> range(len(arr)):</span><br><span class="line">		binary_str+=bin(arr[y])[<span class="number">2</span>:].rjust(<span class="number">6</span>,<span class="string">"0"</span>)</span><br><span class="line">	binary_str = binary_str[<span class="number">0</span>:len(binary_str)-(num*(<span class="number">8</span><span class="number">-6</span>))]</span><br><span class="line">	plaintext = <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>,len(binary_str),<span class="number">8</span>):</span><br><span class="line">		plaintext+=chr(eval(<span class="string">"0b"</span>+binary_str[x:x+<span class="number">8</span>]))</span><br><span class="line">	<span class="keyword">return</span> plaintext</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> mybase64decode(<span class="string">"H6AfGzIeXjSCP3IaHzSBHhRCEFRCOhRWHAohFjxjOeqjCU=="</span>)</span><br><span class="line"><span class="keyword">print</span> mybase64encode(<span class="string">"de1ctf&#123;E_L4nguag3_1s_K3KeK3_N4Ji4&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># out:</span></span><br><span class="line"><span class="comment"># 		de1ctf&#123;E_L4nguag3_1s_K3KeK3_N4Ji4&#125;</span></span><br><span class="line"><span class="comment">#		H6AfGzIeXjSCP3IaHzSBHhRCEFRCOhRWHAohFjxjOeqjCU==</span></span><br></pre></td></tr></table></figure></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
