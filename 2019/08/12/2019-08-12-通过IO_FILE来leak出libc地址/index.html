@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        通过IO_FILE来leak出libc地址 - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#glibc源码层面分析"><span class="toc-text">glibc源码层面分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例题"><span class="toc-text">例题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        通过IO_FILE来leak出libc地址
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-08-12 09:28:00</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <p>昨天看了一道通过IO_FILE来leak出libc地址的方法，今儿搞一搞原理</p>
+<h2 id="glibc源码层面分析"><a href="#glibc源码层面分析" class="headerlink" title="glibc源码层面分析"></a>glibc源码层面分析</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    puts(&quot;this is demo!&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单的在gdb中调试一下，调用puts的时候，首先是调用了<code>_IO_puts</code>：<br>1<br><code>/glibc/libio/ioputs.c:32</code><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span></span><br><span class="line">_IO_puts (<span class="keyword">const</span> <span class="keyword">char</span> *str)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">int</span> result = EOF;</span><br><span class="line">  _IO_size_t len = <span class="built_in">strlen</span> (str);</span><br><span class="line">  _IO_acquire_lock (_IO_stdout);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ((_IO_vtable_offset (_IO_stdout) != <span class="number">0</span></span><br><span class="line">       || _IO_fwide (_IO_stdout, <span class="number">-1</span>) == <span class="number">-1</span>)</span><br><span class="line">      &amp;&amp; _IO_sputn (_IO_stdout, str, len) == len</span><br><span class="line">      &amp;&amp; _IO_putc_unlocked (<span class="string">'\n'</span>, _IO_stdout) != EOF)</span><br><span class="line">    result = MIN (INT_MAX, len + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  _IO_release_lock (_IO_stdout);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在这段代码中最重要的是调用了<code>_IO_sputn</code>，这是一个宏，定义如下:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _IO_sputn(__fp, __s, __n) _IO_XSPUTN (__fp, __s, __n)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _IO_XSPUTN(FP, DATA, N) JUMP2 (__xsputn, FP, DATA, N)</span></span><br></pre></td></tr></table></figure></p>
+<p>实际上调用了<code>stdout</code>的vtable中的<code>__xsputn</code>，也就是<code>_IO_new_file_xsputn</code>函数</p>
+<p><code>/glibc/libio/fileops.c:1279</code><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">_IO_size_t</span><br><span class="line">_IO_new_file_xsputn (_IO_FILE *f, <span class="keyword">const</span> <span class="keyword">void</span> *data, _IO_size_t n)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *s = (<span class="keyword">const</span> <span class="keyword">char</span> *) data;</span><br><span class="line">  _IO_size_t to_do = n;</span><br><span class="line">  <span class="keyword">int</span> must_flush = <span class="number">0</span>;</span><br><span class="line">  _IO_size_t count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (n &lt;= <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="comment">/* This is an optimized implementation.</span></span><br><span class="line"><span class="comment">     If the amount to be written straddles a block boundary</span></span><br><span class="line"><span class="comment">     (or the filebuf is unbuffered), use sys_write directly. */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* First figure out how much space is available in the buffer. */</span></span><br><span class="line">  <span class="keyword">if</span> ((f-&gt;_flags &amp; _IO_LINE_BUF) &amp;&amp; (f-&gt;_flags &amp; _IO_CURRENTLY_PUTTING))</span><br><span class="line">    &#123;</span><br><span class="line">      count = f-&gt;_IO_buf_end - f-&gt;_IO_write_ptr;</span><br><span class="line">      <span class="keyword">if</span> (count &gt;= n)</span><br><span class="line">	&#123;</span><br><span class="line">	  <span class="keyword">const</span> <span class="keyword">char</span> *p;</span><br><span class="line">	  <span class="keyword">for</span> (p = s + n; p &gt; s; )</span><br><span class="line">	    &#123;</span><br><span class="line">	      <span class="keyword">if</span> (*--p == <span class="string">'\n'</span>)</span><br><span class="line">		&#123;</span><br><span class="line">		  count = p - s + <span class="number">1</span>;</span><br><span class="line">		  must_flush = <span class="number">1</span>;</span><br><span class="line">		  <span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (f-&gt;_IO_write_end &gt; f-&gt;_IO_write_ptr)</span><br><span class="line">    count = f-&gt;_IO_write_end - f-&gt;_IO_write_ptr; <span class="comment">/* Space available. */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Then fill the buffer. */</span></span><br><span class="line">  <span class="keyword">if</span> (count &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> (count &gt; to_do)</span><br><span class="line">	count = to_do;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _LIBC</span></span><br><span class="line">      f-&gt;_IO_write_ptr = __mempcpy (f-&gt;_IO_write_ptr, s, count);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">      <span class="built_in">memcpy</span> (f-&gt;_IO_write_ptr, s, count);</span><br><span class="line">      f-&gt;_IO_write_ptr += count;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">      s += count;</span><br><span class="line">      to_do -= count;</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">if</span> (to_do + must_flush &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      _IO_size_t block_size, do_write;</span><br><span class="line">      <span class="comment">/* Next flush the (full) buffer. */</span></span><br><span class="line">      <span class="keyword">if</span> (_IO_OVERFLOW (f, EOF) == EOF)</span><br><span class="line">	<span class="comment">/* If nothing else has to be written we must not signal the</span></span><br><span class="line"><span class="comment">	   caller that everything has been written.  */</span></span><br><span class="line">	<span class="keyword">return</span> to_do == <span class="number">0</span> ? EOF : n - to_do;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/* Try to maintain alignment: write a whole number of blocks.  */</span></span><br><span class="line">      block_size = f-&gt;_IO_buf_end - f-&gt;_IO_buf_base;</span><br><span class="line">      do_write = to_do - (block_size &gt;= <span class="number">128</span> ? to_do % block_size : <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (do_write)</span><br><span class="line">	&#123;</span><br><span class="line">	  count = new_do_write (f, s, do_write);</span><br><span class="line">	  to_do -= count;</span><br><span class="line">	  <span class="keyword">if</span> (count &lt; do_write)</span><br><span class="line">	    <span class="keyword">return</span> n - to_do;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/* Now write out the remainder.  Normally, this will fit in the</span></span><br><span class="line"><span class="comment">	 buffer, but it's somewhat messier for line-buffered files,</span></span><br><span class="line"><span class="comment">	 so we let _IO_default_xsputn handle the general case. */</span></span><br><span class="line">      <span class="keyword">if</span> (to_do)</span><br><span class="line">	to_do -= _IO_default_xsputn (f, s+do_write, to_do);</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">return</span> n - to_do;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这些代码中有一处<code>_IO_OVERFLOW</code>:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span></span><br><span class="line">_IO_new_file_overflow (_IO_FILE *f, <span class="keyword">int</span> ch)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> (f-&gt;_flags &amp; _IO_NO_WRITES) <span class="comment">/* SET ERROR */</span></span><br><span class="line">    &#123;</span><br><span class="line">      f-&gt;_flags |= _IO_ERR_SEEN;</span><br><span class="line">      __set_errno (EBADF);</span><br><span class="line">      <span class="keyword">return</span> EOF;</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="comment">/* If currently reading or no buffer allocated. */</span></span><br><span class="line">  <span class="keyword">if</span> ((f-&gt;_flags &amp; _IO_CURRENTLY_PUTTING) == <span class="number">0</span> || f-&gt;_IO_write_base == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="comment">/* Allocate a buffer if needed. */</span></span><br><span class="line">      <span class="keyword">if</span> (f-&gt;_IO_write_base == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	  _IO_doallocbuf (f);</span><br><span class="line">	  _IO_setg (f, f-&gt;_IO_buf_base, f-&gt;_IO_buf_base, f-&gt;_IO_buf_base);</span><br><span class="line">	&#125;</span><br><span class="line">      <span class="comment">/* Otherwise must be currently reading.</span></span><br><span class="line"><span class="comment">	 If _IO_read_ptr (and hence also _IO_read_end) is at the buffer end,</span></span><br><span class="line"><span class="comment">	 logically slide the buffer forwards one block (by setting the</span></span><br><span class="line"><span class="comment">	 read pointers to all point at the beginning of the block).  This</span></span><br><span class="line"><span class="comment">	 makes room for subsequent output.</span></span><br><span class="line"><span class="comment">	 Otherwise, set the read pointers to _IO_read_end (leaving that</span></span><br><span class="line"><span class="comment">	 alone, so it can continue to correspond to the external position). */</span></span><br><span class="line">      <span class="keyword">if</span> (__glibc_unlikely (_IO_in_backup (f)))</span><br><span class="line">	&#123;</span><br><span class="line">	  <span class="keyword">size_t</span> nbackup = f-&gt;_IO_read_end - f-&gt;_IO_read_ptr;</span><br><span class="line">	  _IO_free_backup_area (f);</span><br><span class="line">	  f-&gt;_IO_read_base -= MIN (nbackup,</span><br><span class="line">				   f-&gt;_IO_read_base - f-&gt;_IO_buf_base);</span><br><span class="line">	  f-&gt;_IO_read_ptr = f-&gt;_IO_read_base;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (f-&gt;_IO_read_ptr == f-&gt;_IO_buf_end)</span><br><span class="line">	f-&gt;_IO_read_end = f-&gt;_IO_read_ptr = f-&gt;_IO_buf_base;</span><br><span class="line">      f-&gt;_IO_write_ptr = f-&gt;_IO_read_ptr;</span><br><span class="line">      f-&gt;_IO_write_base = f-&gt;_IO_write_ptr;</span><br><span class="line">      f-&gt;_IO_write_end = f-&gt;_IO_buf_end;</span><br><span class="line">      f-&gt;_IO_read_base = f-&gt;_IO_read_ptr = f-&gt;_IO_read_end;</span><br><span class="line"></span><br><span class="line">      f-&gt;_flags |= _IO_CURRENTLY_PUTTING;</span><br><span class="line">      <span class="keyword">if</span> (f-&gt;_mode &lt;= <span class="number">0</span> &amp;&amp; f-&gt;_flags &amp; (_IO_LINE_BUF | _IO_UNBUFFERED))</span><br><span class="line">	f-&gt;_IO_write_end = f-&gt;_IO_write_ptr;</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">if</span> (ch == EOF)</span><br><span class="line">    <span class="keyword">return</span> _IO_do_write (f, f-&gt;_IO_write_base,</span><br><span class="line">			 f-&gt;_IO_write_ptr - f-&gt;_IO_write_base);</span><br><span class="line">  <span class="keyword">if</span> (f-&gt;_IO_write_ptr == f-&gt;_IO_buf_end ) <span class="comment">/* Buffer is really full */</span></span><br><span class="line">    <span class="keyword">if</span> (_IO_do_flush (f) == EOF)</span><br><span class="line">      <span class="keyword">return</span> EOF;</span><br><span class="line">  *f-&gt;_IO_write_ptr++ = ch;</span><br><span class="line">  <span class="keyword">if</span> ((f-&gt;_flags &amp; _IO_UNBUFFERED)</span><br><span class="line">      || ((f-&gt;_flags &amp; _IO_LINE_BUF) &amp;&amp; ch == <span class="string">'\n'</span>))</span><br><span class="line">    <span class="keyword">if</span> (_IO_do_write (f, f-&gt;_IO_write_base,</span><br><span class="line">		      f-&gt;_IO_write_ptr - f-&gt;_IO_write_base) == EOF)</span><br><span class="line">      <span class="keyword">return</span> EOF;</span><br><span class="line">  <span class="keyword">return</span> (<span class="keyword">unsigned</span> <span class="keyword">char</span>) ch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里面最重要的是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (f-&gt;_IO_write_ptr == f-&gt;_IO_buf_end ) /* Buffer is really full */</span><br><span class="line">    if (_IO_do_flush (f) == EOF)</span><br><span class="line">      return EOF;</span><br></pre></td></tr></table></figure></p>
+<p>当<code>_IO_write_ptr</code>和<code>_IO_buf_end</code>不想等的话就会打印他们之间的字符，达到leak的效果</p>
+<p>需要我们修改的条件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_flags = 0xfbad0000  // Magic number</span><br><span class="line">_flags &amp; = ~_IO_NO_WRITES // _flags = 0xfbad0000</span><br><span class="line">_flags | = _IO_CURRENTLY_PUTTING // _flags = 0xfbad0800</span><br><span class="line">_flags | = _IO_IS_APPENDING // _flags = 0xfbad1800</span><br></pre></td></tr></table></figure></p>
+<p>也就是说<code>_flags</code>字段要修改成<code>0xfbad1800</code></p>
+<p>其次修改<code>_IO_FILE_plus</code>结构体中 <code>_IO_write_base</code>字段的最低为为<code>\x00</code>即可leak</p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="http://pzhxbz.cn/?p=139" target="_blank" rel="noopener">利用stdout来处理无leak的堆题</a><br><a href="https://sunichi.github.io/2018/11/29/leak-from-stdout/" target="_blank" rel="noopener">Leak From Stdout</a></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
