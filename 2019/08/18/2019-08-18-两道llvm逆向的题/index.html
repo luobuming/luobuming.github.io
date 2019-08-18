@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        两道llvm逆向的题 - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SUCTF-hardCPP"><span class="toc-text">SUCTF-hardCPP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络与信息安全领域专项赛-flat"><span class="toc-text">网络与信息安全领域专项赛-flat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        两道llvm逆向的题
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-08-18 19:48:00</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <p>这最近的几场比赛中又碰到了两道LLVM的逆向题，之前总是配不好<code>deflat.py</code>（去平坦化脚本）环境，所以很苦恼，今儿再SUCTF中又碰见一道，代码不多，也就硬刚了一下，emmm，到最后也是刚出来了，也没那么复杂，半猜半解</p>
+<h2 id="SUCTF-hardCPP"><a href="#SUCTF-hardCPP" class="headerlink" title="SUCTF-hardCPP"></a>SUCTF-hardCPP</h2><p>64位ELF文件，在运行的时候发现缺少一个<code>libc++.so.1</code>，我以为是我自己虚拟机的G++编译系统有缺失，安装了几个小时的系统，到最后也没能安装成功，到最后到文件系统里面搜了下<code>libc++</code>，出来了一个<code>libc++.so</code>，然后我想着把这个文件的名字改成<code>libc++.so.1</code>，谁知道真的行了（哭了，mmp）</p>
+<p>然后拖到IDA中分析，该程序被LLVM优化过，所以流程被改的不容易看出来了</p>
+<p>看main函数前面这几句代码，还是可以看明白的，程序读入了21个字符<br><img src="https://s2.ax1x.com/2019/08/18/mliuOU.png" alt><br>接着往下看，找到了一段关键代码，通过<code>main::$_0::operator() const</code>几行代码处理之后，与<code>enc</code>进行对于，发现<code>enc</code>就是密文<code>enc = [0x0F3,0x2E,0x18,0x36,0x0E1,0x4C,0x22,0x0D1,0x0F9,0x8C,0x40,0x76,0x0F4,0x0E,0x0,0x5,0x0A3,0x90,0x0E,0x0A5]</code><br><img src="https://s2.ax1x.com/2019/08/18/mliGf1.md.png" alt></p>
+<p>具体数据处理还得看<code>{lambda(int)#1}</code>中的代码，我一句一句得来分析</p>
+<p>返回第二个参数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">char __fastcall main::$_0::operator() const(__int64 a1, char a2)</span><br><span class="line">&#123;</span><br><span class="line">  return a2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>返回对第二个参数进行取模的值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">__int64 __fastcall main::$_1::operator() const(char)::&#123;lambda(int)#1&#125;::operator() const(char *a1, int a2)</span><br><span class="line">&#123;</span><br><span class="line">  return (*a1 % a2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面这个比较长，首先来看下返回值v16，最后一次对v16赋值是<code>v16 = *(&amp;v5 - 16) + **(&amp;v5 - 2);</code>,而<code>*(&amp;v5 - 16)</code>和<code>**(&amp;v5 - 2)</code>向上找到赋值的地方其实是<code>v12 = a2;v11 = a1;</code>，也就是说，该函数返回两个参数的和<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">__int64 __fastcall main::$_0::operator() const(char)::&#123;lambda(char)#1&#125;::operator() const(__int64 a1, char a2)</span><br><span class="line">&#123;</span><br><span class="line">  signed int v2; // eax</span><br><span class="line">  signed int v3; // eax</span><br><span class="line">  __int64 v5; // [rsp+0h] [rbp-40h]</span><br><span class="line">  int v6; // [rsp+4h] [rbp-3Ch]</span><br><span class="line">  int v7; // [rsp+8h] [rbp-38h]</span><br><span class="line">  int v8; // [rsp+Ch] [rbp-34h]</span><br><span class="line">  int v9; // [rsp+10h] [rbp-30h]</span><br><span class="line">  int v10; // [rsp+14h] [rbp-2Ch]</span><br><span class="line">  __int64 v11; // [rsp+18h] [rbp-28h]</span><br><span class="line">  char v12; // [rsp+23h] [rbp-1Dh]</span><br><span class="line">  int v13; // [rsp+24h] [rbp-1Ch]</span><br><span class="line">  bool v14; // [rsp+2Ah] [rbp-16h]</span><br><span class="line">  bool v15; // [rsp+2Bh] [rbp-15h]</span><br><span class="line">  unsigned int v16; // [rsp+2Ch] [rbp-14h]</span><br><span class="line"></span><br><span class="line">  v14 = ((x_5 - 1) * x_5 &amp; 1) == 0;</span><br><span class="line">  v15 = y_6 &lt; 10;</span><br><span class="line">  v13 = 1023500310;</span><br><span class="line">  v12 = a2;</span><br><span class="line">  v11 = a1;</span><br><span class="line">  do</span><br><span class="line">  &#123;</span><br><span class="line">    while ( 1 )</span><br><span class="line">    &#123;</span><br><span class="line">      while ( 1 )</span><br><span class="line">      &#123;</span><br><span class="line">        while ( 1 )</span><br><span class="line">        &#123;</span><br><span class="line">          v10 = v13;</span><br><span class="line">          v9 = v13 + 2037067308;</span><br><span class="line">          if ( v13 != -2037067308 )</span><br><span class="line">            break;</span><br><span class="line">          *(&amp;v5 - 2) = v11;</span><br><span class="line">          *(&amp;v5 - 16) = v12;</span><br><span class="line">          v13 = -1418698808;</span><br><span class="line">        &#125;</span><br><span class="line">        v8 = v10 + 1418698808;</span><br><span class="line">        if ( v10 != -1418698808 )</span><br><span class="line">          break;</span><br><span class="line">        v3 = -2037067308;</span><br><span class="line">        *(&amp;v5 - 2) = v11;</span><br><span class="line">        *(&amp;v5 - 16) = v12;</span><br><span class="line">        v16 = *(&amp;v5 - 16) + **(&amp;v5 - 2);</span><br><span class="line">        if ( y_6 &lt; 10 || ((x_5 - 1) * x_5 &amp; 1) == 0 )</span><br><span class="line">          v3 = 1456142001;</span><br><span class="line">        v13 = v3;</span><br><span class="line">      &#125;</span><br><span class="line">      v7 = v10 - 1023500310;</span><br><span class="line">      if ( v10 != 1023500310 )</span><br><span class="line">        break;</span><br><span class="line">      v2 = -2037067308;</span><br><span class="line">      if ( v15 || v14 )</span><br><span class="line">        v2 = -1418698808;</span><br><span class="line">      v13 = v2;</span><br><span class="line">    &#125;</span><br><span class="line">    v6 = v10 - 1456142001;</span><br><span class="line">  &#125;</span><br><span class="line">  while ( v10 != 1456142001 );</span><br><span class="line">  return v16;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>同样先看返回值，向上追溯，找到v16的赋值，看到最后其实就是返回第二个参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">char __fastcall main::$_2::operator() const(__int64 a1, char a2)</span><br><span class="line">&#123;</span><br><span class="line">  signed int v2; // eax</span><br><span class="line">  signed int v3; // eax</span><br><span class="line">  char v5; // [rsp+0h] [rbp-50h]</span><br><span class="line">  int v6; // [rsp+Ch] [rbp-44h]</span><br><span class="line">  int v7; // [rsp+10h] [rbp-40h]</span><br><span class="line">  int v8; // [rsp+14h] [rbp-3Ch]</span><br><span class="line">  int v9; // [rsp+18h] [rbp-38h]</span><br><span class="line">  int v10; // [rsp+1Ch] [rbp-34h]</span><br><span class="line">  __int64 v11; // [rsp+20h] [rbp-30h]</span><br><span class="line">  char v12; // [rsp+2Fh] [rbp-21h]</span><br><span class="line">  int v13; // [rsp+30h] [rbp-20h]</span><br><span class="line">  bool v14; // [rsp+35h] [rbp-1Bh]</span><br><span class="line">  bool v15; // [rsp+36h] [rbp-1Ah]</span><br><span class="line">  char v16; // [rsp+37h] [rbp-19h]</span><br><span class="line"></span><br><span class="line">  v14 = ((x_11 - 1) * x_11 &amp; 1) == 0;</span><br><span class="line">  v15 = y_12 &lt; 10;</span><br><span class="line">  v13 = -1990873412;</span><br><span class="line">  v12 = a2;</span><br><span class="line">  v11 = a1;</span><br><span class="line">  while ( 1 )</span><br><span class="line">  &#123;</span><br><span class="line">    while ( 1 )</span><br><span class="line">    &#123;</span><br><span class="line">      while ( 1 )</span><br><span class="line">      &#123;</span><br><span class="line">        v10 = v13;</span><br><span class="line">        v9 = v13 + 1990873412;</span><br><span class="line">        if ( v13 != -1990873412 )</span><br><span class="line">          break;</span><br><span class="line">        v2 = -1373097315;</span><br><span class="line">        if ( v15 || v14 )</span><br><span class="line">          v2 = 1457028246;</span><br><span class="line">        v13 = v2;</span><br><span class="line">      &#125;</span><br><span class="line">      v8 = v10 + 1373097315;</span><br><span class="line">      if ( v10 != -1373097315 )</span><br><span class="line">        break;</span><br><span class="line">      *(&amp;v5 - 2) = v11;</span><br><span class="line">      *(&amp;v5 - 16) = v12;</span><br><span class="line">      v5 = *(&amp;v5 - 16);</span><br><span class="line">      v13 = 1457028246;</span><br><span class="line">    &#125;</span><br><span class="line">    v7 = v10 + 961146335;</span><br><span class="line">    if ( v10 == -961146335 )</span><br><span class="line">      break;</span><br><span class="line">    v6 = v10 - 1457028246;</span><br><span class="line">    if ( v10 == 1457028246 )</span><br><span class="line">    &#123;</span><br><span class="line">      v3 = -1373097315;</span><br><span class="line">      *(&amp;v5 - 2) = v11;</span><br><span class="line">      *(&amp;v5 - 16) = v12;</span><br><span class="line">      v5 = *(&amp;v5 - 16);</span><br><span class="line">      v16 = v5;</span><br><span class="line">      if ( y_12 &lt; 10 || ((x_11 - 1) * x_11 &amp; 1) == 0 )</span><br><span class="line">        v3 = -961146335;</span><br><span class="line">      v13 = v3;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return v16;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>返回两个参数异或的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">__int64 __fastcall main::$_2::operator() const(char)::&#123;lambda(char)#1&#125;::operator() const(_BYTE *a1, char a2)</span><br><span class="line">&#123;</span><br><span class="line">  return (a2 ^ *a1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>返回两个参数乘积的值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">__int64 __fastcall main::$_3::operator() const(char)::&#123;lambda(char)#1&#125;::operator() const(char *a1, char a2)</span><br><span class="line">&#123;</span><br><span class="line">  return (a2 * *a1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后到最后总和到一块的操作就是<br><code>(v33%7+v34)^(((v31^18)*3+2)&amp;0xff)</code></p>
+<p>然后就是v33和v34未知，向上溯源，发现和v38有关，但是v38是两个<code>time(0)</code>返回值相减得到的值，是不确定的，这时候我就迷茫了</p>
+<p>既然现在密文已经确定了，那么我开始半猜的碰撞密文</p>
+<p>最后发现v33和v34是相邻的关系，进而解出来flag</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">enc = [<span class="number">0x0F3</span>,<span class="number">0x2E</span>,<span class="number">0x18</span>,<span class="number">0x36</span>,<span class="number">0x0E1</span>,<span class="number">0x4C</span>,<span class="number">0x22</span>,<span class="number">0x0D1</span>,<span class="number">0x0F9</span>,<span class="number">0x8C</span>,<span class="number">0x40</span>,<span class="number">0x76</span>,<span class="number">0x0F4</span>,<span class="number">0x0E</span>,<span class="number">0x0</span>,<span class="number">0x5</span>,<span class="number">0x0A3</span>,<span class="number">0x90</span>,<span class="number">0x0E</span>,<span class="number">0x0A5</span>]</span><br><span class="line"></span><br><span class="line">flag = <span class="string">"f"</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">19</span>):</span><br><span class="line">	<span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">32</span>,<span class="number">128</span>):</span><br><span class="line">		<span class="keyword">if</span> (((((ord(flag[x])^<span class="number">18</span>)*<span class="number">3</span>)+<span class="number">2</span>)&amp;<span class="number">0xff</span>)^((ord(flag[x])%<span class="number">7</span>)+y))&amp;<span class="number">0xff</span>==enc[x+<span class="number">1</span>]:</span><br><span class="line">			flag = flag+chr(y)</span><br><span class="line"><span class="keyword">print</span> flag</span><br></pre></td></tr></table></figure>
+<p>flag:<code>flag{mY-CurR1ed_Fns}</code></p>
+<h2 id="网络与信息安全领域专项赛-flat"><a href="#网络与信息安全领域专项赛-flat" class="headerlink" title="网络与信息安全领域专项赛-flat"></a>网络与信息安全领域专项赛-flat</h2><p>同样是一道LLVM优化过的题目</p>
+<p>从main函数中大致可以看出来有5个check</p>
+<p>分析一波之后：</p>
+<ul>
+<li>check1:<code>0&lt;len&lt;50</code></li>
+<li>check2:前五位<code>flag{</code></li>
+<li>check3:最后一位<code>}</code></li>
+<li>check4:<code>flag[28]、flag[13]、flag[18]、flag[23]</code>的值都为<code>-</code></li>
+</ul>
+<p>总结上述的条件，确定flag大括号中的内容形式是uuid,类似：<code>5718d7f0-c193-11e9-bfbc-54e1ad893dbe</code></p>
+<p>接着来分析check5，在这个函数中，发现一个比较：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if ( v13[v12] != v14[v12] )</span><br></pre></td></tr></table></figure></p>
+<p>向上溯源，v14是第二个参数，v13是通过第一个参数转变而来的</p>
+<p>而这个函数<code>fun_check5(v20, (int *)&amp;dest);</code>，第二个参数是dest，向上溯源找到赋值的地方：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">memcpy(&amp;dest, &quot;J&quot;, 0x90uLL);</span><br></pre></td></tr></table></figure></p>
+<p>起初我以为给dest中赋值0x90个<code>J</code>，到最后我想错了，在gdb中调试发现这里赋值了一串字符，然后点击这里发现全部数据：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">.rodata:0000000000401480 qword_401480    dq 320000004Ah          ; DATA XREF: main+234↑o</span><br><span class="line">.rodata:0000000000401488                 dq 3600000032h</span><br><span class="line">.rodata:0000000000401490                 dq 4300000031h</span><br><span class="line">.rodata:0000000000401498                 dq 3300000036h</span><br><span class="line">.rodata:00000000004014A0                 dq 330000002Dh</span><br><span class="line">.rodata:00000000004014A8                 dq 3200000049h</span><br><span class="line">.rodata:00000000004014B0                 dq 2D00000049h</span><br><span class="line">.rodata:00000000004014B8                 dq 4700000045h</span><br><span class="line">.rodata:00000000004014C0                 dq 3400000045h</span><br><span class="line">.rodata:00000000004014C8                 dq 490000002Dh</span><br><span class="line">.rodata:00000000004014D0                 dq 4300000042h</span><br><span class="line">.rodata:00000000004014D8                 dq 2D00000043h</span><br><span class="line">.rodata:00000000004014E0                 dq 4500000049h</span><br><span class="line">.rodata:00000000004014E8                 dq 3100000034h</span><br><span class="line">.rodata:00000000004014F0                 dq 3500000041h</span><br><span class="line">.rodata:00000000004014F8                 dq 3500000049h</span><br><span class="line">.rodata:0000000000401500                 dq 3400000046h</span><br><span class="line">.rodata:0000000000401508                 dq 4200000048h</span><br></pre></td></tr></table></figure></p>
+<p>然后转字符串得到：<code>J2261C63-3I2I-EGE4-IBCC-IE41A5I5F4HB</code><br>到这里我们可以发现，flag格式已经是对照上了，所以断定check5是对我们输入的flag进行转变<br>最后通过函数中数值的比较和变化得出转换规则（我觉得不太好找吧）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">flag = <span class="string">"J2261C63-3I2I-EGE4-IBCC-IE41A5I5F4HB"</span></span><br><span class="line">current = <span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(len(flag)):</span><br><span class="line">	<span class="keyword">if</span> ord(flag[x])&gt;ord(<span class="string">"A"</span>):</span><br><span class="line">		current += chr(ord(flag[x])<span class="number">-17</span>)</span><br><span class="line">	<span class="keyword">elif</span> ord(flag[x])==ord(<span class="string">"-"</span>):</span><br><span class="line">		current += flag[x]</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		current += chr(ord(flag[x])+<span class="number">48</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"flag&#123;"</span>+current+<span class="string">"&#125;"</span></span><br></pre></td></tr></table></figure>
+<p>flag:<code>flag{9bbfa2fc-c8b8-464d-8122-84daqe8e5d71}</code></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>遇到这类题的时候就很烦恼，defalt脚本用不好，手动分析太累了，难受！</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
