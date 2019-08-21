@@ -56,32 +56,32 @@
             <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
-                    <span>HOME</span>
+                    <span>主页</span>
                 </a>
             </li>
             <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
-                    <span>TAGS</span>
+                    <span>标签</span>
                 </a>
             </li>
             <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
-                    <span>ARCHIVES</span>
+                    <span>存档</span>
                 </a>
             </li>
             <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
-                    <span>ABOUT</span>
+                    <span>关于</span>
                 </a>
             </li>
             
             <li>
                 <a id="search">
                     <i class="iconfont icon-sousuo1"></i>
-                    <span>SEARCH</span>
+                    <span>搜索</span>
                 </a>
             </li>
             
@@ -89,8 +89,8 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、什么是缓冲区机制"><span class="toc-text">一、什么是缓冲区机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、为什么使用缓冲区机制"><span class="toc-text">二、为什么使用缓冲区机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、缓冲区的分类"><span class="toc-text">三、缓冲区的分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、对缓冲区操作的函数（C语言）"><span class="toc-text">四、对缓冲区操作的函数（C语言）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子（2019SSCTF攻防赛-pwn）"><span class="toc-text">例子（2019SSCTF攻防赛-pwn）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
-</div>
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#文章首发与安全客"><span class="toc-text">文章首发与安全客</span></a></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#一、什么是缓冲区机制"><span class="toc-text">一、什么是缓冲区机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、为什么使用缓冲区机制"><span class="toc-text">二、为什么使用缓冲区机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、缓冲区的分类"><span class="toc-text">三、缓冲区的分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、对缓冲区操作的函数（C语言）"><span class="toc-text">四、对缓冲区操作的函数（C语言）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子（2019SSCTF攻防赛-pwn）"><span class="toc-text">例子（2019SSCTF攻防赛-pwn）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a>
+</li></div>
     
 </div>
 
@@ -100,7 +100,7 @@
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
             <input id="search-input">
-            <span id="begin-search">search</span>
+            <span id="begin-search">搜索</span>
         </div>
         <div class="search-result-container" id="search-result-container">
 
@@ -124,21 +124,21 @@
     </div>
 
     <div class="post-meta">
-        <span class="attr">Post：<span>2019-08-19 15:41:00</span></span>
+        <span class="attr">发布于：<span>2019-08-19 15:41:00</span></span>
         
-        <span class="attr">Tags：/
+        <span class="attr">标签：/
         
         <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
         <span>/</span>
         
         
         </span>
-        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
 </span>
 
     </div>
     <div class="post-content no-indent">
-        <p>在最近的几场比赛中，部分赛题牵扯到缓冲区的知识，之前对这块的知识还不够特别的理解，所以抽时间来总结一下</p>
+        <h4 id="文章首发与安全客"><a href="#文章首发与安全客" class="headerlink" title="文章首发与安全客"></a>文章首发与<a href="https://www.anquanke.com/post/id/184517" target="_blank" rel="noopener">安全客</a></h4><p>在最近的几场比赛中，部分赛题牵扯到缓冲区的知识，之前对这块的知识还不够特别的理解，所以抽时间来总结一下</p>
 <h2 id="一、什么是缓冲区机制"><a href="#一、什么是缓冲区机制" class="headerlink" title="一、什么是缓冲区机制"></a>一、什么是缓冲区机制</h2><p>首先我们要知道什么是缓冲区</p>
 <p>总的来说，缓冲区是内存空间的一部分，在内存中预留了一定的存储空间，用来暂时保存输入和输出等<code>I/O</code>操作的一些数据，这些预留的空间就叫做缓冲区；而<code>buffer</code>缓冲区和<code>Cache</code>缓存区都属于缓冲区的一种</p>
 <p><code>buffer</code>缓冲区存储速度不同步的设备或者优先级不同的设备之间的传输数据，比如键盘、鼠标等；此外，<code>buffer</code>一般是用在写入磁盘的；</p>
