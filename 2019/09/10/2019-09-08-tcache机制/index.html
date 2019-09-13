@@ -183,6 +183,12 @@
 <p>首先通过<code>size</code>找到<code>tcachebin</code>的<code>index</code>，然后判断<code>tcache</code>是否存在，再判断算出来的<code>index</code>是否小于最大的<code>index（64）</code>，最后再判断<code>index</code>对应的<code>tcache bin</code>中<code>chunk</code>的数量是不是大于最大容量（7），如果都符合条件的话，则调用<code>tcache_put</code>函数，跟进来看一下：</p>
 <p><code>/root/glibc-2.27/malloc/malloc.c:2925</code><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> __always_inline <span class="keyword">void</span></span><br><span class="line">tcache_put (mchunkptr chunk, <span class="keyword">size_t</span> tc_idx)</span><br><span class="line">&#123;</span><br><span class="line">  tcache_entry *e = (tcache_entry *) chunk2mem (chunk);</span><br><span class="line">  assert (tc_idx &lt; TCACHE_MAX_BINS);</span><br><span class="line">  e-&gt;next = tcache-&gt;entries[tc_idx];</span><br><span class="line">  tcache-&gt;entries[tc_idx] = e;</span><br><span class="line">  ++(tcache-&gt;counts[tc_idx]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>首先通过<code>chunk2mem</code>来获取到要<code>free</code>的<code>chunk</code>的<code>user date</code>的首地址，然后再判断算出来的<code>index</code>是否小于最大的<code>index（64）</code>，然后是将该<code>chunk</code>的<code>next</code>指针指向当前<code>tcache bin</code>中的第一个 <code>chunk</code>，再然后就是把该<code>tcache bin</code>的第一个<code>chunk</code>的地址设置成该<code>chunk</code>，相对应的<code>counts</code>值加一</p>
+<p>chunk进入到tcache中的几种类型：</p>
+<ul>
+<li>如果申请的chunk在fastbin中取出来的，而且该fastbin中还有其他chunk，程序会把该bin中其他的chunk全部转移到相应index的tcachebin中</li>
+<li>smallbin的chunk进入tcache中的原理和上述一样</li>
+<li>在unsortedbin上循环操作时，，当找到合适的chunk，并不直接返回，而是先放到tcache中，然后在进行处理</li>
+</ul>
 
         
         <br>
