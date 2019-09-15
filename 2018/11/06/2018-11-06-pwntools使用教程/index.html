@@ -56,32 +56,32 @@
             <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
-                    <span>主页</span>
+                    <span>HOME</span>
                 </a>
             </li>
             <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
-                    <span>标签</span>
+                    <span>TAGS</span>
                 </a>
             </li>
             <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
-                    <span>存档</span>
+                    <span>ARCHIVES</span>
                 </a>
             </li>
             <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
-                    <span>关于</span>
+                    <span>ABOUT</span>
                 </a>
             </li>
             
             <li>
                 <a id="search">
                     <i class="iconfont icon-sousuo1"></i>
-                    <span>搜索</span>
+                    <span>SEARCH</span>
                 </a>
             </li>
             
@@ -89,7 +89,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#pwntools"><span class="toc-text">pwntools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用方法"><span class="toc-text">使用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#引入pwntools模块"><span class="toc-text">引入pwntools模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#连接到我们指定的地址及端口，然后该函数会返回remote对象。"><span class="toc-text">连接到我们指定的地址及端口，然后该函数会返回remote对象。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#remote对象主要用来进行对远程主机的输入输出，它有如下几个方法："><span class="toc-text">remote对象主要用来进行对远程主机的输入输出，它有如下几个方法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#p32-、u32"><span class="toc-text">p32()、u32()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#debug调试输出"><span class="toc-text">debug调试输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在pwntools写脚本的时候与GDB交互"><span class="toc-text">在pwntools写脚本的时候与GDB交互</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ELF-用来操作elf的工具"><span class="toc-text">ELF():用来操作elf的工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DynELF"><span class="toc-text">DynELF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#汇编与反汇编"><span class="toc-text">汇编与反汇编</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成shellcode"><span class="toc-text">生成shellcode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一些小工具"><span class="toc-text">一些小工具</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#pwntools"><span class="toc-text">pwntools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用方法"><span class="toc-text">使用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#引入pwntools模块"><span class="toc-text">引入pwntools模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#连接到我们指定的地址及端口，然后该函数会返回remote对象。"><span class="toc-text">连接到我们指定的地址及端口，然后该函数会返回remote对象。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#remote对象主要用来进行对远程主机的输入输出，它有如下几个方法："><span class="toc-text">remote对象主要用来进行对远程主机的输入输出，它有如下几个方法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#p32-、u32"><span class="toc-text">p32()、u32()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#debug调试输出"><span class="toc-text">debug调试输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在pwntools写脚本的时候与GDB交互"><span class="toc-text">在pwntools写脚本的时候与GDB交互</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ELF-用来操作elf的工具"><span class="toc-text">ELF():用来操作elf的工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DynELF"><span class="toc-text">DynELF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#汇编与反汇编"><span class="toc-text">汇编与反汇编</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成shellcode"><span class="toc-text">生成shellcode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一些小工具"><span class="toc-text">一些小工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-9-14-总结"><span class="toc-text">2019-9-14 总结</span></a></li></ol>
 </div>
     
 </div>
@@ -100,7 +100,7 @@
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
             <input id="search-input">
-            <span id="begin-search">搜索</span>
+            <span id="begin-search">search</span>
         </div>
         <div class="search-result-container" id="search-result-container">
 
@@ -124,16 +124,16 @@
     </div>
 
     <div class="post-meta">
-        <span class="attr">发布于：<span>2018-11-06 21:42:24</span></span>
+        <span class="attr">Post：<span>2018-11-06 21:42:24</span></span>
         
-        <span class="attr">标签：/
+        <span class="attr">Tags：/
         
         <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
         <span>/</span>
         
         
         </span>
-        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
 </span>
 
     </div>
@@ -142,8 +142,8 @@
 <h2 id="pwntools"><a href="#pwntools" class="headerlink" title="pwntools"></a>pwntools</h2><ul>
 <li>pwntools是一个二进制利用框架。官方文档提供了详细的api规范。然而目前并没有一个很好的新手教程。因此我用了我过去的几篇writeup。由于本文只是用来介绍pwntools使用方法，我不会过于详细的讲解各种二进制漏洞攻击技术。</li>
 </ul>
-<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><h3 id="引入pwntools模块"><a href="#引入pwntools模块" class="headerlink" title="引入pwntools模块"></a>引入pwntools模块</h3><figure class="highlight capnproto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br></pre></td></tr></table></figure>
-<h3 id="连接到我们指定的地址及端口，然后该函数会返回remote对象。"><a href="#连接到我们指定的地址及端口，然后该函数会返回remote对象。" class="headerlink" title="连接到我们指定的地址及端口，然后该函数会返回remote对象。"></a>连接到我们指定的地址及端口，然后该函数会返回remote对象。</h3><figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">remote("一个域名或者ip地址", 端口)</span></span><br></pre></td></tr></table></figure>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><h3 id="引入pwntools模块"><a href="#引入pwntools模块" class="headerlink" title="引入pwntools模块"></a>引入pwntools模块</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br></pre></td></tr></table></figure>
+<h3 id="连接到我们指定的地址及端口，然后该函数会返回remote对象。"><a href="#连接到我们指定的地址及端口，然后该函数会返回remote对象。" class="headerlink" title="连接到我们指定的地址及端口，然后该函数会返回remote对象。"></a>连接到我们指定的地址及端口，然后该函数会返回remote对象。</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">remote(&quot;一个域名或者ip地址&quot;, 端口)</span><br></pre></td></tr></table></figure>
 <h3 id="remote对象主要用来进行对远程主机的输入输出，它有如下几个方法："><a href="#remote对象主要用来进行对远程主机的输入输出，它有如下几个方法：" class="headerlink" title="remote对象主要用来进行对远程主机的输入输出，它有如下几个方法："></a>remote对象主要用来进行对远程主机的输入输出，它有如下几个方法：</h3><ul>
 <li>send(payload)发送payload</li>
 <li>sendline(payload)发送payload，并进行换行（末尾\n）</li>
@@ -173,21 +173,28 @@
 <h3 id="ELF-用来操作elf的工具"><a href="#ELF-用来操作elf的工具" class="headerlink" title="ELF():用来操作elf的工具"></a>ELF():用来操作elf的工具</h3><ul>
 <li>既可以操作ELF可执行文件，</li>
 </ul>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">e = ELF(<span class="string">"./pwn"</span>) <span class="comment">#用来加载一个文件</span></span><br><span class="line">e.plt[<span class="string">"funcname"</span>] <span class="comment"># 找出funcname在plt段中的地址</span></span><br><span class="line">e.got[<span class="string">"funcname"</span>] <span class="comment"># 找出funcname在got段中的地址</span></span><br><span class="line">e.symbols[<span class="string">"funcname"</span>] <span class="comment">#找出funcname在.text段中中的地址</span></span><br><span class="line">e.search(<span class="string">"/bin/sh"</span>).next() <span class="comment">#找出“/bin/sh”在文件中的位置</span></span><br><span class="line">e.bss() <span class="comment">#返回该文件中bss段的首地址</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">e = ELF(&quot;./pwn&quot;) #用来加载一个文件</span><br><span class="line">e.plt[&quot;funcname&quot;] # 找出funcname在plt段中的地址</span><br><span class="line">e.got[&quot;funcname&quot;] # 找出funcname在got段中的地址</span><br><span class="line">e.symbols[&quot;funcname&quot;] #找出funcname在.text段中中的地址</span><br><span class="line">e.search(&quot;/bin/sh&quot;).next() #找出“/bin/sh”在文件中的位置</span><br><span class="line">e.bss() #返回该文件中bss段的首地址</span><br></pre></td></tr></table></figure>
 <ul>
 <li>可以用来操作libc.so文件</li>
 </ul>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">libc</span> = ELF(<span class="string">"libc.so.6"</span>)</span><br><span class="line"></span><br><span class="line"><span class="attr">libc.address</span> = function_real_addr - function_got   #libc.address赋值过之后再用libc.symbols查找函数时，地址是自动计算好的</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">libc = ELF(&quot;libc.so.6&quot;)</span><br><span class="line"></span><br><span class="line">libc.address = function_real_addr - function_got   #libc.address赋值过之后再用libc.symbols查找函数时，地址是自动计算好的</span><br></pre></td></tr></table></figure>
 <h3 id="DynELF"><a href="#DynELF" class="headerlink" title="DynELF"></a>DynELF</h3><ul>
 <li>通过信息泄露 获得远程函数地址</li>
 </ul>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">leak</span><span class="params">(address)</span></span><span class="symbol">:</span></span><br><span class="line">    <span class="comment">#函数体</span></span><br><span class="line">d = DynELF(leak, main) <span class="comment"># 创建一个没有程序的DynELF对象</span></span><br><span class="line">d = DynELF(leak, main, elf=ELF(<span class="string">'./pwnme'</span>)) <span class="comment"># 创建一个有程序的DynELF对象</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">d.lookup(<span class="string">'system'</span>, <span class="string">'libc'</span>) <span class="comment"># 显示system在内存中的地址</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def leak(address):</span><br><span class="line">    #函数体</span><br><span class="line">d = DynELF(leak, main) # 创建一个没有程序的DynELF对象</span><br><span class="line">d = DynELF(leak, main, elf=ELF(&apos;./pwnme&apos;)) # 创建一个有程序的DynELF对象</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">d.lookup(&apos;system&apos;, &apos;libc&apos;) # 显示system在内存中的地址</span><br></pre></td></tr></table></figure>
 <h3 id="汇编与反汇编"><a href="#汇编与反汇编" class="headerlink" title="汇编与反汇编"></a>汇编与反汇编</h3><ul>
 <li>asm(‘mov eax, 0’)</li>
 <li>disasm(‘\xb8\x0b\x00\x00\x00’)</li>
 </ul>
-<h3 id="生成shellcode"><a href="#生成shellcode" class="headerlink" title="生成shellcode"></a>生成shellcode</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">context<span class="selector-class">.arch</span> = <span class="string">'amd64'</span></span><br><span class="line">shellcode = asm(shellcraft<span class="selector-class">.amd64</span><span class="selector-class">.sh</span>())</span><br></pre></td></tr></table></figure>
-<h3 id="一些小工具"><a href="#一些小工具" class="headerlink" title="一些小工具"></a>一些小工具</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#base64加密解密</span><br><span class="line"><span class="function"><span class="title">b64e</span><span class="params">(<span class="string">"test"</span>)</span></span></span><br><span class="line"><span class="function"><span class="title">b64d</span><span class="params">(<span class="string">'dGVzdA=='</span>)</span></span></span><br><span class="line"></span><br><span class="line">#字符串与ASCII码的转换</span><br><span class="line"><span class="function"><span class="title">enhex</span><span class="params">(<span class="string">"test"</span>)</span></span></span><br><span class="line"><span class="function"><span class="title">unhex</span><span class="params">(<span class="string">"74657374"</span>)</span></span></span><br><span class="line"></span><br><span class="line">#随机生成n个字符的字符串</span><br><span class="line"><span class="function"><span class="title">randoms</span><span class="params">(n)</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="生成shellcode"><a href="#生成shellcode" class="headerlink" title="生成shellcode"></a>生成shellcode</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">context.arch = &apos;amd64&apos;</span><br><span class="line">shellcode = asm(shellcraft.amd64.sh())</span><br></pre></td></tr></table></figure>
+<h3 id="一些小工具"><a href="#一些小工具" class="headerlink" title="一些小工具"></a>一些小工具</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#base64加密解密</span><br><span class="line">b64e(&quot;test&quot;)</span><br><span class="line">b64d(&apos;dGVzdA==&apos;)</span><br><span class="line"></span><br><span class="line">#字符串与ASCII码的转换</span><br><span class="line">enhex(&quot;test&quot;)</span><br><span class="line">unhex(&quot;74657374&quot;)</span><br><span class="line"></span><br><span class="line">#随机生成n个字符的字符串</span><br><span class="line">randoms(n)</span><br></pre></td></tr></table></figure>
+<h2 id="2019-9-14-总结"><a href="#2019-9-14-总结" class="headerlink" title="2019-9-14 总结"></a>2019-9-14 总结</h2><p><code>pwnlib.args</code>：用于接收命令行传进的参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">print</span> args</span><br><span class="line"><span class="keyword">print</span> <span class="string">"远程端口 ： "</span>+ args[<span class="string">'IP'</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">"远程地址 ： "</span>+ args[<span class="string">'PORT'</span>]</span><br></pre></td></tr></table></figure>
+<p>out：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> 一筐萝卜➜ <span class="built_in">test</span>  python  study.py IP=127.0.0.1 PORT=12345</span><br><span class="line">defaultdict(&lt;<span class="built_in">type</span> <span class="string">'str'</span>&gt;, &#123;<span class="string">'PLT_DEBUG'</span>: <span class="string">''</span>, <span class="string">'PORT'</span>: <span class="string">'12345'</span>, <span class="string">'IP'</span>: <span class="string">'127.0.0.1'</span>&#125;)</span><br><span class="line">远程端口 ： 127.0.0.1</span><br><span class="line">远程地址 ： 12345</span><br><span class="line"> 一筐萝卜➜ <span class="built_in">test</span></span><br></pre></td></tr></table></figure></p>
+<p>在python中直接运行字节码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">binsh_code = asm(shellcraft.i386.sh())</span><br><span class="line"></span><br><span class="line">filename = make_elf(binsh_code,extract=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">p = process(filename)</span><br><span class="line">p.sendline(<span class="string">"ls"</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"-"</span>*<span class="number">40</span></span><br><span class="line"><span class="keyword">print</span> p.recvline()</span><br><span class="line"><span class="keyword">print</span> <span class="string">"-"</span>*<span class="number">40</span></span><br></pre></td></tr></table></figure></p>
+<p>out：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> 一筐萝卜➜ <span class="built_in">test</span>  python study.py</span><br><span class="line">[+] Starting <span class="built_in">local</span> process <span class="string">'/tmp/pwn-asm-L1xcN5/step3-elf'</span>: pid 16587</span><br><span class="line">----------------------------------------</span><br><span class="line">easy_heap  exp.py  study.py  test.py</span><br><span class="line"></span><br><span class="line">----------------------------------------</span><br><span class="line">[*] Stopped process <span class="string">'/tmp/pwn-asm-L1xcN5/step3-elf'</span> (pid 16587)</span><br><span class="line"> 一筐萝卜➜ <span class="built_in">test</span></span><br></pre></td></tr></table></figure></p>
+<p><code>pwn.context</code>：设置运行时的变量<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">使用context.binary自动设置所有适当的值</span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.binary=<span class="string">'./pwn_file'</span></span><br></pre></td></tr></table></figure></p>
+<p><code>context.update</code>：改写变量<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">context.update(os=<span class="string">'linux'</span>,arch=<span class="string">'amd64'</span>)</span><br></pre></td></tr></table></figure></p>
 
         
         <br>

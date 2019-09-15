@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        利用Lief在AWD中Patch-elf - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+     你若盛开，清风自来！ 
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            萝卜
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lief"><span class="toc-text">Lief</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用方法"><span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在-eh-frame段上插入代码"><span class="toc-text">在.eh_frame段上插入代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直接修改动态链接库中的函数表"><span class="toc-text">直接修改动态链接库中的函数表</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        利用Lief在AWD中Patch-elf
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-09-14 19:56:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <p>为了准备第五空间的比赛，google了一番怎么在线下中修复pwn，之前对这块的知识完全不懂，上次在国赛中其实是吃了大亏的。</p>
+<h2 id="Lief"><a href="#Lief" class="headerlink" title="Lief"></a>Lief</h2><p>这是跨平台库，可以利用它来对ELF、PE、macho格式的文件进行解析和修改</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>如果是用PIP直接安装的话我也不知道为什么它会出错，我是直接在python官网上下载的zip包，然后手动安装，安装的时候需要下载一个egg后缀的东西，下载后放到<code>/root/</code>下即可</p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lief</span><br><span class="line">file = lief.parse(<span class="string">"filename"</span>)<span class="comment">#首先是载入文件</span></span><br><span class="line"><span class="keyword">print</span> file<span class="comment">#输出文件的信息，我感觉和 readelf -a filename 的效果差不多</span></span><br><span class="line">puts_symbols = filter(<span class="keyword">lambda</span> e:e.name==<span class="string">"****"</span>,file.imported_symbols)[<span class="number">0</span>] <span class="comment">#(python2写法) 获取到某一个函数的symbols的地址</span></span><br><span class="line">****_symbols = filter(<span class="keyword">lambda</span> e:e.name==<span class="string">"puts"</span>,file.imported_symbols).__next__()</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">python2 返回list</span></span><br><span class="line"><span class="string">python3 返回filter</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">****_symbols.name=<span class="string">'system'</span></span><br><span class="line">file.write(<span class="string">"patch_filename"</span>)<span class="comment">#将修改过后的文件写成新的ELF文件</span></span><br></pre></td></tr></table></figure>
+<p>经过验证发现函数确实被改过来的，但是修改过后的文件大小和原来的大小相差得有点大</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> 一筐萝卜➜ patch  du -h ./shell &amp;&amp; du -h patch_shell </span><br><span class="line">12K	./shell</span><br><span class="line">36K	patch_shell</span><br></pre></td></tr></table></figure>
+<h3 id="在-eh-frame段上插入代码"><a href="#在-eh-frame段上插入代码" class="headerlink" title="在.eh_frame段上插入代码"></a>在<code>.eh_frame</code>段上插入代码</h3><p>这个方法是个很不错得方法</p>
+<p>首先，<code>.eh_frame</code>一般都在<code>0x400000           0x401000</code>,而这段地址上是具有可执行权限的<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; vmmap</span><br><span class="line">LEGEND: STACK | HEAP | CODE | DATA | RWX | RODATA</span><br><span class="line">          0x400000           0x401000 r-xp     1000 0      /root/patch/shell</span><br><span class="line">          0x600000           0x601000 r--p     1000 0      /root/patch/shell</span><br><span class="line">          0x601000           0x602000 rw-p     1000 1000   /root/patch/shell</span><br><span class="line">    0x7ffff7a0d000     0x7ffff7bcd000 r-xp   1c0000 0      /lib/x86_64-linux-gnu/libc-2.23.so</span><br><span class="line">    0x7ffff7bcd000     0x7ffff7dcd000 ---p   200000 1c0000 /lib/x86_64-linux-gnu/libc-2.23.so</span><br><span class="line">    0x7ffff7dcd000     0x7ffff7dd1000 r--p     4000 1c0000 /lib/x86_64-linux-gnu/libc-2.23.so</span><br><span class="line">    0x7ffff7dd1000     0x7ffff7dd3000 rw-p     2000 1c4000 /lib/x86_64-linux-gnu/libc-2.23.so</span><br><span class="line">    0x7ffff7dd3000     0x7ffff7dd7000 rw-p     4000 0      </span><br><span class="line">    0x7ffff7dd7000     0x7ffff7dfd000 r-xp    26000 0      /lib/x86_64-linux-gnu/ld-2.23.so</span><br><span class="line">    0x7ffff7fd9000     0x7ffff7fdc000 rw-p     3000 0      </span><br><span class="line">    0x7ffff7ff7000     0x7ffff7ffa000 r--p     3000 0      [vvar]</span><br><span class="line">    0x7ffff7ffa000     0x7ffff7ffc000 r-xp     2000 0      [vdso]</span><br><span class="line">    0x7ffff7ffc000     0x7ffff7ffd000 r--p     1000 25000  /lib/x86_64-linux-gnu/ld-2.23.so</span><br><span class="line">    0x7ffff7ffd000     0x7ffff7ffe000 rw-p     1000 26000  /lib/x86_64-linux-gnu/ld-2.23.so</span><br><span class="line">    0x7ffff7ffe000     0x7ffff7fff000 rw-p     1000 0      </span><br><span class="line">    0x7ffffffde000     0x7ffffffff000 rw-p    21000 0      [stack]</span><br><span class="line">0xffffffffff600000 0xffffffffff601000 r-xp     1000 0      [vsyscall]</span><br></pre></td></tr></table></figure></p>
+<p>一般这种方法都是把源代码是<code>call *******</code>，然后我们可以在<code>.eh_frame</code>上写一个函数，然后把代码改成<code>call new_addr</code>，</p>
+<p>形如这样的，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">.eh_frame:0000000000400630</span><br><span class="line">.eh_frame:0000000000400630 ; =============== S U B R O U T I N E =======================================</span><br><span class="line">.eh_frame:0000000000400630</span><br><span class="line">.eh_frame:0000000000400630</span><br><span class="line">.eh_frame:0000000000400630 ; __int64 __fastcall sub_400630(const char *buf)</span><br><span class="line">.eh_frame:0000000000400630 sub_400630      proc near               ; CODE XREF: main+9↑p</span><br><span class="line">.eh_frame:0000000000400630                 mov     rsi, rdi        ; buf</span><br><span class="line">.eh_frame:0000000000400633                 mov     rdi, 0          ; fd</span><br><span class="line">.eh_frame:000000000040063A                 mov     rdx, 14h        ; count</span><br><span class="line">.eh_frame:0000000000400641                 mov     rax, 1</span><br><span class="line">.eh_frame:0000000000400648                 syscall                 ; LINUX - sys_write</span><br><span class="line">.eh_frame:000000000040064A                 retn</span><br><span class="line">.eh_frame:000000000040064A sub_400630      endp</span><br><span class="line">.eh_frame:000000000040064A</span><br><span class="line">.eh_frame:000000000040064A ; ---------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+<p>如果说是要直接调用函数的话，那么改动的东西会很多，总所周知，ELF大部分都是动态链接，所以直接改函数的话不是太容易；再者来说，利用系统调用来调用函数也是很方便的<br><a href="http://radishes.top/2019/06/08/2019-06-08-SROP%E5%88%9D%E6%8E%A2/" target="_blank" rel="noopener">系统调用标号和函数对应表</a></p>
+<h3 id="直接修改动态链接库中的函数表"><a href="#直接修改动态链接库中的函数表" class="headerlink" title="直接修改动态链接库中的函数表"></a>直接修改动态链接库中的函数表</h3><p>一般pwn都是采用的是动态链接，所以程序中用到的系统函数都是在动态链接库中的，所以我们可以尝试着直接改动态链接库</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lief</span><br><span class="line"></span><br><span class="line">file = lief.parse(<span class="string">"/lib/x86_64-linux-gnu/libc.so.6"</span>)</span><br><span class="line"><span class="comment"># print file</span></span><br><span class="line">puts_symbols = filter(<span class="keyword">lambda</span> e:e.name==<span class="string">"puts"</span>,file.dynamic_symbols).__next__()</span><br><span class="line">system_symbols = filter(<span class="keyword">lambda</span> e:e.name==<span class="string">"system"</span>,file.dynamic_symbols).__next__()</span><br><span class="line"></span><br><span class="line">print(puts_symbols)</span><br><span class="line">print(system_symbols)</span><br><span class="line"></span><br><span class="line">puts_symbols.name=<span class="string">"system"</span></span><br><span class="line">system_symbols.name=<span class="string">"puts"</span></span><br><span class="line"></span><br><span class="line">file.write(<span class="string">"libc.so.6"</span>)</span><br></pre></td></tr></table></figure>
+<p>可以看到成功的执行了system函数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> 一筐萝卜➜ patch  LD_LIBRARY_PATH=. ./shell_old</span><br><span class="line">binsh.c  libc.so.6  mypatch.py	patchelf-0.8  patchelf-0.8.tar.bz2  shell_old</span><br><span class="line"> 一筐萝卜➜ patch  ./shell_old                  </span><br><span class="line">ls</span><br><span class="line"> 一筐萝卜➜ patch</span><br></pre></td></tr></table></figure></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
