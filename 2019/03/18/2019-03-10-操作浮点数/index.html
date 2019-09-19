@@ -162,7 +162,7 @@
 </tr>
 </tbody>
 </table>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fld</span> <span class="built_in">dword</span> <span class="built_in">ptr</span> <span class="built_in">ds</span>:[<span class="built_in">eax</span>+<span class="number">0xC</span>]   意思是将[<span class="built_in">eax</span>+c]的值以浮点型放进<span class="built_in">ST0</span>里面</span><br><span class="line"><span class="keyword">fstp</span> <span class="built_in">dword</span> <span class="built_in">ptr</span> <span class="built_in">ss</span>:[<span class="built_in">ebp</span>-<span class="number">0x20</span>] 意思是将<span class="built_in">ST0</span>里面的浮点值，放到<span class="built_in">ebp</span>-<span class="number">20</span>这个内存里面，同是清空<span class="built_in">ST0</span>里面的值</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fld dword ptr ds:[eax+0xC]   意思是将[eax+c]的值以浮点型放进ST0里面</span><br><span class="line">fstp dword ptr ss:[ebp-0x20] 意思是将ST0里面的浮点值，放到ebp-20这个内存里面，同是清空ST0里面的值</span><br></pre></td></tr></table></figure>
 <h4 id="除法"><a href="#除法" class="headerlink" title="除法"></a>除法</h4><table>
 <thead>
 <tr>
@@ -291,7 +291,7 @@
 </table>
 <h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p><a href="http://www.voidcn.com/article/p-hlzrbceg-qh.html" target="_blank" rel="noopener">汇编语言学习笔记(十二)-浮点指令</a></p>
 <h3 id="浮点数二进制表示"><a href="#浮点数二进制表示" class="headerlink" title="浮点数二进制表示"></a>浮点数二进制表示</h3><p>在计算机中，浮点数在内存中的存储和整数的存储是不一样的。计算机底层只能识别0和1，也就是采用二进制，二进制也可用科学计数法来表示浮点数</p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2.5</span>  转换成二进制 <span class="number">10.1</span>  科学记数法表示为<span class="number">1.01</span>×<span class="number">2</span>^<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2.5  转换成二进制 10.1  科学记数法表示为1.01×2^1</span><br></pre></td></tr></table></figure>
 <p>十进制小数转换二进制小数时，整数部分和平常的方法是一样的，小数部分规则如下：</p>
 <p><img src="https://s2.ax1x.com/2019/03/18/AeO0wn.png" alt> </p>
 <h4 id="单精度浮点数"><a href="#单精度浮点数" class="headerlink" title="单精度浮点数"></a>单精度浮点数</h4><ul>
