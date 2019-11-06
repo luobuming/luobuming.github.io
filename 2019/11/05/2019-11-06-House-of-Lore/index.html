@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        House-of-Lore - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+     你若盛开，清风自来！ 
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            萝卜
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        House-of-Lore
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-11-05 12:56:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <p>House-of-Lore是一个关于small bin的，利用条件是</p>
+<ul>
+<li>能够控制进入small bin中的chunk</li>
+<li>用户malloc的大小可控</li>
+</ul>
+<p>源码分析：(glibc-2.23/malloc/malloc.c:3405)<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">if</span> (in_smallbin_range (nb))<span class="comment">//nb在不在small bin 范围内</span></span><br><span class="line">   &#123;</span><br><span class="line">     idx = smallbin_index (nb); <span class="comment">//获取nb大小所在得small bin得index</span></span><br><span class="line">     bin = bin_at (av, idx);<span class="comment">//获取对应index的指针</span></span><br><span class="line"></span><br><span class="line">     <span class="keyword">if</span> ((victim = last (bin)) != bin)<span class="comment">//取最后一个chunk的指针和第一个chunk的指针对比</span></span><br><span class="line">       &#123;<span class="comment">//验证改small bin是不是为空</span></span><br><span class="line">         <span class="keyword">if</span> (victim == <span class="number">0</span>) <span class="comment">/* initialization check 验证有没有初始化*/</span></span><br><span class="line">           malloc_consolidate (av);</span><br><span class="line">         <span class="keyword">else</span></span><br><span class="line">           &#123;</span><br><span class="line">             bck = victim-&gt;bk;<span class="comment">//取倒数第二个chunk</span></span><br><span class="line"><span class="keyword">if</span> (__glibc_unlikely (bck-&gt;fd != victim))<span class="comment">//验证一下fd指针</span></span><br><span class="line">               &#123;</span><br><span class="line">                 errstr = <span class="string">"malloc(): smallbin double linked list corrupted"</span>;</span><br><span class="line">                 <span class="keyword">goto</span> errout;</span><br><span class="line">               &#125;</span><br><span class="line">             set_inuse_bit_at_offset (victim, nb);</span><br><span class="line">             bin-&gt;bk = bck;******</span><br><span class="line">             bck-&gt;fd = bin;******</span><br><span class="line"></span><br><span class="line">             <span class="keyword">if</span> (av != &amp;main_arena)</span><br><span class="line">               victim-&gt;size |= NON_MAIN_ARENA;</span><br><span class="line">             check_malloced_chunk (av, victim, nb);</span><br><span class="line">             <span class="keyword">void</span> *p = chunk2mem (victim);</span><br><span class="line">             alloc_perturb (p, bytes);</span><br><span class="line">             <span class="keyword">return</span> p;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>主要触发点我已经在上面用*号标明，当我们可以控制已经释放了的<code>small bin</code>时，控制它的bk指针，指向伪造的<code>chunk</code>地址，然后再<code>malloc</code>两次<code>victim</code>的<code>size</code>，即可分配到我们伪造的地址上</p>
+<p>demo:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//gcc -g -no-pie demo.c -o demo</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="keyword">char</span> *heap[<span class="number">5</span>];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">"hello"</span>);</span><br><span class="line">	heap[<span class="number">0</span>]=<span class="built_in">malloc</span>(<span class="number">0x90</span>);</span><br><span class="line">	heap[<span class="number">1</span>]=<span class="built_in">malloc</span>(<span class="number">0x100</span>);</span><br><span class="line">	<span class="built_in">free</span>(heap[<span class="number">0</span>]);</span><br><span class="line">	heap[<span class="number">2</span>]=<span class="built_in">malloc</span>(<span class="number">0x110</span>);</span><br><span class="line"></span><br><span class="line">	heap[<span class="number">3</span>]=<span class="built_in">malloc</span>(<span class="number">0x90</span>);</span><br><span class="line">	heap[<span class="number">4</span>]=<span class="built_in">malloc</span>(<span class="number">0x90</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>gdb</code>中调试，在<code>heap[3]=malloc(0x90);</code>处停下，修改内存数据，伪造此时在small bin中的heap[0]，其bk指针指向<code>0x601060</code>，其<code>0x601070</code>的值为<code>heap[0] chunk</code>的起始地址，其<code>0x601078</code>的值是一个指向<code>fd指针</code>是<code>0x601060</code>的指针，<br>执行程序<code>heap[4]</code>即可分配到<code>0x601070</code></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
