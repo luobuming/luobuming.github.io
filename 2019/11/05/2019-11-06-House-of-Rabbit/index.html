@@ -56,32 +56,32 @@
             <li>
                 <a href="/">
                     <i class="iconfont icon-shouye1"></i>
-                    <span>主页</span>
+                    <span>HOME</span>
                 </a>
             </li>
             <li>
                 <a href="/tags">
                     <i class="iconfont icon-biaoqian1"></i>
-                    <span>标签</span>
+                    <span>TAGS</span>
                 </a>
             </li>
             <li>
                 <a href="/archives">
                     <i class="iconfont icon-guidang2"></i>
-                    <span>存档</span>
+                    <span>ARCHIVES</span>
                 </a>
             </li>
             <li>
                 <a href="/about/">
                     <i class="iconfont icon-guanyu2"></i>
-                    <span>关于</span>
+                    <span>ABOUT</span>
                 </a>
             </li>
             
             <li>
                 <a id="search">
                     <i class="iconfont icon-sousuo1"></i>
-                    <span>搜索</span>
+                    <span>SEARCH</span>
                 </a>
             </li>
             
@@ -89,7 +89,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#待写……"><span class="toc-text">待写……</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#原理"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#利用条件："><span class="toc-text">利用条件：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一、通过修改size来利用House-of-Rabbit"><span class="toc-text">一、通过修改size来利用House-of-Rabbit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一、通过修改fd指针来利用House-of-Rabbit"><span class="toc-text">一、通过修改fd指针来利用House-of-Rabbit</span></a></li></ol>
 </div>
     
 </div>
@@ -100,7 +100,7 @@
         <div class="search-input">
             <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
             <input id="search-input">
-            <span id="begin-search">搜索</span>
+            <span id="begin-search">search</span>
         </div>
         <div class="search-result-container" id="search-result-container">
 
@@ -124,26 +124,38 @@
     </div>
 
     <div class="post-meta">
-        <span class="attr">发布于：<span>2019-11-05 12:56:00</span></span>
+        <span class="attr">Post：<span>2019-11-05 12:56:00</span></span>
         
-        <span class="attr">标签：/
+        <span class="attr">Tags：/
         
         <a class="tag" href="/tags/#pwn" title="pwn">pwn</a>
         <span>/</span>
         
         
         </span>
-        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
 </span>
 
     </div>
     <div class="post-content no-indent">
-        <p>利用条件：</p>
-<ul>
-<li>能够控制chunk的size字段或者是fd字段</li>
-<li>能够malloc很大的size</li>
+        <h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><code>malloc_conslidate</code>函数合并堆块的时候没有检查<code>chunk</code>的<code>size</code>字段，当我们可以伪造已经在<code>fast bin</code>中<code>chunk</code>的<code>size</code>字段时，就可以获得一个伪造大小的<code>small bin chunk</code>，这样可以很快的构造出来<code>chunk overlap</code></p>
+<h3 id="利用条件："><a href="#利用条件：" class="headerlink" title="利用条件："></a>利用条件：</h3><ul>
+<li>能够控制<code>chunk</code>的<code>size</code>字段或者是<code>fd字段</code></li>
+<li>能够<code>malloc</code>很大的<code>size</code>或者存在<code>scanf</code>函数</li>
 </ul>
-<h2 id="待写……"><a href="#待写……" class="headerlink" title="待写……"></a>待写……</h2>
+<h3 id="一、通过修改size来利用House-of-Rabbit"><a href="#一、通过修改size来利用House-of-Rabbit" class="headerlink" title="一、通过修改size来利用House-of-Rabbit"></a>一、通过修改<code>size</code>来利用<code>House-of-Rabbit</code></h3><p><code>demo</code>：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> *heap[<span class="number">5</span>];</span><br><span class="line">	heap[<span class="number">0</span>]=<span class="built_in">malloc</span>(<span class="number">0x40</span>);</span><br><span class="line">	heap[<span class="number">1</span>]=<span class="built_in">malloc</span>(<span class="number">0x40</span>);</span><br><span class="line">	heap[<span class="number">2</span>]=<span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line">	<span class="built_in">free</span>(heap[<span class="number">0</span>]);</span><br><span class="line">	<span class="built_in">free</span>(heap[<span class="number">1</span>]);</span><br><span class="line">	heap[<span class="number">3</span>]=<span class="built_in">malloc</span>(<span class="number">0x1000</span>);<span class="comment">//trigger</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在11行下断点，修改chunk为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">fastbins</span><br><span class="line">0x20: 0x0</span><br><span class="line">0x30: 0x0</span><br><span class="line">0x40: 0x0</span><br><span class="line">0x50: 0x602050 —▸ 0x602000 ◂— 0x0</span><br><span class="line">0x60: 0x0</span><br><span class="line">0x70: 0x0</span><br><span class="line">0x80: 0x0</span><br><span class="line">unsortedbin</span><br><span class="line">all: 0x0</span><br><span class="line">smallbins</span><br><span class="line">empty</span><br><span class="line">largebins</span><br><span class="line">empty</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">0x602000:	0x0000000000000000	0x0000000000000071</span><br><span class="line">0x602010:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602020:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602030:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602040:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602050:	0x0000000000000000	0x0000000000000051</span><br><span class="line">0x602060:	0x0000000000602000	0x0000000000000000</span><br><span class="line">0x602070:	0x0000000000000000	0x0000000000000051</span><br><span class="line">0x602080:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602090:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x6020a0:	0x0000000000000000	0x0000000000000021</span><br><span class="line">0x6020b0:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x6020c0:	0x0000000000000000	0x0000000000020f41</span><br><span class="line">0x6020d0:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x6020e0:	0x0000000000000000	0x0000000000000000</span><br></pre></td></tr></table></figure></p>
+<p>执行第11行之后，<code>chunk</code>为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">fastbins</span><br><span class="line">0x20: 0x0</span><br><span class="line">0x30: 0x0</span><br><span class="line">0x40: 0x0</span><br><span class="line">0x50: 0x0</span><br><span class="line">0x60: 0x0</span><br><span class="line">0x70: 0x0</span><br><span class="line">0x80: 0x0</span><br><span class="line">unsortedbin</span><br><span class="line">all: 0x0</span><br><span class="line">smallbins</span><br><span class="line">0x50: 0x602050 —▸ 0x7ffff7dd1bb8 (main_arena+152) ◂— 0x602050 /* &apos;P `&apos; */</span><br><span class="line">0x70: 0x602000 —▸ 0x7ffff7dd1bd8 (main_arena+184) ◂— 0x602000</span><br><span class="line">largebins</span><br><span class="line">empty</span><br></pre></td></tr></table></figure></p>
+<p>成功的伪造出来一个0x70的<code>chunk</code>，原来这个<code>chunk</code>时0x50的，所以可以造成<code>chunk overlap</code></p>
+<blockquote>
+<p>需要注意的是，伪造的<code>chunk</code>的<code>next chunk</code>时，最好要合并<code>chunk</code>不要拆分<code>chunk</code></p>
+</blockquote>
+<h3 id="一、通过修改fd指针来利用House-of-Rabbit"><a href="#一、通过修改fd指针来利用House-of-Rabbit" class="headerlink" title="一、通过修改fd指针来利用House-of-Rabbit"></a>一、通过修改<code>fd指针</code>来利用<code>House-of-Rabbit</code></h3><p>demo：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> *heap[<span class="number">5</span>];</span><br><span class="line">	heap[<span class="number">0</span>]=<span class="built_in">malloc</span>(<span class="number">0x40</span>);</span><br><span class="line">	heap[<span class="number">4</span>]=<span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line">	heap[<span class="number">1</span>]=<span class="built_in">malloc</span>(<span class="number">0x100</span>);</span><br><span class="line">	heap[<span class="number">2</span>]=<span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line">	<span class="built_in">free</span>(heap[<span class="number">0</span>]);</span><br><span class="line">	heap[<span class="number">3</span>]=<span class="built_in">malloc</span>(<span class="number">0x1000</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>也是再<code>free</code>之后下断点，查看<code>heap</code>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">fastbins</span><br><span class="line">0x20: 0x0</span><br><span class="line">0x30: 0x0</span><br><span class="line">0x40: 0x0</span><br><span class="line">0x50: 0x602000 ◂— 0x0</span><br><span class="line">0x60: 0x0</span><br><span class="line">0x70: 0x0</span><br><span class="line">0x80: 0x0</span><br><span class="line">unsortedbin</span><br><span class="line">all: 0x0</span><br><span class="line">smallbins</span><br><span class="line">empty</span><br><span class="line">largebins</span><br><span class="line">empty</span><br><span class="line">pwndbg&gt; x/60gx 0x602000</span><br><span class="line">0x602000:	0x0000000000000000	0x0000000000000051</span><br><span class="line">0x602010:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602020:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602030:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602040:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602050:	0x0000000000000000	0x0000000000000021</span><br><span class="line">0x602060:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602070:	0x0000000000000000	0x0000000000000111</span><br><span class="line">0x602080:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602090:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x6020a0:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x6020b0:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x6020c0:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x6020d0:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x6020e0:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x6020f0:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602100:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602110:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602120:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602130:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602140:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602150:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602160:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602170:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x602180:	0x0000000000000000	0x0000000000000021</span><br><span class="line">0x602190:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x6021a0:	0x0000000000000000	0x0000000000020e61</span><br><span class="line">0x6021b0:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x6021c0:	0x0000000000000000	0x0000000000000000</span><br><span class="line">0x6021d0:	0x0000000000000000	0x0000000000000000</span><br></pre></td></tr></table></figure></p>
+<p>修改<code>0x602000</code>的<code>fd指针</code>为<code>0x602070</code>，然后执行下一句代码</p>
+<p><code>heap</code>情况：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">fastbins</span><br><span class="line">0x20: 0x0</span><br><span class="line">0x30: 0x0</span><br><span class="line">0x40: 0x0</span><br><span class="line">0x50: 0x0</span><br><span class="line">0x60: 0x0</span><br><span class="line">0x70: 0x0</span><br><span class="line">0x80: 0x0</span><br><span class="line">unsortedbin</span><br><span class="line">all: 0x0</span><br><span class="line">smallbins</span><br><span class="line">0x50: 0x602000 —▸ 0x7ffff7dd1bb8 (main_arena+152) ◂— 0x602000</span><br><span class="line">0x110: 0x602070 —▸ 0x7ffff7dd1c78 (main_arena+344) ◂— 0x602070 /* &apos;p `&apos; */</span><br><span class="line">largebins</span><br><span class="line">empty</span><br></pre></td></tr></table></figure></p>
+<p>此时就多出来一个<code>chunk</code>在<code>small bin</code>中</p>
+
         
         <br>
         <div id="comment-container">
