@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        docker学习(二) - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+     你若盛开，清风自来！ 
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            萝卜
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dockerfile"><span class="toc-text">Dockerfile</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#格式"><span class="toc-text">格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#FROM"><span class="toc-text">FROM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RUN"><span class="toc-text">RUN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注释"><span class="toc-text">注释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#初次通过使用Dockerfile"><span class="toc-text">初次通过使用Dockerfile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像构建上下文（context）"><span class="toc-text">镜像构建上下文（context）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-build"><span class="toc-text">docker build</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        docker学习(二)
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-11-19 20:59:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#docker" title="docker">docker</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p>Dockerfile是用来构建镜像的文本文件，其中包含一条一条的指令</p>
+<h2 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h2><h3 id="FROM"><a href="#FROM" class="headerlink" title="FROM"></a>FROM</h3><p>用来指定基础镜像，必须放在Dockerfile的第一行，如：<code>FROM ubuntu:16.04</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">服务类镜像：nginx、redis、mongo、mysql、httpd、php、tomcat 等</span><br><span class="line">操作系统镜像：ubuntu、debian、centos、fedora、alpine 等</span><br><span class="line">空镜像：scratch</span><br></pre></td></tr></table></figure>
+<h3 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h3><p>RUN是用来执行系统命令的</p>
+<p>两种格式：</p>
+<ul>
+<li>shell命令格式。直接在RUN后加上要执行的命令即可<br><code>eg: RUN touch radish.txt</code></li>
+<li>exec命令格式。不推荐使用。<br><code>eg: EXEC [&#39;touch&#39;,&quot;radish.txt&quot;]</code></li>
+</ul>
+<p>需要注意的是，Dockerfile中的每一条指令都会建立一层，所以在写Dockerfile的时候尽量合并</p>
+<p>eg：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM ubuntu:16.04</span><br><span class="line">RUN touch radish.txt \</span><br><span class="line">	&amp;&amp; rm radish.txt</span><br></pre></td></tr></table></figure></p>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>在dockerfile中注释符用<code>#</code></p>
+<h3 id="初次通过使用Dockerfile"><a href="#初次通过使用Dockerfile" class="headerlink" title="初次通过使用Dockerfile"></a>初次通过使用Dockerfile</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FROM ubuntu:16.04</span><br><span class="line">RUN echo &quot;Hacked by Radish...&quot; &gt; /var/www/html/index.php</span><br></pre></td></tr></table></figure>
+<p>在dockerfile的目录下执行<code>docker build -t docker_test:this_is_test .</code></p>
+<p>执行后会发现多了一个新的docker镜像，也就是你所建立的</p>
+<h3 id="镜像构建上下文（context）"><a href="#镜像构建上下文（context）" class="headerlink" title="镜像构建上下文（context）"></a>镜像构建上下文（context）</h3><p>上面利用dockerfile来创建镜像的时候用的命令后面有一个<code>.</code>，不要以为这个代表的是dockerfile的目录，其实这个是上下文的目录</p>
+<p>当你执行docker build的时候，docker程序会把你指定的上下文目录下的文件全部打包发送到docker中，供docker使用，如，复制本机文件到docker里面</p>
+<p>在dockerfile中复制文件的时候，只能是上下文目录下的，不能超越上下文目录，否则会找不到</p>
+<p>如果上下文目录下存在不想让docker打包的文件，可以利用<code>.dockerignore</code>来进行限制，格式如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">filename.txt</span><br><span class="line">filename.php</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="docker-build"><a href="#docker-build" class="headerlink" title="docker build"></a>docker build</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ docker build --<span class="built_in">help</span>                                                                                                     </span><br><span class="line">                                                                                                                             </span><br><span class="line">Usage:  docker build [OPTIONS] PATH | URL | -                                                                                </span><br><span class="line">                                                                                                                             </span><br><span class="line">Build an image from a Dockerfile                                                                                             </span><br><span class="line">                                                                                                                             </span><br><span class="line">Options:                                                                                                                     </span><br><span class="line">      --add-host list           Add a custom host-to-IP mapping (host:ip)                                                    </span><br><span class="line">      --build-arg list          Set build-time variables                                                                     </span><br><span class="line">      --cache-from strings      Images to consider as cache sources                                                          </span><br><span class="line">      --cgroup-parent string    Optional parent cgroup <span class="keyword">for</span> the container                                                     </span><br><span class="line">      --compress                Compress the build context using gzip                                                        </span><br><span class="line">      --cpu-period int          Limit the CPU CFS (Completely Fair Scheduler) period                                         </span><br><span class="line">      --cpu-quota int           Limit the CPU CFS (Completely Fair Scheduler) quota                                          </span><br><span class="line">  -c, --cpu-shares int          CPU shares (relative weight)                                                                 </span><br><span class="line">      --cpuset-cpus string      CPUs <span class="keyword">in</span> <span class="built_in">which</span> to allow execution (0-3, 0,1)                                                  </span><br><span class="line">      --cpuset-mems string      MEMs <span class="keyword">in</span> <span class="built_in">which</span> to allow execution (0-3, 0,1)                                                  </span><br><span class="line">      --<span class="built_in">disable</span>-content-trust   Skip image verification (default <span class="literal">true</span>)                                                       </span><br><span class="line">  -f, --file string             Name of the Dockerfile (Default is <span class="string">'PATH/Dockerfile'</span>)                                        </span><br><span class="line">      --force-rm                Always remove intermediate containers                                                        </span><br><span class="line">      --iidfile string          Write the image ID to the file                                                               </span><br><span class="line">      --isolation string        Container isolation technology                                                               </span><br><span class="line">      --label list              Set metadata <span class="keyword">for</span> an image                                                                    </span><br><span class="line">  -m, --memory bytes            Memory <span class="built_in">limit</span>                                                                                 </span><br><span class="line">      --memory-swap bytes       Swap <span class="built_in">limit</span> equal to memory plus swap: <span class="string">'-1'</span> to <span class="built_in">enable</span> unlimited swap                          </span><br><span class="line">      --network string          Set the networking mode <span class="keyword">for</span> the RUN instructions during build (default <span class="string">"default"</span>)            </span><br><span class="line">      --no-cache                Do not use cache when building the image                                                     </span><br><span class="line">      --pull                    Always attempt to pull a newer version of the image                                          </span><br><span class="line">  -q, --quiet                   Suppress the build output and <span class="built_in">print</span> image ID on success                                      </span><br><span class="line">      --rm                      Remove intermediate containers after a successful build (default <span class="literal">true</span>)                       </span><br><span class="line">      --security-opt strings    Security options                                                                             </span><br><span class="line">      --shm-size bytes          Size of /dev/shm                                                                             </span><br><span class="line">  -t, --tag list                Name and optionally a tag <span class="keyword">in</span> the <span class="string">'name:tag'</span> format                                           </span><br><span class="line">      --target string           Set the target build stage to build.                                                         </span><br><span class="line">      --<span class="built_in">ulimit</span> <span class="built_in">ulimit</span>           Ulimit options (default [])                                                                  </span><br><span class="line">➜  ~</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>-f</code>：指定dockerfile的位置</li>
+<li><code>-q</code>：只输出ID</li>
+<li><code>-t</code>：指定docker name和tag，格式：<code>name:tag</code></li>
+</ul>
+<blockquote>
+<p>默认情况下会在上下文的目录下找Dockerfile文件</p>
+</blockquote>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

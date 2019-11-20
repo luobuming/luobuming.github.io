@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        docker学习(一) - 萝卜
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+     你若盛开，清风自来！ 
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar radius">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            萝卜
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组成"><span class="toc-text">组成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#比较"><span class="toc-text">比较</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令给指令"><span class="toc-text">命令给指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#常用的命令"><span class="toc-text">常用的命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取镜像"><span class="toc-text">获取镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker-ps-命令"><span class="toc-text">Docker ps 命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker-run命令"><span class="toc-text">Docker run命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#commit建立镜像"><span class="toc-text">commit建立镜像</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> 你若盛开，清风自来！ </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        docker学习(一)
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2019-11-19 15:37:00</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#docker" title="docker">docker</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <p>之前也了解过一些关于<code>docker</code>的知识，但是学的也是太浅了，决定要系统的学习一下。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://yeasy.gitbooks.io/docker_practice/introduction/what.html" target="_blank" rel="noopener">yeasy</a></p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>介绍的话我这里就不再多嘴了，网上资料很多的</p>
+<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><p>简单的来说，docker由镜像、容器、仓库</p>
+<p>镜像：包含了一个完整的操作系统。查看本地镜像命令：<code>docker images</code><br>容器：它是真正提供服务，消耗资源的东西。<br>仓库：用于存放镜像。类似于<code>github</code></p>
+<h2 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h2><p>和虚拟机相比，<code>docker</code>更快，性能更好，更省资源。</p>
+<h2 id="命令给指令"><a href="#命令给指令" class="headerlink" title="命令给指令"></a>命令给指令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ docker --<span class="built_in">help</span></span><br><span class="line"></span><br><span class="line">Usage:  docker [OPTIONS] COMMAND</span><br><span class="line"></span><br><span class="line">A self-sufficient runtime <span class="keyword">for</span> containers</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">      --config string      Location of client config files (default <span class="string">"/root/.docker"</span>)</span><br><span class="line">  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default context <span class="built_in">set</span> with <span class="string">"docker context use"</span>)</span><br><span class="line">  -D, --debug              Enable debug mode</span><br><span class="line">  -H, --host list          Daemon socket(s) to connect to</span><br><span class="line">  -l, --<span class="built_in">log</span>-level string   Set the logging level (<span class="string">"debug"</span>|<span class="string">"info"</span>|<span class="string">"warn"</span>|<span class="string">"error"</span>|<span class="string">"fatal"</span>) (default <span class="string">"info"</span>)</span><br><span class="line">      --tls                Use TLS; implied by --tlsverify</span><br><span class="line">      --tlscacert string   Trust certs signed only by this CA (default <span class="string">"/root/.docker/ca.pem"</span>)</span><br><span class="line">      --tlscert string     Path to TLS certificate file (default <span class="string">"/root/.docker/cert.pem"</span>)</span><br><span class="line">      --tlskey string      Path to TLS key file (default <span class="string">"/root/.docker/key.pem"</span>)</span><br><span class="line">      --tlsverify          Use TLS and verify the remote</span><br><span class="line">  -v, --version            Print version information and quit</span><br><span class="line"></span><br><span class="line">Management Commands:</span><br><span class="line">  builder     Manage builds</span><br><span class="line">  config      Manage Docker configs</span><br><span class="line">  container   Manage containers</span><br><span class="line">  context     Manage contexts</span><br><span class="line">  engine      Manage the docker engine</span><br><span class="line">  image       Manage images</span><br><span class="line">  network     Manage networks</span><br><span class="line">  node        Manage Swarm nodes</span><br><span class="line">  plugin      Manage plugins</span><br><span class="line">  secret      Manage Docker secrets</span><br><span class="line">  service     Manage services</span><br><span class="line">  stack       Manage Docker stacks</span><br><span class="line">  swarm       Manage Swarm</span><br><span class="line">  system      Manage Docker</span><br><span class="line">  trust       Manage trust on Docker images</span><br><span class="line">  volume      Manage volumes</span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  attach      Attach <span class="built_in">local</span> standard input, output, and error streams to a running container</span><br><span class="line">  build       Build an image from a Dockerfile</span><br><span class="line">  commit      Create a new image from a container<span class="string">'s changes</span></span><br><span class="line"><span class="string">  cp          Copy files/folders between a container and the local filesystem</span></span><br><span class="line"><span class="string">  create      Create a new container</span></span><br><span class="line"><span class="string">  diff        Inspect changes to files or directories on a container'</span>s filesystem</span><br><span class="line">  events      Get real time events from the server</span><br><span class="line">  <span class="built_in">exec</span>        Run a <span class="built_in">command</span> <span class="keyword">in</span> a running container</span><br><span class="line">  <span class="built_in">export</span>      Export a container<span class="string">'s filesystem as a tar archive</span></span><br><span class="line"><span class="string">  history     Show the history of an image</span></span><br><span class="line"><span class="string">  images      List images</span></span><br><span class="line"><span class="string">  import      Import the contents from a tarball to create a filesystem image</span></span><br><span class="line"><span class="string">  info        Display system-wide information</span></span><br><span class="line"><span class="string">  inspect     Return low-level information on Docker objects</span></span><br><span class="line"><span class="string">  kill        Kill one or more running containers</span></span><br><span class="line"><span class="string">  load        Load an image from a tar archive or STDIN</span></span><br><span class="line"><span class="string">  login       Log in to a Docker registry</span></span><br><span class="line"><span class="string">  logout      Log out from a Docker registry</span></span><br><span class="line"><span class="string">  logs        Fetch the logs of a container</span></span><br><span class="line"><span class="string">  pause       Pause all processes within one or more containers</span></span><br><span class="line"><span class="string">  port        List port mappings or a specific mapping for the container</span></span><br><span class="line"><span class="string">  ps          List containers</span></span><br><span class="line"><span class="string">  pull        Pull an image or a repository from a registry</span></span><br><span class="line"><span class="string">  push        Push an image or a repository to a registry</span></span><br><span class="line"><span class="string">  rename      Rename a container</span></span><br><span class="line"><span class="string">  restart     Restart one or more containers</span></span><br><span class="line"><span class="string">  rm          Remove one or more containers</span></span><br><span class="line"><span class="string">  rmi         Remove one or more images</span></span><br><span class="line"><span class="string">  run         Run a command in a new container</span></span><br><span class="line"><span class="string">  save        Save one or more images to a tar archive (streamed to STDOUT by default)</span></span><br><span class="line"><span class="string">  search      Search the Docker Hub for images</span></span><br><span class="line"><span class="string">  start       Start one or more stopped containers</span></span><br><span class="line"><span class="string">  stats       Display a live stream of container(s) resource usage statistics</span></span><br><span class="line"><span class="string">  stop        Stop one or more running containers</span></span><br><span class="line"><span class="string">  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE</span></span><br><span class="line"><span class="string">  top         Display the running processes of a container</span></span><br><span class="line"><span class="string">  unpause     Unpause all processes within one or more containers</span></span><br><span class="line"><span class="string">  update      Update configuration of one or more containers</span></span><br><span class="line"><span class="string">  version     Show the Docker version information</span></span><br><span class="line"><span class="string">  wait        Block until one or more containers stop, then print their exit codes</span></span><br><span class="line"><span class="string">Run '</span>docker COMMAND --<span class="built_in">help</span><span class="string">' for more information on a command.</span></span><br></pre></td></tr></table></figure>
+<h3 id="常用的命令"><a href="#常用的命令" class="headerlink" title="常用的命令"></a>常用的命令</h3><p><code>docker images</code>：查看本地的镜像文件<br><code>docker search</code>：搜索指定名字的镜像文件<br><code>docker ps</code>：列出运行的<code>docker</code><br><code>docker rm</code>：删除指定的容器<br><code>docker rmi</code>：删除指定的镜像文件<br><code>docker stop</code>：停止正在运行的<code>docker</code><br><code>docker start</code>：开启已经停止的<code>docker</code><br><code>docker restart</code>：重启<code>docker</code></p>
+<h2 id="获取镜像"><a href="#获取镜像" class="headerlink" title="获取镜像"></a>获取镜像</h2><p><code>docker search</code>：查找指定名字的镜像文件<br><code>docker pull</code>：将镜像文件下载到本地</p>
+<h2 id="Docker-ps-命令"><a href="#Docker-ps-命令" class="headerlink" title="Docker ps 命令"></a>Docker ps 命令</h2><p>ps命令用来列出容器</p>
+<p><code>CONTAINER ID</code>:<code>docker</code> 容器ID<br><code>IMAGE</code>：<code>docker</code>容器所使用的镜像<br><code>COMMAND</code>：启动容器时运行的命令<br><code>CREATED</code> ：容器的创建时间<br><code>PORTS</code> ：端口和宿主机映射关系和网络传输协议的类型<br><code>NAMES</code> ：<code>docker</code>容器的<code>name</code><br><code>STATUS</code> ：<code>docker</code>的状态</p>
+<ul>
+<li><code>created</code>（已创建）</li>
+<li><code>restarting</code>（重启中）</li>
+<li><code>running</code>（运行中）</li>
+<li><code>removing</code>（迁移中）</li>
+<li><code>paused</code>（暂停）</li>
+<li><code>exited</code>（停止）</li>
+<li><code>dead</code>（死亡）<br>该命令由其下面参数：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-a : 列出所有的容器信息，包括未正在运行  eg：docker ps -a</span><br><span class="line">--filter : 根据条件过滤显示内容 eg：docker ps --filter <span class="string">"[name/status/ancestor/ancestor]=ctf_pwn"</span></span><br><span class="line">--format : 格式化输入容器的信息 eg：docker ps --format <span class="string">"docker is &#123;&#123;.Names&#125;&#125;"</span>,占位符下面已列出</span><br><span class="line">-l : 输入最近创建的容器</span><br><span class="line">-n : 列出最近创建的n个容器</span><br><span class="line">-q : 只显示容器的ID号</span><br><span class="line">-s ：显示总的容器大小</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>占位符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.ID</td>
+<td>容器ID</td>
+<td></td>
+</tr>
+<tr>
+<td>.Image</td>
+<td>容器所使用镜像的name</td>
+<td></td>
+</tr>
+<tr>
+<td>.Command</td>
+<td>…</td>
+<td></td>
+</tr>
+<tr>
+<td>.Ports</td>
+<td>…</td>
+<td></td>
+</tr>
+<tr>
+<td>.Status</td>
+<td>…</td>
+<td></td>
+</tr>
+<tr>
+<td>.Size</td>
+<td>…</td>
+<td></td>
+</tr>
+<tr>
+<td>.Names</td>
+<td>…</td>
+<td></td>
+</tr>
+<tr>
+<td>.Networks</td>
+<td>…</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Docker-run命令"><a href="#Docker-run命令" class="headerlink" title="Docker run命令"></a>Docker run命令</h2><p>该命令是创建一个新的容器并运行一个命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run [options] image</span><br></pre></td></tr></table></figure>
+<p>OPTIONS说明：(直接从菜鸟教程上搬过来了)</p>
+<ul>
+<li><p><strong>-a stdin:</strong> 指定标准输入输出内容类型，可选 STDIN/STDOUT/STDERR 三项；</p>
+</li>
+<li><p><strong>-d:</strong> 后台运行容器，并返回容器ID；</p>
+</li>
+<li><p><strong>-i:</strong> 以交互模式运行容器，通常与 -t 同时使用；</p>
+</li>
+<li><p><strong>-P:</strong> 随机端口映射，容器内部端口<strong>随机</strong>映射到主机的高端口</p>
+</li>
+<li><p><strong>-p:</strong> 指定端口映射，格式为：主机(宿主)端口:容器端口</p>
+</li>
+<li><p><strong>-t:</strong> 为容器重新分配一个伪输入终端，通常与 -i 同时使用；</p>
+</li>
+<li><p><strong>–name=”nginx-lb”:</strong> 为容器指定一个名称；</p>
+</li>
+<li><p><strong>–dns 8.8.8.8:</strong> 指定容器使用的DNS服务器，默认和宿主一致；</p>
+</li>
+<li><p><strong>–dns-search example.com:</strong> 指定容器DNS搜索域名，默认和宿主一致；</p>
+</li>
+<li><p><strong>-h “mars”:</strong> 指定容器的hostname；</p>
+</li>
+<li><p><strong>-e username=”ritchie”:</strong> 设置环境变量；</p>
+</li>
+<li><p><strong>–env-file=[]:</strong> 从指定文件读入环境变量；</p>
+</li>
+<li><p><strong>–cpuset=”0-2” or –cpuset=”0,1,2”:</strong> 绑定容器到指定CPU运行；</p>
+</li>
+<li><p><strong>-m :</strong>设置容器使用内存最大值；</p>
+</li>
+<li><p><strong>–net=”bridge”:</strong> 指定容器的网络连接类型，支持 bridge/host/none/container: 四种类型；</p>
+</li>
+<li><p><strong>–link=[]:</strong> 添加链接到另一个容器；</p>
+</li>
+<li><p><strong>–expose=[]:</strong> 开放一个端口或一组端口；</p>
+</li>
+<li><p><strong>–volume , -v:</strong> 绑定一个卷</p>
+</li>
+</ul>
+<h2 id="commit建立镜像"><a href="#commit建立镜像" class="headerlink" title="commit建立镜像"></a>commit建立镜像</h2><p>大多数不用这个，因为这个缺点很多</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        转发请备注<a href="“https://luobuming.github.io”">一筐萝卜</a>的个人博客 <br>
+        本站总访问量<span id="busuanzi_value_site_pv"></span>次
+       </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
